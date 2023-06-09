@@ -6,7 +6,7 @@
 
   <groupId>mx.edu.utez</groupId>
   <artifactId>UCQ</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>UCQ</name>
   <packaging>war</packaging>
 
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>org.glassfish.web</groupId>
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
-            <version>3.0.1 </version>
+            <version>2.0.0 </version>
         </dependency>
         <dependency>
             <groupId>com.sun.mail</groupId>
