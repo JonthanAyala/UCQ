@@ -77,8 +77,7 @@ public class ServletUser extends HttpServlet {
                 lastname = req.getParameter("lastname");
                 username = req.getParameter("username");
                 birthday = req.getParameter("birthday");
-                status = req.getParameter("status");
-                User user1 = new User(0L, name, surname, lastname, birthday, username, status);
+                User user1 = new User(0L, name, surname, lastname, birthday, username, "Activo");
                 boolean result = new DaoUser().save(user1);
                 if (result){
                     redirect = "/user/users?result="+result+"&message="+ URLEncoder.encode("¡Exito! Usuario registrado correctamente.", StandardCharsets.UTF_8);
@@ -91,6 +90,7 @@ public class ServletUser extends HttpServlet {
             default:
                 System.out.println(action);
         }
+        resp.sendRedirect(req.getContextPath()+ redirect);
     }
 
 }
