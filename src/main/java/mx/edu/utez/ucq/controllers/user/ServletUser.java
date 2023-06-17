@@ -29,7 +29,9 @@ public class ServletUser extends HttpServlet {
     private String action;
     private String redirect = "/user/users";
 
-    private  String name, surname, lastname, username, birthday, status;
+    private  String id, name, surname, lastname, username, birthday, status;
+
+    private User user;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -47,7 +49,15 @@ public class ServletUser extends HttpServlet {
                 redirect = "/views/user/create.jsp";
                 break;
             case "/user/user-view-update":
-
+                id= req.getParameter("id");
+                User user3 = new DaoUser().findOne(id != null ? Long.parseLong(id):0);
+                if(user3 !=null){
+                    req.setAttribute("user",user3);
+                    redirect = "/views/user/update.jsp";
+                }else {
+                    redirect = "/user/users?result" + false +
+                            "&messages" + URLEncoder.encode("", StandardCharsets.UTF_8);
+                }
                 break;
             default:
                 System.out.println(action);
@@ -61,14 +71,21 @@ public class ServletUser extends HttpServlet {
         resp.setContentType("text/html");
         action = req.getServletPath();
         switch (action){
-            case "/user/user-view-update":
-                String id = req.getParameter("id");
-                User user = new DaoUser().findOne(id != null ? Long.parseLong(id): 0);
-                if (user != null){
-                    req.setAttribute("user", user);
-                    redirect = "/views/user/update.jsp";
+            case "/user/update":
+                id = req.getParameter("id");
+                name = req.getParameter("name");
+                surname = req.getParameter("surname");
+                lastname = req.getParameter("lastname");
+                username = req.getParameter("username");
+                birthday = req.getParameter("birthday");
+                status = req.getParameter("status");
+                user = new User(Long.parseLong(id), name, surname, lastname, birthday, username, status);
+                if (new DaoUser().update(user)){
+                    redirect = "/user/users?result="+true+"&message="+ URLEncoder.encode("¡Exito! Usuario actualizado correctamente.", StandardCharsets.UTF_8);
+
                 }else {
-                    redirect = "/user/users";
+                    redirect = "/user/users?result="+false+"&message="+ URLEncoder.encode("Error accion no actualizado correctamente.", StandardCharsets.UTF_8);
+
                 }
                 break;
             case "/user/save":
@@ -86,6 +103,14 @@ public class ServletUser extends HttpServlet {
                     redirect = "/user/users?result="+result+"&message="+ URLEncoder.encode("Error accion no realizada correctamente.", StandardCharsets.UTF_8);
 
                 }
+                break;
+            case "/user/delete":
+                id = req.getParameter("id");
+                if (new DaoUser().delete(Long.parseLong(id))) {
+                    redirect = "/user/users?result="+true+"&message="+ URLEncoder.encode("¡Exito! Usuario eliminado correctamente.", StandardCharsets.UTF_8);
+                }else
+                    redirect = "/user/users?result="+false+"&message="+ URLEncoder.encode("¡ERROR! Usuario no eliminado.", StandardCharsets.UTF_8);
+
                 break;
             default:
                 System.out.println(action);
