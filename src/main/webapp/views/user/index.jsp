@@ -39,7 +39,7 @@
                       <c:out value="${s.count}"/>
                     </td>
                     <td>
-                      <c:out value="${user.name}"/><c:out value="${user.surname}"/><c:out value="${user.lastname}"/>
+                      <c:out value="${user.name}"/> <c:out value="${user.surname}"/> <c:out value="${user.lastname}"/>
                     </td>
                     <td>
                       <c:out value="${user.birthday}"/>
