@@ -12,6 +12,7 @@
   <div class="row">
     <div class="col text-center mt-5">
       <a href="user/users">Usuarios</a>
+      <a href="user/prueba2">Alumnos</a>
     </div>
   </div>
 </div>
