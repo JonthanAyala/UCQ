@@ -14,14 +14,16 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-@WebServlet(name = "users",urlPatterns = {
+    @WebServlet(name = "users",urlPatterns = {
         "/user/users",
         "/user/user",
         "/user/user-view",
         "/user/save",
         "/user/user-view-update",
         "/user/update",
-        "/user/delete"
+        "/user/delete",
+        "/user/teacher",
+        "/user/pruebas"
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 
@@ -58,6 +60,12 @@ public class ServletUser extends HttpServlet {
                     redirect = "/user/users?result" + false +
                             "&messages" + URLEncoder.encode("", StandardCharsets.UTF_8);
                 }
+                break;
+            case "/user/teacher":
+                redirect = "/views/user/exam.jsp";
+                break;
+            case "/user/pruebas":
+                redirect = "/views/user/pruebas.jsp";
                 break;
             default:
                 System.out.println(action);
