@@ -2,24 +2,15 @@ package mx.edu.utez.ucq.models.user;
 
 public class User {
     private Long id;
-    private String name;
-    private String surname;
-    private String lastname;
-    private String birthday;
-    private String username;
-    private String status;
-
+    private String usuario;
+    private String contra;
     public User() {
     }
 
-    public User(Long id, String name, String surname, String lastname, String birthday, String username, String status) {
+    public User(Long id, String usuario, String contra) {
         this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.lastname = lastname;
-        this.birthday = birthday;
-        this.username = username;
-        this.status = status;
+        this.usuario = usuario;
+        this.contra = contra;
     }
 
     public String getId() {
@@ -30,51 +21,20 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getContra() {
+        return contra;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setContra(String contra) {
+        this.contra = contra;
     }
 
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

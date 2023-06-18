@@ -15,9 +15,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @WebServlet(name = "users",urlPatterns = {
-        "/user/users",
-        "/user/user",
-        "/user/user-view",
+        "/user/menuEs",
+        "/user/menuProf",
+        "/user/menuAdm",
         "/user/save",
         "/user/user-view-update",
         "/user/update",
@@ -29,7 +29,7 @@ public class ServletUser extends HttpServlet {
     private String action;
     private String redirect = "/user/users";
 
-    private  String name, surname, lastname, username, birthday, status;
+    private  String usuario, contra;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -60,6 +60,12 @@ public class ServletUser extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html");
         action = req.getServletPath();
+        if(action=){
+
+            else{
+
+            }
+        }
         switch (action){
             case "/user/user-view-update":
                 String id = req.getParameter("id");
@@ -72,12 +78,8 @@ public class ServletUser extends HttpServlet {
                 }
                 break;
             case "/user/save":
-                name = req.getParameter("name");
-                surname = req.getParameter("surname");
-                lastname = req.getParameter("lastname");
-                username = req.getParameter("username");
-                birthday = req.getParameter("birthday");
-                status = req.getParameter("status");
+                usuario = req.getParameter("usuario");
+                contra = req.getParameter("contra");
                 User user1 = new User(0L, name, surname, lastname, birthday, username, status);
                 boolean result = new DaoUser().save(user1);
                 if (result){

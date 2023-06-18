@@ -29,13 +29,8 @@ public class DaoUser implements DaoRepository<User>{
             while (rs.next()){
                 User user = new User();
                 user.setId(rs.getLong("id"));
-                user.setName(rs.getString("name"));
-                user.setLastname(rs.getString("lastname"));
-                user.setSurname(rs.getString("surname"));
-                user.setUsername(rs.getString("username"));
-                user.setBirthday(rs.getString("birthday"));
-                user.setStatus(rs.getString("status"));
-                users.add(user);
+                user.setUsuario(rs.getString("usuario"));
+                user.setContra(rs.getString("contra"));
             }
         }catch (SQLException e){
             Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
@@ -56,12 +51,9 @@ public class DaoUser implements DaoRepository<User>{
             User user = new User();
             if (rs.next()){
                 user.setId(rs.getLong("id"));
-                user.setName(rs.getString("name"));
-                user.setLastname(rs.getString("lastname"));
-                user.setSurname(rs.getString("surname"));
-                user.setUsername(rs.getString("username"));
-                user.setBirthday(rs.getString("birthday"));
-                user.setStatus(rs.getString("status"));
+                user.setUsuario(rs.getString("name"));
+                user.setContra(rs.getString("lastname"));
+
             }
             return user;
         }catch (SQLException e){
@@ -101,8 +93,8 @@ public class DaoUser implements DaoRepository<User>{
             String query = "UPDATE users set name = ?, surname = ?, lastname = ?, username = ?, birthday = ?, status = ?, status = ? where id = ?";
 
             pstm = conn.prepareStatement(query);
-            pstm.setString(1,object.getName());
-            pstm.setString(2,object.getSurname());
+            pstm.setString(1,object.getUsuario());
+            pstm.setString(2,object.getContra());
             pstm.setString(3, object.getLastname());
             pstm.setString(4,object.getUsername());
             pstm.setString(5,object.getBirthday());
