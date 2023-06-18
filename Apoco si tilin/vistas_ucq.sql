@@ -16,14 +16,21 @@ create table Users(
     primary key (id_user)
 );
 
-/*vistas de users*/
+/*vistas de users-----------------------------------------------------------------------------------------------------------------------*/
 create view vista_user as select id_user as id, name as nombre, surname as apellido, curp ,
 status as estatus, type_user as tipo_usuario, mail as gmail, enrollment as matricula from users
 group by type_user =1 and type_user = 2 and type_user = 3
 order by type_user asc;
-
 select * from vista_user;
-#disparador before update-----------------------------------------------------------------------------------------------------------------
+#________________________________________________________________________________________________________________________________________________________________________
+#INDICES-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+create unique index idx_users_type_user on Users(type_user);
+/* indice simple*/
+create index idx_users_enrollment on Users (enrollment);
+/* indice compuesto*/
+create index idx_users_name_surname on Users (name,surname);
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#disparador before update-------------------------------------------------------------------------------------------------------------------------------------------------
 delimiter $$
 CREATE TRIGGER update_status_trigger
 before UPDATE ON users
@@ -118,7 +125,7 @@ BEGIN
       SET MESSAGE_TEXT = 'ERROR.';
     end if;
 END; $$
-#-----------------------------------------------------------------------------------------------------------------------------------------
+#____________________________________________________________________________________________________________________________________________________________________________
 
 CREATE TABLE exams (
     id_exam INT(254) NOT NULL,
@@ -138,8 +145,12 @@ from exams
 join users on exams.fk_user = users.id_user
 group by users.type_user=2
 order by users.name asc;
-
 select * from vista_exams;
+#______________________________________________________________________________________________________________________________________________________________________
+#INDICES EXAMS---------------------------------------------------------------------------------------------------------------------------------------------------------
+create index idx_exams_code on exams (code);
+/* indice compuesto*/
+create index idx_exams_start_time_end_time on exams (start_time,end_time);
 
 #--------------------------------------------------------------------------------------------------------
 
@@ -166,8 +177,14 @@ join Users on Students_exam.fk_user = Users.id_user
 join exams on Students_exam.fk_exam = exams.id_exam
 group by exams.id_exam
 order by users.name asc;
-#----------------------------------------------------------------------------------------------------------
 select * from vista_Students_exam;
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#INDICES STUDENTS_EXAM--------------------------------------------------------------------------------------------------------------------------------------------------------
+/* indice simple*/
+create index idx_students_exam_id_Student_exam on Students_exam (id_Student_exam);
+/* indice compuesto*/
+create index idx_students_exam_start_date_end_date on Students_exam (start_date,end_date);
+
 
 CREATE TABLE Questions (
   id_Question INT(5) NOT NULL,
@@ -188,7 +205,12 @@ CREATE TABLE Questions (
   order by questions.points asc;
   
   select*from vista_questions;
-  #----------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  #INDICES QUESTIONS---------------------------------------------------------------------------------------------------------------------------------------------------------
+    /* indice simple*/
+	create index idx_questions_url_image on questions (url_image);
+	/* indice compuesto*/
+	create index idx_questions_id_question_type_question_ on questions (id_Question,type_question);
   
   CREATE TABLE Questions_answer (
   id_Question_answer INT NOT NULL,
@@ -210,7 +232,12 @@ group by questions.type_question
 order by questions.points asc;
 
 select * from vista_questions_answer;
-#------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#INDICES QUESTIONS_ANSWER_________________________________________________________________________________________________________________________________________________
+/* indice simple*/
+create index idx_questions_answer_id_Question_answer on Questions_answer (id_Question_answer);
+/* indice compuesto */
+create index idx_questions_answer_answer_if_answer on Questions_answer (answer,if_answer);
 
 CREATE TABLE Students_exam_answer (
   id_Student_exam_answer INT NOT NULL,
@@ -237,7 +264,13 @@ CREATE TABLE Students_exam_answer (
     order by questions.points asc;
     
     select * from vista_students_exam_answer;
-    #--------------------------------------------------------------------------------------------------------------------
+    #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #INDICES STUDENTS_EXAM_ANSWER_____________________________________________________________________________________________________________________________________________
+        /* indice simple*/
+create index idx_Student_exam_answer_id_Student_exam_answer on Students_exam_answer (id_Student_exam_answer);
+    /* indice compuesto */
+create index idx_Student_exam_answer_fk_question_fk_answer on Students_exam_answer (fk_question,fk_answer);
+#_____________________________________________________________________________________________________________________________________________________________________________
     
 CREATE TABLE Exam_questions (
   id_Exam_questions INT NOT NULL,
@@ -260,3 +293,9 @@ group by questions.type_question
 order by questions.points asc;
 
 select * from vista_exam_questions;
+#_______________________________________________________________________________________________________________________________________________________________________
+#INDICES EXAM_QUESTIONS______________________________________________________________________________________________________________________________________________________
+ /* indice simple*/
+ create index idx_exam_questions_id_Exam_questions on Exam_questions (id_Exam_questions);
+ /* indice compuesto */
+create index idx_Exam_questions_fk_exam_fk_question on Exam_questions (fk_exam,fk_question);
