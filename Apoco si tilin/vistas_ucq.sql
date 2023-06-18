@@ -15,7 +15,7 @@ create table Users(
     password varchar(254),
     primary key (id_user)
 );
-
+#--
 /*vistas de users-----------------------------------------------------------------------------------------------------------------------*/
 create view vista_user as select id_user as id, name as nombre, surname as apellido, curp ,
 status as estatus, type_user as tipo_usuario, mail as gmail, enrollment as matricula from users
