@@ -14,8 +14,8 @@
 </head>
 <body style="background-color: #D8EAE3;">
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
+<nav class="navbar navbar-expand-lg bg-body-tertiary"  >
+  <div class="container-fluid h-20 d-inline-block" style="width: 120px; >
     <a class="navbar-brand position-absolute top-50 start-50 translate-middle"><h3 class="text-center">Ultimate Custom Quiz</h3></a>
 
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -42,7 +42,7 @@
               <div class="row">
                 <div class="col text-center">
                   <label for="codigo" class="fw-bold ">Codigo acceso</label>
-                  <input  type="text" name="codigo" id="codigo" class="form-control" required >
+                  <input  type="text" name="codigo" id="codigo" class="form-control" required style="background-color: #D9D9D9;">
                   <button type="submit" class="btn btn-outline-success btn-sm">
                     ACEPTAR
                   </button>
@@ -74,10 +74,12 @@
               <th>Nombre examen</th>
               <th>Fecha inicio</th>
               <th>Fecha finalizacion</th>
+              <th>Maestro</th>
 
               </thead>
               <tbody>
                 <tr>
+                  <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
