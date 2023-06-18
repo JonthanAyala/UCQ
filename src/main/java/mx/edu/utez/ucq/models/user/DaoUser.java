@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 public class DaoUser implements DaoRepository<User>{
     private Connection conn;
     private PreparedStatement pstm;
@@ -98,8 +99,7 @@ public class DaoUser implements DaoRepository<User>{
     public boolean update(User object) {
         try {
             conn = new MySQLConnection().connect();
-            String query = "UPDATE users set name = ?, surname = ?, lastname = ?, username = ?, birthday = ?, status = ?, status = ? where id = ?";
-
+            String query = "UPDATE users SET name = ?, surname = ?, lastname = ?, username = ?, birthday = ?, status = ? where id = ?";
             pstm = conn.prepareStatement(query);
             pstm.setString(1,object.getName());
             pstm.setString(2,object.getSurname());
@@ -107,7 +107,7 @@ public class DaoUser implements DaoRepository<User>{
             pstm.setString(4,object.getUsername());
             pstm.setString(5,object.getBirthday());
             pstm.setString(6,object.getStatus());
-            pstm.setString(7,object.getId());
+            pstm.setLong(7,object.getId());
             return pstm.executeUpdate() > 0; // == 1
 
         }catch (SQLException e){
@@ -122,7 +122,7 @@ public class DaoUser implements DaoRepository<User>{
     public boolean delete(Long id) {
         try {
             conn = new MySQLConnection().connect();
-            String query = "DELETE users where id = ?";
+            String query = "DELETE FROM users where id = ?";
             pstm = conn.prepareStatement(query);
             pstm.setLong(1,id);
             return  pstm.executeUpdate() == 1;

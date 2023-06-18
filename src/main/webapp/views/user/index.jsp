@@ -39,7 +39,7 @@
                       <c:out value="${s.count}"/>
                     </td>
                     <td>
-                      <c:out value="${user.name}"/><c:out value="${user.surname}"/><c:out value="${user.lastname}"/>
+                      <c:out value="${user.name}"/> <c:out value="${user.surname}"/> <c:out value="${user.lastname}"/>
                     </td>
                     <td>
                       <c:out value="${user.birthday}"/>
@@ -51,6 +51,18 @@
                       <c:out value="${user.status}"/>
                     </td>
                     <td>
+                      <form method="get" action="/user/user-view-update">
+                        <input hidden value="${user.id}" name="id">
+                        <button type="submit" class="btn btn-outline-warning btn-sm">
+                          Editar
+                        </button>
+                      </form>
+                      <form method="post" action="/user/delete">
+                        <input hidden value="${user.id}" name="id">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                          Eliminar
+                        </button>
+                      </form>
                     </td>
                   </tr>
                 </c:forEach>

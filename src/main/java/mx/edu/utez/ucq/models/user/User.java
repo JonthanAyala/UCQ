@@ -22,8 +22,8 @@ public class User {
         this.status = status;
     }
 
-    public String getId() {
-        return String.valueOf(id);
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
