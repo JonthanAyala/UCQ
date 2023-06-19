@@ -13,6 +13,7 @@
     <div class="col text-center mt-5">
       <a href="user/users">Usuarios</a>
       <a href="user/prueba2">Alumnos</a>
+      <a href="user/prueba3">Admin</a>
     </div>
   </div>
 </div>
