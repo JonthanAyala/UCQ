@@ -121,17 +121,18 @@ create index idx_exams_code on exams (code);
 create index idx_exams_start_time_end_time on exams (start_time,end_time);
 
 #------------------------disparador after insert exams-----------------------
-delimiter $$
+DELIMITER $$
 CREATE TRIGGER create_exam_trigger
 AFTER INSERT ON exams
 FOR EACH ROW
 BEGIN
-    DECLARE new_exam_id INT(254);            dudas			DUDAS
-    SET new_exam_id = NEW.id_exam;
-
-    INSERT INTO exams (id_exam, name_exam, code, start_time, fk_user)
-    VALUES (new_exam_id, NEW.name_exam, NEW.code, NEW.start_time, NEW.fk_user);
-END;$$
+    -- Validar si la columna "end_time" no es nula y asignarla como nula
+    IF NEW.end_time IS NOT NULL THEN
+        SET NEW.end_time = NULL;
+        -- Puedes agregar aquí el código adicional que desees ejecutar después de asignar la columna como nula
+    END IF;
+END$$
+DELIMITER ;
 #-----------------------disparador before insert exams----------------------
 delimiter $$
 CREATE TRIGGER validate_time
@@ -144,16 +145,17 @@ BEGIN
     end if;
 END;$$
 #---------------------------disparador after update exams---------------------------
-delimiter $$
+DELIMITER $$
 CREATE TRIGGER update_exam_trigger
 AFTER UPDATE ON exams
 FOR EACH ROW
 BEGIN
-	if end_time < start_time then      						DUDA
-    SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'tiempo mal';
-    end if;
-END;$$
+    -- Validar si el valor de "end_time" es menor que el valor de "start_time"
+    IF NEW.end_time < NEW.start_time THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El tiempo final es anterior al tiempo de inicio';
+    END IF;
+END$$
+DELIMITER ;
 #disparador before update exams____________________________________________________________________________________________________________________________________________
 															DUDA
 #disparador BEFORE delete exams__________________________________________________________________________________________________________________________________________
