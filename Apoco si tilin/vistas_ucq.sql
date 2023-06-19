@@ -537,7 +537,7 @@ CREATE TABLE Students_exam_answer (
     ON UPDATE CASCADE
     );
     
-    /*vista estudiantes con sus respuestas*/
+    /* vista estudiantes con sus respuestas*/
     create view vista_students_exam_answer as 
     select students_exam.id_student_exam , students_exam_answer.fk_question, 
     questions.type_question , questions.points , questions.description,
