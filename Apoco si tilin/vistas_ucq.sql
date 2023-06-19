@@ -17,7 +17,10 @@ create table Users(
     primary key (id_user)
 );
 
-insert into users values (0,'Emilio','alpizar','AIGE041218HMSLRMA3','activo', 3,'20223tn.edu@utez.edu.mx' );
+insert into users values (0,'Emilio','alpizar','AIGE041218HMSLRMA3','activo', 3,'20223tn.edu@uez.edu.mx' );
+insert into users values (1,'Emilio','alpizar','GIGE041238HMSLRMd3','activo', 2,'20223tn.edu@utez.edu.mx','20223tn084','sdsds' );
+select * from users;
+UPDATE users SET password = 'sddffvvdsjkfvv324' where id_user = 1;
 /*vistas de users_______________________________________________________________________________________________________________________________________________________*/
 create view vista_user as 
 select * from users
@@ -31,7 +34,7 @@ create index idx_users_enrollment on Users (enrollment);
 /* indice compuesto*/
 create index idx_users_name_surname on Users (name,surname);
 
-#disparador before update________________________________________________________________________________________________________________________________________________
+#------------------disparador before update-----------------------
 delimiter $$
 CREATE TRIGGER update_password
 before UPDATE ON users
@@ -46,9 +49,10 @@ END;$$
 delimiter $$
 CREATE TRIGGER user_updated
 AFTER UPDATE ON users
-FOR EACH ROW											/*enviar msj*/
+FOR EACH ROW											
 BEGIN
-	SELECT CONCAT('Actualizado', concat(old.name, OLD.surname));
+	SIGNAL sqlstate '45000'
+		SET MESSAGE_TEXT = 'se ha actualizado';
 END;$$
 #------------------------Disparador before delete user-------------------------------
 DELIMITER $$
@@ -64,21 +68,11 @@ END;$$
 #-----------------Disparador after delete user---------------------------------------
 DELIMITER $$
 CREATE TRIGGER User_deleted
-after DELETE ON Users 														/*enviar msj*/
+after DELETE ON Users 														
 FOR EACH ROW
 BEGIN
-    SELECT CONCAT(OLD.name, concat(' ', OLD.surname));
-END;$$
-#--------------------------disparador  after insert user--------------------------------
-DELIMITER $$
-CREATE TRIGGER user_created
-AFTER INSERT
-ON Users FOR EACH ROW
-BEGIN
-    if new.type_user >3 then
-    SELECT CONCAT(new.name, concat(' ', new.surname)); 				/*enviar msj*/
-    SET MESSAGE_TEXT = 'Nuevo usuario creado';
-    end if;
+    SIGNAL sqlstate '45000'
+	SET MESSAGE_TEXT = 'Se elimino el estudiante';
 END;$$
 #--------------------disparador before insert user----------------------
 DELIMITER $$
@@ -94,6 +88,18 @@ BEGIN
         SET MESSAGE_TEXT = 'Error: El campo mail debe contener la dirección de correo de "@utez.edu.mx".';
 	END IF;
 END;$$
+#--------------------------disparador  after insert user--------------------------------
+DELIMITER $$
+CREATE TRIGGER user_created
+AFTER INSERT
+ON Users FOR EACH ROW
+BEGIN
+    if new.type_user >3 then
+		SIGNAL sqlstate '45000'
+		SET MESSAGE_TEXT = 'Se agrego el estudiante';
+    end if;			
+END;$$
+
 #___________________________________________________________________
 CREATE TABLE exams (
     id_exam INT(254) NOT NULL,
@@ -121,18 +127,16 @@ create index idx_exams_code on exams (code);
 create index idx_exams_start_time_end_time on exams (start_time,end_time);
 
 #------------------------disparador after insert exams-----------------------
-DELIMITER $$
+delimiter $$
 CREATE TRIGGER create_exam_trigger
 AFTER INSERT ON exams
 FOR EACH ROW
 BEGIN
-    -- Validar si la columna "end_time" no es nula y asignarla como nula
     IF NEW.end_time IS NOT NULL THEN
         SET NEW.end_time = NULL;
         -- Puedes agregar aquí el código adicional que desees ejecutar después de asignar la columna como nula
     END IF;
-END$$
-DELIMITER ;
+END;$$
 #-----------------------disparador before insert exams----------------------
 delimiter $$
 CREATE TRIGGER validate_time
@@ -145,17 +149,16 @@ BEGIN
     end if;
 END;$$
 #---------------------------disparador after update exams---------------------------
-DELIMITER $$
+delimiter $$
 CREATE TRIGGER update_exam_trigger
 AFTER UPDATE ON exams
 FOR EACH ROW
 BEGIN
-    -- Validar si el valor de "end_time" es menor que el valor de "start_time"
+	-- Validar si el valor de "end_time" es menor que el valor de "start_time"
     IF NEW.end_time < NEW.start_time THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El tiempo final es anterior al tiempo de inicio';
     END IF;
-END$$
-DELIMITER ;
+END;$$
 #disparador before update exams____________________________________________________________________________________________________________________________________________
 															DUDA
 #disparador BEFORE delete exams__________________________________________________________________________________________________________________________________________
@@ -217,8 +220,9 @@ create index idx_students_exam_start_date_end_date on Students_exam (start_date,
 delimiter $$
 CREATE TRIGGER trigger_inserted_student_exam
 AFTER INSERT
-ON Students_exam FOR EACH ROW							/*enviar msj*/
+ON Students_exam FOR EACH ROW							
 BEGIN
+	SIGNAL sqlstate '45000'
     SET MESSAGE_TEXT = 'calificacion insertada.';
 END;$$
 #------------------------disparador before insert Students_exam----------------------------
@@ -242,13 +246,14 @@ BEGIN
 END;$$
 #--------------------disparador before update Students_exam-----------------------
 
+
 #------------------disparador after update Students_exam----------------------
 delimiter $$
 CREATE TRIGGER updated_rating
 before update
 ON Students_exam FOR EACH ROW
 BEGIN
-	duda
+									duda
 END;$$
 #-----------------------disparador before delete Students_exam--------------------
 delimiter $$
@@ -256,9 +261,7 @@ CREATE TRIGGER validate_student
 before delete
 ON Students_exam FOR EACH ROW
 BEGIN
-	IF (SELECT * FROM Students_exam WHERE fk_user = 3) THEN
-	DUDA
-    elseif
+	IF (SELECT * FROM Students_exam WHERE fk_user != 3) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Error: El ID del estudiante no existe.';
 	end if;
@@ -267,10 +270,9 @@ END;$$
 delimiter $$
 CREATE TRIGGER validate_student
 after delete
-ON Students_exam FOR EACH ROW					/*enviar msj*/
+ON Students_exam FOR EACH ROW                    
 BEGIN
-	SET MESSAGE_TEXT = 'Se elimino el estudiante';
-	delete from students_exam where id_Student_exam;
+    delete from students_exam where id_Student_exam;
 END;$$
 #______________________________________________________________________________
 
@@ -328,8 +330,20 @@ BEGIN
         SET MESSAGE_TEXT = 'El valor del atributo type_question no es válido.';
     END IF;
 END;$$
-#------------------disparador after update questions-------------------------
+
+#-----------------disparador before update questions---------------------
 delimiter $$
+CREATE TRIGGER validate_type_question_trigger
+BEFORE UPDATE ON questions
+FOR EACH ROW
+BEGIN
+    -- Verificar si el nuevo valor de type_question es igual al valor existente
+    IF NEW.type_question = OLD.type_question THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se permite actualizar con el mismo valor de type_question';
+    END IF;
+END;$$
+#------------------disparador after update questions-------------------------
+DELIMITER $$
 CREATE TRIGGER after_update_trigger
 AFTER UPDATE ON Questions
 FOR EACH ROW
@@ -339,25 +353,14 @@ BEGIN
         AND NEW.url_image IS NOT NULL
         AND NEW.type_question IS NOT NULL
         AND NEW.description IS NOT NULL
-        AND NEW.points IS NOT NULL THEN						
+        AND NEW.points IS NOT NULL THEN
         -- Mensaje de éxito
-        SIGNAL SQLSTATE 'SUCCESS'							/*dice que esta mal el succes*/
+        SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Los datos se han actualizado correctamente.';
     ELSE
         -- Mensaje de error
-        SIGNAL SQLSTATE 'ERROR'
+        SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Uno o más campos requeridos están incompletos.';
-    END IF;
-END;$$
-#-----------------disparador before update questions---------------------
-delimiter $$
-CREATE TRIGGER validate_type_question_trigger
-BEFORE UPDATE ON questions
-FOR EACH ROW
-BEGIN
-    -- Verificar si el nuevo valor de type_question es igual al valor existente
-    IF new.type_question = old.type_question THEN		/*manda error en el new y old we*/
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se permite actualizar con el mismo valor de type_question';
     END IF;
 END;$$
 #--------------------disparador before delete questions--------------------------
@@ -374,20 +377,16 @@ BEGIN
     SIGNAL SQLSTATE '45000'
       SET MESSAGE_TEXT = 'La pregunta ya esta asignada con un id en un examen.';
   END IF;
-END;$$
+END; $$
 #--------------------disparador after delete questions---------------------
 DELIMITER $$
-CREATE TRIGGER delete_id_question
-AFTER DELETE ON questions
+CREATE TRIGGER after_delete_trigger
+AFTER DELETE ON Questions
 FOR EACH ROW
 BEGIN
-	IF ROW_COUNT() > 0 THEN
-			-- Mensaje de éxito
-			SELECT 'Los datos se eliminaron correctamente' AS Message;
-		ELSE																	/*marca que: no se permite devolver un conjunto de resultados de un disparador*/
-			-- Mensaje de error
-			SELECT 'Error al eliminar los datos de la tabla Questions' AS Message;
-	END IF;
+    signal sqlstate '45000'
+SET MESSAGE_TEXT = 'Se elimino la pregunta y su contenido';
+delete from Questions where id_Question;
 END;$$
 #_________________________________________________________________________________________________________________________________________________________________________
 
@@ -435,22 +434,22 @@ BEGIN
     END IF;
 END;$$
 #---------------------disparador after insert Questions_answer---------------------
-drop trigger tr_check_if_answer;
 DELIMITER $$
 -- Crear el trigger
-CREATE TRIGGER tr_check_if_answer
+CREATE TRIGGER check_if_answer
 AFTER INSERT ON questions_answer
 FOR EACH ROW
 BEGIN
     DECLARE error_message VARCHAR(255);
-
+    
     -- Validar el valor de if_answer
-    IF new.if_answer <> 'verdadero' AND new.if_answer <> 'falso' THEN			/*creo en los news manda error*/
+    IF NEW.if_answer <> 'verdadero' AND NEW.if_answer <> 'falso' THEN
         -- Generar mensaje de error
         SET error_message = 'El valor de if_answer debe ser "verdadero" o "falso".';
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = error_message;
     END IF;
-END;$$
+END; $$
+
 #---------------------disparador before update Questions_answer-------------------------------------
 delimiter $$
 CREATE TRIGGER tr_check_answer_if_answer
@@ -478,11 +477,11 @@ BEGIN
         AND NEW.if_answer IS NOT NULL
         AND NEW.fk_Question IS NOT NULL THEN
         -- Mensaje de éxito
-        SIGNAL SQLSTATE 'SUCCESS'							/*que esta mal el success*/
+        SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Los datos se han actualizado correctamente.';
     ELSE
         -- Mensaje de error
-        SIGNAL SQLSTATE 'ERROR'
+        SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Uno o más campos requeridos están incompletos.';
     END IF;
 END;$$
@@ -503,18 +502,14 @@ BEGIN
   END IF;
 END;$$
 #----------------------disparador after delete Questions_answer-----------------------------------
-delimiter $$
-CREATE TRIGGER after_delete_trigger
+DELIMITER $$
+CREATE TRIGGER delete_answer
 AFTER DELETE ON Questions_answer
 FOR EACH ROW
 BEGIN
-    IF ROW_COUNT() > 0 THEN
-        -- Mensaje de éxito
-        SELECT 'Los datos se eliminaron correctamente' AS Message;  /*que no se permite devolver un conjunto de resultados de un disparador*/
-    ELSE
-        -- Mensaje de error
-        SELECT 'Error al eliminar los datos de la tabla Questions' AS Message;
-    END IF;
+    signal sqlstate '45000'
+SET MESSAGE_TEXT = 'Se elimino la respuesta de la pregunta';
+delete from Questions_answer where id_Question_answer;
 END;$$
 #_________________________________________________________________________________________________________________________________________________________________________
 
@@ -598,14 +593,116 @@ select * from vista_exam_questions;
  create index idx_exam_questions_id_Exam_questions on Exam_questions (id_Exam_questions);
  /* indice compuesto */
 create index idx_Exam_questions_fk_exam_fk_question on Exam_questions (fk_exam,fk_question);
-#disparador after insert questions Exam_questions______________________________________________________________________________________________________________________
+#------------------disparador after insert Exam_questions-----------------------
+DELIMITER $$
+-- Crear el trigger
+CREATE TRIGGER tr_check_relations_exam_questions
+AFTER INSERT ON exam_questions
+FOR EACH ROW
+BEGIN
+    DECLARE error_message VARCHAR(255);
+    DECLARE count_records INT;
+    
+    -- Verificar si existe una relación entre id_Examen_pregunta, fk_Question y fk_Exam en las tablas question y exam
+    SELECT COUNT(*) INTO count_records
+    FROM question q
+    INNER JOIN exam e ON q.fk_Exam = e.id_Exam
+    WHERE q.id_Question = NEW.fk_Question AND e.id_Exam = NEW.fk_Exam;
+    
+    -- Validar la existencia de la relación
+    IF count_records = 0 THEN
+        -- Generar mensaje de error
+        SET error_message = 'La relación entre id_Examen_pregunta, fk_Question y fk_Exam no existe en las tablas question y exam.';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = error_message;
+    ELSE
+        -- Generar mensaje de éxito
+        SET error_message = 'La inserción se realizó correctamente.';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = error_message;
+    END IF;
+END;$$
+#-------------------disparador before insert Exam_questions----------------------
+delimiter $$
+CREATE TRIGGER tr_check_fk_question_exam
+BEFORE INSERT ON Exam_questions
+FOR EACH ROW
+BEGIN
+    DECLARE error_message VARCHAR(255);
+    DECLARE count_records INT;
 
-#disparador before insert questions Exam_questions______________________________________________________________________________________________________________________
+    -- Verificar si existe una relación entre fk_Question y fk_Exam en las tablas question y exam
+    SELECT COUNT(*) INTO count_records
+    FROM question q
+    INNER JOIN exam e ON q.fk_Exam = e.id_Exam
+    WHERE q.id_Question = NEW.fk_Question AND e.id_Exam = NEW.fk_Exam;
 
-#disparador after update questions Exam_questions______________________________________________________________________________________________________________________
-
-#disparador before update questions Exam_questions______________________________________________________________________________________________________________________
-
-#disparador before delete questions Exam_questions_____________________________________________________________________________________________________________________
-
-#disparador after delete questions Exam_questions_______________________________________________________________________________________________________________________
+    -- Validar la existencia de la relación
+    IF count_records = 0 THEN
+        -- Generar mensaje de error
+        SET error_message = 'La relación entre fk_Question y fk_Exam no existe en las tablas question y exam.';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = error_message;
+    END IF;
+END;$$
+#--------------------------disparador after update Exam_questions-------------------------------
+DELIMITER $$
+CREATE TRIGGER updated_data
+AFTER UPDATE ON Questions_answer
+FOR EACH ROW
+BEGIN
+    -- Validar si todos los datos están correctos
+    IF NEW.id_Question_answer IS NOT NULL
+        AND NEW.answer IS NOT NULL
+        AND NEW.if_answer IS NOT NULL
+        AND NEW.fk_Question IS NOT NULL THEN
+        -- Mensaje de éxito
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Los datos se han actualizado correctamente.';
+    ELSE
+        -- Mensaje de error
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Uno o más campos requeridos están incompletos.';
+    END IF;
+END;$$
+#--------------------------disparador before update Exam_questions------------------------------
+DELIMITER $$
+CREATE TRIGGER tr_check_id_exam_question
+BEFORE UPDATE ON exam_questions
+FOR EACH ROW
+BEGIN
+    DECLARE error_message VARCHAR(255);
+    
+    -- Verificar si el nuevo valor de id_Examen_questions es distinto al valor ya almacenado
+    IF NEW.id_Examen_questions <> OLD.id_Examen_questions THEN
+        -- Validar si el nuevo valor de id_Examen_questions está repetido
+        IF EXISTS (SELECT 1 FROM exam_questions WHERE id_Examen_questions = NEW.id_Examen_questions) THEN	
+            -- Generar mensaje de error
+            SET error_message = 'Número de pregunta repetido en la tabla exam_questions.';
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = error_message;
+        END IF;
+    END IF;
+END;$$
+#-------------------------disparador before delete Exam_questions------------------------
+DELIMITER $$
+CREATE TRIGGER delete_questions_answer_correct
+BEFORE DELETE ON Questions
+FOR EACH ROW
+BEGIN
+  DECLARE Exam_Question_count INT;
+  SELECT COUNT(*) INTO Exam_Question_count
+  FROM Exam_Questions
+  WHERE fk_Question = OLD.id_question;
+  -- Verificar si hay respuestas asociadas con un id de pregunta
+  IF Exam_Question_count > 0 THEN
+    SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'La respuesta ya esta asignada con una pregunta.';
+  END IF;
+END; $$
+#----------------------disparador after delete Exam_questions------------------------
+DELIMITER $$
+CREATE TRIGGER after_delete_trigger_exam_question
+AFTER DELETE ON exam_questions
+FOR EACH ROW
+BEGIN
+    signal sqlstate '45000'
+SET MESSAGE_TEXT = 'Se elimino el registro de la tabla';
+delete from Questions_answer where id_Question_answer;
+END;$$
