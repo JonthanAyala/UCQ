@@ -7,25 +7,51 @@
     <link href="/path/to/bootstrap.min.css" rel="stylesheet">
     <jsp:include page="../../layouts/head.jsp"/>
 </head>
-<body>
-<div class="container">
-    <h1>Crear Examen</h1>
+<body style="background-color: #d9d9d9">
 
-    <form action="/path/to/save-exam.jsp" method="POST">
-        <div id="questions-container">
+<div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <input class="form-control bg-dark text-white" type="text" placeholder="Nombre Examen">
+        </div>
+    </nav>
 
+</div>
+
+<div class="container" style="background-color: white">
+
+    <div id="questions-container">
+
+    </div>
+
+    <div class="container mt-5" style="background-color: white">
+        <div class="row">
+            <div class="col mb-5">
+                <form action="/path/to/save-exam.jsp" method="post">
+                    <div class="d-grid">
+                        <button type="button" class="btn mt-5" onclick="addQuestionClose()" style="background-color: #d9d9d9" >
+                            Agregar pregunta cerrada
+                            <img src="../../assets/img/icons8-add-48.png">
+                        </button>
+                        <button type="button" class="btn mt-5" onclick="addQuestionOpen()" style="background-color: #d9d9d9" >
+                            Agregar pregunta abierta
+                            <img src="../../assets/img/icons8-add2-48.png">
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div>
-            <button type="submit" class="btn btn-success">Guardar</button>
-            <a href="/path/to/continue-creating.jsp" class="btn btn-secondary">Continuar Creando en Otro Momento</a><br>
-        </div>
-        <button type="button" class="btn btn-primary mt-3" onclick="addQuestionClose()">Agregar Pregunta Cerrada</button>
-        <button type="button" class="btn btn-primary mt-3" onclick="addQuestionOpen()">Agregar Pregunta Abierta</button>
-    </form>
+    </div>
+</div>
+
+<div class=" container mt-5" style="text-align: right">
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a href="/path/to/continue-creating.jsp" class="btn btn-secondary">Continuar Creando en Otro Momento</a><br>
 </div>
 
 <jsp:include page="../../layouts/footer.jsp"/>
 <script>
+
     function addQuestionClose() {
         var questionContainer = document.getElementById("questions-container");
 
@@ -90,14 +116,26 @@
         addButton.innerHTML = "Agregar Respuesta";
         addButton.addEventListener("click", addAnswerClose);
 
+        var removeQuestion= document.createElement("button");
+        removeQuestion.className= "btn btn-danger mt-2";
+        removeQuestion.setAttribute("type", "button");
+        removeQuestion.innerHTML = "Eliminar pregunta";
+        removeQuestion.addEventListener("click", function() {
+            questionContainer.removeChild(card);
+        });
+
         cardBody.appendChild(addButton);
+        cardBody.appendChild(removeQuestion);
+
 
         card.appendChild(cardHeader);
         card.appendChild(cardBody);
 
+
         questionContainer.appendChild(card);
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
 
     function addAnswerClose() {
         var answerContainer = document.getElementById("answer-container");
@@ -130,6 +168,7 @@
         answerGroup.appendChild(removeButton);
 
         answerContainer.appendChild(answerGroup);
+
     }
     function addQuestionOpen() {
         var questionContainer = document.getElementById("questions-container");
@@ -177,6 +216,14 @@
         scoreInput.setAttribute("id", "question-score");
         scoreInput.setAttribute("name", "question-score");
 
+        var removeQuestion= document.createElement("button");
+        removeQuestion.className= "btn btn-danger mt-2";
+        removeQuestion.setAttribute("type", "button");
+        removeQuestion.innerHTML = "Eliminar pregunta";
+        removeQuestion.addEventListener("click", function() {
+            questionContainer.removeChild(card);
+        });
+
         formGroupScore.appendChild(scoreLabel);
         formGroupScore.appendChild(scoreInput);
 
@@ -185,6 +232,8 @@
 
         card.appendChild(cardHeader);
         card.appendChild(cardBody);
+
+        cardBody.appendChild(removeQuestion);
 
         questionContainer.appendChild(card);
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
