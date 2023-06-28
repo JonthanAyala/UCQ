@@ -12,8 +12,8 @@
   <div class="row">
     <div class="col text-center mt-5">
       <a href="user/users">Usuarios</a>
-      <a href="user/prueba2">Alumnos</a>
-      <a href="user/prueba3">Admin</a>
+      <a href="user/student">Alumnos</a>
+      <a href="user/admin">Admin</a>
     </div>
   </div>
 </div>
