@@ -7,6 +7,24 @@
     <link href="/path/to/bootstrap.min.css" rel="stylesheet">
     <jsp:include page="../../layouts/head.jsp"/>
 </head>
+
+<style>
+    .card-color{
+        border: solid #ffffff;
+    }
+
+    .card-header-color{
+
+        border: solid #ffffff;
+    }
+
+    .answer-container{
+        display: inline-block;
+        min-width: 500px;
+    }
+
+</style>
+
 <body style="background-color: #d9d9d9">
 
 <div>
@@ -56,10 +74,10 @@
         var questionContainer = document.getElementById("questions-container");
 
         var card = document.createElement("div");
-        card.className = "card mt-3";
+        card.className = "card mt-3 card-color";
 
         var cardHeader = document.createElement("div");
-        cardHeader.className = "card-header";
+        cardHeader.className = "card-header card-header-color";
 
         var cardTitle = document.createElement("h5");
         cardTitle.className = "card-title";
@@ -79,6 +97,9 @@
 
         var questionTextarea = document.createElement("textarea");
         questionTextarea.className = "form-control";
+        questionTextarea.style ="resize: none";
+        questionTextarea.contentEditable = "true";
+        questionTextarea.maxLength = 255;
         questionTextarea.setAttribute("id", "closed-question");
         questionTextarea.setAttribute("name", "closed-question");
 
@@ -91,21 +112,38 @@
         var answerLabel = document.createElement("label");
         answerLabel.innerHTML = "Respuestas:";
 
-        var answerInput = document.createElement("input");
-        answerInput.setAttribute("type", "text");
-        answerInput.className = "form-control";
-        answerInput.setAttribute("name", "answer");
-        answerInput.setAttribute("placeholder", "Respuesta");
-        answerInput.required = true;
+        var divInputGroup = document.createElement("div");
+        divInputGroup.className="input-group-text input-group-sm";
+        answerContainer.setAttribute("id", "answer-container");
 
-        var correctCheckbox = document.createElement("input");
-        correctCheckbox.setAttribute("type", "checkbox");
-        correctCheckbox.setAttribute("name", "correct-answer");
-        correctCheckbox.className = "form-check-input";
+        var divInputGroupText = document.createElement("div");
+        divInputGroupText.className = "input-group-text";
+
+        var inputCheckbox = document.createElement("input");
+        inputCheckbox.className = "form-check-input mt-0";
+        inputCheckbox.type = "checkbox";
+        inputCheckbox.value = "";
+        inputCheckbox.setAttribute("aria-label", "correctAnswer");
+        inputCheckbox.setAttribute("name", "correct-answer");
+
+        divInputGroupText.appendChild(inputCheckbox);
+
+        var answerInput2 = document.createElement("input")
+        answerInput2.type = "text";
+        answerInput2.className ="form-control"
+        answerInput2.setAttribute("aria-label", "correctAnswer");
+        answerInput2.style ="resize: none";
+        answerInput2.maxLength = 255;
+        answerInput2.contentEditable = "true";
+        answerInput2.setAttribute("name", "answer");
+        answerInput2.setAttribute("placeholder", "Respuesta");
+        answerInput2.required = true;
+
+        divInputGroup.appendChild(divInputGroupText);
+        divInputGroup.appendChild(answerInput2);
 
         answerContainer.appendChild(answerLabel);
-        answerContainer.appendChild(answerInput);
-        answerContainer.appendChild(correctCheckbox);
+        answerContainer.appendChild(divInputGroup);
 
         cardBody.appendChild(formGroupQuestion);
         cardBody.appendChild(answerContainer);
@@ -141,19 +179,39 @@
         var answerContainer = document.getElementById("answer-container");
 
         var answerGroup = document.createElement("div");
-        answerGroup.className = "form-group d-flex align-items-center";
+        answerGroup.className = "form-group align-items-center";
 
-        var answerInput = document.createElement("input");
-        answerInput.setAttribute("type", "text");
-        answerInput.className = "form-control mr-2";
-        answerInput.setAttribute("name", "answer");
-        answerInput.setAttribute("placeholder", "Respuesta");
-        answerInput.required = true;
+        var divInputGroup = document.createElement("div");
+        divInputGroup.className="input-group-text  mb-2 input-group-sm mt-2";
 
-        var correctCheckbox = document.createElement("input");
-        correctCheckbox.setAttribute("type", "checkbox");
-        correctCheckbox.setAttribute("name", "correct-answer");
-        correctCheckbox.className = "form-check-input mr-2";
+        var divInputGroupText = document.createElement("div");
+        divInputGroupText.className = "input-group-text ";
+
+        var inputCheckbox = document.createElement("input");
+        inputCheckbox.className = "form-check-input mt-0";
+        inputCheckbox.type = "checkbox";
+        inputCheckbox.value = "";
+        inputCheckbox.setAttribute("aria-label", "correctAnswer");
+        inputCheckbox.setAttribute("name", "correct-answer");
+
+        divInputGroupText.appendChild(inputCheckbox);
+
+        var answerInput2 = document.createElement("input");
+        answerContainer.setAttribute("id", "answer-container");
+        answerInput2.className ="form-control"
+        answerInput2.setAttribute("aria-label", "correctAnswer");
+        answerInput2.style ="resize: none";
+        answerInput2.maxLength = 255;
+        answerInput2.contentEditable = true;
+        answerInput2.setAttribute("name", "answer");
+        answerInput2.setAttribute("placeholder", "Respuesta");
+        answerInput2.required = true;
+
+        divInputGroup.appendChild(divInputGroupText);
+        divInputGroup.appendChild(answerInput2);
+
+        var divRemoveButton = document.createElement("div");
+        divRemoveButton.className ="mb-2"
 
         var removeButton = document.createElement("button");
         removeButton.className = "btn btn-danger";
@@ -163,9 +221,11 @@
             answerContainer.removeChild(answerGroup);
         });
 
-        answerGroup.appendChild(answerInput);
-        answerGroup.appendChild(correctCheckbox);
-        answerGroup.appendChild(removeButton);
+        divRemoveButton.appendChild(removeButton);
+
+        answerGroup.appendChild(divInputGroup);
+
+        answerGroup.appendChild(divRemoveButton)
 
         answerContainer.appendChild(answerGroup);
 
@@ -174,10 +234,10 @@
         var questionContainer = document.getElementById("questions-container");
 
         var card = document.createElement("div");
-        card.className = "card mt-3";
+        card.className = "card mt-3 card-color";
 
         var cardHeader = document.createElement("div");
-        cardHeader.className = "card-header";
+        cardHeader.className = "card-header card-header-color";
 
         var cardTitle = document.createElement("h5");
         cardTitle.className = "card-title";
