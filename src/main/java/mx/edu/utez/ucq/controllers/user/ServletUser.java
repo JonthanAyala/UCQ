@@ -62,7 +62,7 @@ public class ServletUser extends HttpServlet {
                 }
                 break;
             case "/user/teacher":
-                redirect = "/views/user/exam.jsp";
+                redirect = "/views/teacher/exam.jsp";
                 break;
             case "/user/pruebas":
                 redirect = "/views/user/pruebas.jsp";
