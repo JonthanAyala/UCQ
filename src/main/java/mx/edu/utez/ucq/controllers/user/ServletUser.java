@@ -23,7 +23,9 @@ import java.util.List;
         "/user/update",
         "/user/delete",
         "/user/teacher",
-        "/user/pruebas"
+        "/user/pruebas",
+        "/user/student",
+        "/user/admin"
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 
@@ -66,6 +68,12 @@ public class ServletUser extends HttpServlet {
                 break;
             case "/user/pruebas":
                 redirect = "/views/user/pruebas.jsp";
+
+            case "/user/student":
+                redirect = "/views/student/index.jsp";
+                break;
+            case "/user/admin":
+                redirect="/views/admin/index.jsp";
                 break;
             default:
                 System.out.println(action);

@@ -13,7 +13,11 @@
     <li class="list-group-item"><a href="user/users">Usuarios</a></li>
     <li class="list-group-item"><a href="exam/exams">Pruebas</a></li>
     <li class="list-group-item"><a href="user/teacher">Examen</a></li>
+     <li class="list-group-item"><a href="user/student">Alumnos</a></li>
+     <li class="list-group-item"><a href="user/admin">Admin</a></li>
   </ul>
+    </div>
+  </div>
 </div>
 <jsp:include page="./layouts/footer.jsp"/>
 </body>
