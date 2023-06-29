@@ -8,12 +8,14 @@
   <jsp:include page="./layouts/head.jsp"/>
 </head>
 <body>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col text-center mt-5">
-      <a href="user/users">Usuarios</a>
-      <a href="user/student">Alumnos</a>
-      <a href="user/admin">Admin</a>
+<div class="card position-absolute top-50 start-50 translate-middle" style="width: 18rem;">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"><a href="user/users">Usuarios</a></li>
+    <li class="list-group-item"><a href="exam/exams">Pruebas</a></li>
+    <li class="list-group-item"><a href="user/teacher">Examen</a></li>
+     <li class="list-group-item"><a href="user/student">Alumnos</a></li>
+     <li class="list-group-item"><a href="user/admin">Admin</a></li>
+  </ul>
     </div>
   </div>
 </div>
