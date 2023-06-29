@@ -33,8 +33,7 @@ public class ServletUser extends HttpServlet {
     private String action;
     private String redirect = "/user/users";
 
-    private  String id, name, surname, lastname, username, birthday, status;
-
+    private  String id, name, surname, curp,status, type_user, email, enrollment,pasword;
     private User user;
 
     @Override
@@ -87,7 +86,7 @@ public class ServletUser extends HttpServlet {
         resp.setContentType("text/html");
         action = req.getServletPath();
         switch (action){
-            case "/user/update":
+            /*case "/user/update":
                 id = req.getParameter("id");
                 name = req.getParameter("name");
                 surname = req.getParameter("surname");
@@ -119,7 +118,7 @@ public class ServletUser extends HttpServlet {
                     redirect = "/user/users?result="+result+"&message="+ URLEncoder.encode("Error accion no realizada correctamente.", StandardCharsets.UTF_8);
 
                 }
-                break;
+                break;*/
             case "/user/delete":
                 id = req.getParameter("id");
                 if (new DaoUser().delete(Long.parseLong(id))) {
