@@ -1,9 +1,16 @@
-create database UCQ_2;
-use UCQ_2;
+insert into users values (0,'a','aa','AIGE041218HMSLRMA3','activo', 1,'20223tn.edu@utez.edu.mx','','123456');
+insert into users values (0,'Emilio','alpizar','AIGE041218HMSLRMA3','activo', 3,'20223tn.edu@utez.edu.mx','20223tn084','123456');
+insert into users values (0,'a','aa','AIGE041218HMSLRMA3','activo', 3,'20223tn.edu@utez.edu.mx','20223tn111','123456');
+insert into users values (0,'a','aa','AIGE041218HMSLRMA3','activo', 3,'20223tn.edu@utez.edu.mx','20213tn085','123456');
+insert into users values (0,'a','aa','AIGE041218HMSLRMA3','activo', 3,'20223tn.edu@utez.edu.mx','20233tn087','123456');
+select * from users;
+use ucq_2;
 #-----------------------tablas users---------------------
+drop table Users;
 create table Users(
 	id_user int(254) not null auto_increment,
 	name varchar(254) not null,
+    lastname varchar(254)not null,
     surname varchar(254) not null,
     curp varchar (18) not null,
     status varchar(7) not null,
@@ -14,6 +21,7 @@ create table Users(
     primary key (id_user)
 );
 #-----------------------tablas exams---------------------
+drop table exams;
 CREATE TABLE exams (
     id_exam INT(254) NOT NULL,
     name_exam VARCHAR(254) NOT NULL,
@@ -27,6 +35,7 @@ CREATE TABLE exams (
     ON UPDATE CASCADE
 );
 #-----------------------tablas students_exam---------------------
+drop table students_exam;
 CREATE TABLE Students_exam (
   id_Student_exam INT NOT NULL auto_increment,
   score INT(3) NULL,
@@ -46,6 +55,7 @@ CREATE TABLE Students_exam (
 );
 
 #-----------------------tablas questions---------------------
+drop table questions;
 CREATE TABLE Questions (
   id_Question INT(5) NOT NULL,
   url_image VARCHAR(254) NOT NULL,
@@ -56,6 +66,7 @@ CREATE TABLE Questions (
   );
   
   #-----------------------tablas questions_answer---------------------
+  drop table questions_answer;
   CREATE TABLE Questions_answer (
   id_Question_answer INT NOT NULL,
   answer VARCHAR(254) NOT NULL,
@@ -69,6 +80,7 @@ CREATE TABLE Questions (
 );
 
 #-----------------------tablas Students_exam_answer---------------------
+drop table Students_exam_answer;
 CREATE TABLE Students_exam_answer (
   id_Student_exam_answer INT NOT NULL,
   fk_student_exam INT NOT NULL,
@@ -91,6 +103,7 @@ CREATE TABLE Students_exam_answer (
     );
     
 #-----------------------tablas exam_questions---------------------
+drop table exam_questions;
 CREATE TABLE Exam_questions (
   id_Exam_questions INT NOT NULL,
   fk_question INT(5) NOT NULL,
@@ -107,6 +120,7 @@ CREATE TABLE Exam_questions (
 );
 
 /*------------------vistas de users---------------*/
+
 create view view_user as 
 select * from users
 group by type_user, enrollment 
@@ -121,8 +135,8 @@ order by  start_time asc;
 select * from view_exams;
 
 /*----------------vista de estudiantes tienen examen--------------------*/
-create view view_Students_exam as select Students_exam.id_Student_exam , Users.type_user ,Users.name , Users.surname ,
-Users.enrollment , Users.mail , exams.id_exam , exams.name_exam , Students_exam.score , 
+create view view_Students_exam as select Students_exam.id_Student_exam , Users.type_user ,Users.name , Users.lastname, 
+Users.surname, Users.enrollment , Users.mail , exams.id_exam , exams.name_exam , Students_exam.score , 
 Students_exam.start_date, Students_exam.end_date , exams.start_time , exams.end_time 
 from Students_exam
 join Users on Students_exam.fk_user = Users.id_user
@@ -205,27 +219,27 @@ create index idx_Student_exam_answer_fk_question_fk_answer on Students_exam_answ
 create index idx_Exam_questions_fk_exam_fk_question on Exam_questions (fk_exam,fk_question);
 
 #------------------disparador before update-----------------------
+drop trigger update_password;
 delimiter $$
 CREATE TRIGGER update_password
 before UPDATE ON users
 FOR EACH ROW
-BEGIN
-    if new.password < 8 then
+BEGIN													#ya quedo
+    if length(new.password) < 8 then
 		SIGNAL SQLSTATE '45000'
 		SET MESSAGE_TEXT = 'La contraseña debe tener más de 8 caracteres.';
     end if;
 END;$$
-
+update 
 #----------------------disparador after update User------------------------------
 delimiter $$
 CREATE TRIGGER user_updated
 AFTER UPDATE ON users
 FOR EACH ROW											
 BEGIN
-	SIGNAL sqlstate '45000'
-		SET MESSAGE_TEXT = 'se ha actualizado';
+				#falta
 END;$$
-
+select * from users;
 #------------------------Disparador before delete user-------------------------------
 DELIMITER $$
 CREATE TRIGGER validate_user_exists
@@ -237,15 +251,16 @@ BEGIN
       SET MESSAGE_TEXT = 'Usuario no existe.';
     end if;
 END;$$
-
+select * from users;
+delete from users where type_user =;
+insert into users values (0,'pepe','aa','AIGE041218HMSLRMA3','activo', 2,'20223tn.edu@utez.edu.mx','20233tn085','123456');
 #-----------------Disparador after delete user---------------------------------------
 DELIMITER $$
 CREATE TRIGGER User_deleted
 after DELETE ON Users 														
 FOR EACH ROW
 BEGIN
-    SIGNAL sqlstate '45000'
-	SET MESSAGE_TEXT = 'Se elimino el estudiante';
+                             #falta
 END;$$
 
 #--------------------disparador before insert user----------------------
@@ -269,10 +284,7 @@ CREATE TRIGGER user_created
 AFTER INSERT
 ON Users FOR EACH ROW
 BEGIN
-    if new.type_user >3 then
-		SIGNAL sqlstate '45000'
-		SET MESSAGE_TEXT = 'Se agrego el estudiante';
-    end if;			
+									#falta
 END;$$
 
 #-----------------------disparador before insert exams----------------------
@@ -286,6 +298,7 @@ BEGIN
       SET MESSAGE_TEXT = 'ERROR EN EL TIEMPO';
     end if;
 END;$$
+select * from 
 
 #------------------------disparador after insert exams-----------------------
 delimiter $$
