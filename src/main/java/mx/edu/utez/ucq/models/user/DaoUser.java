@@ -91,8 +91,9 @@ public class DaoUser implements DaoRepository<User>{
         @Override
         public boolean save(User object) {
             try {
-            ---INSERT INTO `ucq_2`.`users` (`id_user`, `name`, `surname`, `curp`, `status`, `type_user`, `mail`, `enrollment`, `password`)
+            ---INSERT INTO users (name, surname, curp, status, type_user, mail, enrollment, password)
             VALUES ('0', 'Jonathan', 'Ayala', 'AAGJ040913HNEYRNA4', 'Activo', '3', '20223tn085@utez.edu.mx', '20223tn085', 'na4');
+
                 conn = new MySQLConnection().connect();
                 String query = "insert into users (name, surname, lastname, username, birthday, status) Values (?,?,?,?,?,?);";
                 pstm = conn.prepareStatement(query);
