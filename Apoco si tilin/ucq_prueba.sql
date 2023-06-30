@@ -405,18 +405,13 @@ CREATE TRIGGER count_points_trigger
 BEFORE INSERT ON questions
 FOR EACH ROW
 BEGIN
-    DECLARE total_points INT;
-    
-    -- Calcular la suma de los puntos de todas las preguntas
-    SELECT SUM(points) INTO total_points FROM questions;
-    
-    
-    -- Verificar si la suma total excede los 100 puntos
-    IF total_points > 100 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La suma de puntos excede los 100';
-    ELSEIF total_points = 100 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Puntos permitidos: 100';
-    END IF;
+DECLARE total_points INT;
+-- Calcular la suma de los puntos de todas las preguntas			#segun ya
+SELECT SUM(points) INTO total_points FROM questions;
+-- Verificar si la suma total excede los 100 puntos
+IF total_points >= 100 THEN
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La suma de puntos excede los 100';
+END IF;
 END;$$
 
 #--------------------disparador after insert questions---------------------------
@@ -445,25 +440,22 @@ BEGIN
 END;$$
 
 #------------------disparador after update questions-------------------------
+
 DELIMITER $$
 CREATE TRIGGER after_update_trigger
 AFTER UPDATE ON Questions
 FOR EACH ROW
 BEGIN
-    -- Validar si todos los datos están correctos
-    IF NEW.id_Question IS NOT NULL
-        AND NEW.url_image IS NOT NULL
-        AND NEW.type_question IS NOT NULL
-        AND NEW.description IS NOT NULL
-        AND NEW.points IS NOT NULL THEN
-        -- Mensaje de éxito
-        SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Los datos se han actualizado correctamente.';
-    ELSE
-        -- Mensaje de error
-        SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Uno o más campos requeridos están incompletos.';
-    END IF;
+-- Validar si todos los datos están correctos
+IF NEW.id_Question IS NOT NULL
+AND NEW.url_image IS NOT NULL
+AND NEW.type_question IS NOT NULL
+AND NEW.description IS NOT NULL
+AND NEW.points IS NOT NULL THEN
+-- Mensaje de error
+SIGNAL SQLSTATE '45000'
+SET MESSAGE_TEXT = 'Uno o más campos requeridos están incompletos.';
+END IF;
 END;$$
 
 #--------------------disparador before delete questions--------------------------
