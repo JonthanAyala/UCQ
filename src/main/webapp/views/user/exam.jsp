@@ -9,6 +9,20 @@
 </head>
 
 <style>
+
+    .navbar-color{
+        background-color: #006cb0;
+    }
+
+    .navbar-input{
+        border: solid #006cb0;
+    }
+
+    .placeholder-name-exam {
+        color: black;
+        font-size: 1.5em;
+    }
+
     .card-color{
         border: solid #ffffff;
     }
@@ -23,14 +37,23 @@
         min-width: 500px;
     }
 
+
 </style>
 
-<body style="background-color: #d9d9d9">
+<body style="background-color: #00aa83">
 
 <div>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-color">
+
         <div class="container">
-            <input class="form-control bg-dark text-white" type="text" placeholder="Nombre Examen">
+            <div class="justify-content-xl-center col-xl-5">
+                <form>
+                    <input class="form-control navbar-input placeholder-name-exam" style="background-color:  #006cb0" type="text" placeholder="Nombre Examen" required>
+                </form>
+            </div>
+            <button type="button" class="btn" onclick="" style="background-color: transparent; border: transparent">
+                <img src="../../assets/img/icons8-volver-48.png">
+            </button>
         </div>
     </nav>
 
@@ -91,6 +114,39 @@
         var formGroupQuestion = document.createElement("div");
         formGroupQuestion.className = "form-group";
 
+        var scoreGroup = document.createElement("div");
+        scoreGroup.className ="form-group col-md-1 col-lg-1"
+
+        var scoreLabel = document.createElement("label");
+        scoreLabel.setAttribute("for", "question-score");
+        scoreLabel.innerHTML = "Puntaje:";
+
+        var scoreInput = document.createElement("input");
+        scoreInput.className = "form-control";
+        scoreInput.setAttribute("type", "number");
+        scoreInput.setAttribute("value", 0);
+        scoreInput.setAttribute("max", 10);
+        scoreInput.setAttribute("min", 0)
+        scoreInput.setAttribute("id", "question-score");
+        scoreInput.setAttribute("name", "question-score");
+        scoreInput.addEventListener('input',function(){
+            if (this.value.length > 2)
+                this.value = this.value.slice(0,2);
+        })
+        scoreInput.addEventListener('input', function (){
+            if (this.value > 10)
+                this.value = 10;
+        })
+        scoreInput.addEventListener('input', function (){
+            if (this.value < 0)
+                this.value = 0;
+        })
+
+        scoreGroup.appendChild(scoreLabel);
+        scoreGroup.appendChild(scoreInput);
+
+        cardBody.appendChild(scoreGroup);
+
         var questionLabel = document.createElement("label");
         questionLabel.setAttribute("for", "closed-question");
         questionLabel.innerHTML = "Pregunta:";
@@ -148,11 +204,18 @@
         cardBody.appendChild(formGroupQuestion);
         cardBody.appendChild(answerContainer);
 
+        var divButtons = document.createElement("div");
+        divButtons.className = "form-group";
+
         var addButton = document.createElement("button");
         addButton.className = "btn btn-primary mt-2";
         addButton.setAttribute("type", "button");
         addButton.innerHTML = "Agregar Respuesta";
         addButton.addEventListener("click", addAnswerClose);
+
+        var divRemoveQuestion = document.createElement("div");
+        divRemoveQuestion.className="form-group";
+        divRemoveQuestion.style="text-align: right";
 
         var removeQuestion= document.createElement("button");
         removeQuestion.className= "btn btn-danger mt-2";
@@ -162,9 +225,11 @@
             questionContainer.removeChild(card);
         });
 
-        cardBody.appendChild(addButton);
-        cardBody.appendChild(removeQuestion);
+        divButtons.appendChild(addButton);
+        cardBody.appendChild(divButtons);
+        divRemoveQuestion.appendChild(removeQuestion);
 
+        divButtons.appendChild(divRemoveQuestion);
 
         card.appendChild(cardHeader);
         card.appendChild(cardBody);
@@ -251,20 +316,8 @@
         var formGroupQuestion = document.createElement("div");
         formGroupQuestion.className = "form-group";
 
-        var questionLabel = document.createElement("label");
-        questionLabel.setAttribute("for", "open-question");
-        questionLabel.innerHTML = "Pregunta:";
-
-        var questionTextarea = document.createElement("textarea");
-        questionTextarea.className = "form-control";
-        questionTextarea.setAttribute("id", "open-question");
-        questionTextarea.setAttribute("name", "open-question");
-
-        formGroupQuestion.appendChild(questionLabel);
-        formGroupQuestion.appendChild(questionTextarea);
-
-        var formGroupScore = document.createElement("div");
-        formGroupScore.className = "form-group";
+        var scoreGroup = document.createElement("div");
+        scoreGroup.className ="form-group col-md-1 col-lg-1"
 
         var scoreLabel = document.createElement("label");
         scoreLabel.setAttribute("for", "question-score");
@@ -273,8 +326,46 @@
         var scoreInput = document.createElement("input");
         scoreInput.className = "form-control";
         scoreInput.setAttribute("type", "number");
+        scoreInput.setAttribute("value", 0);
+        scoreInput.setAttribute("max", 10);
+        scoreInput.setAttribute("min", 0)
         scoreInput.setAttribute("id", "question-score");
         scoreInput.setAttribute("name", "question-score");
+        scoreInput.addEventListener('input',function(){
+            if (this.value.length > 2)
+                this.value = this.value.slice(0,2);
+        })
+        scoreInput.addEventListener('input', function (){
+            if (this.value > 10)
+                this.value = 10;
+        })
+        scoreInput.addEventListener('input', function (){
+            if (this.value < 0)
+                this.value = 0;
+        })
+
+        scoreGroup.appendChild(scoreLabel);
+        scoreGroup.appendChild(scoreInput);
+
+        cardBody.appendChild(scoreGroup);
+
+        var formGroupQuestion = document.createElement("div");
+        formGroupQuestion.className = "form-group";
+
+        var questionLabel = document.createElement("label");
+        questionLabel.setAttribute("for", "open-question");
+        questionLabel.innerHTML = "Pregunta:";
+
+        var questionTextarea = document.createElement("textarea");
+        questionTextarea.className = "form-control";
+        questionTextarea.style ="resize: none";
+        questionTextarea.contentEditable = "true";
+        questionTextarea.maxLength = 255;
+        questionTextarea.setAttribute("id", "open-question");
+        questionTextarea.setAttribute("name", "open-question");
+
+        formGroupQuestion.appendChild(questionLabel);
+        formGroupQuestion.appendChild(questionTextarea);
 
         var removeQuestion= document.createElement("button");
         removeQuestion.className= "btn btn-danger mt-2";
@@ -284,11 +375,8 @@
             questionContainer.removeChild(card);
         });
 
-        formGroupScore.appendChild(scoreLabel);
-        formGroupScore.appendChild(scoreInput);
 
         cardBody.appendChild(formGroupQuestion);
-        cardBody.appendChild(formGroupScore);
 
         card.appendChild(cardHeader);
         card.appendChild(cardBody);
