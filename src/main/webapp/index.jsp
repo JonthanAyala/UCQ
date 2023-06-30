@@ -14,6 +14,9 @@
       <a href="user/users">Usuarios</a>
       <a href="user/prueba2">Alumnos</a>
       <a href="user/prueba3">Admin</a>
+      <a href="user/prueba4">Admin-maestros</a>
+      <a href="user/prueba5">Admin-alumnos</a>
+
     </div>
   </div>
 </div>
