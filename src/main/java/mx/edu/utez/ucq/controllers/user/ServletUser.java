@@ -33,8 +33,7 @@ public class ServletUser extends HttpServlet {
     private String action;
     private String redirect = "/user/users";
 
-    private  String id, name, surname, lastname, username, birthday, status;
-
+    private  String id, name, surname, curp,status, type_user, mail, enrollment, password;
     private User user;
 
     @Override
@@ -91,11 +90,13 @@ public class ServletUser extends HttpServlet {
                 id = req.getParameter("id");
                 name = req.getParameter("name");
                 surname = req.getParameter("surname");
-                lastname = req.getParameter("lastname");
-                username = req.getParameter("username");
-                birthday = req.getParameter("birthday");
+                curp = req.getParameter("curp");
                 status = req.getParameter("status");
-                user = new User(Long.parseLong(id), name, surname, lastname, birthday, username, status);
+                type_user = req.getParameter("type_user");
+                mail = req.getParameter("mail");
+                enrollment = req.getParameter("enrollment");
+                password = req.getParameter("password");
+                user = new User(Long.parseLong(id), name, surname, curp, status, Long.parseLong(type_user), mail, enrollment, password);
                 if (new DaoUser().update(user)){
                     redirect = "/user/users?result="+true+"&message="+ URLEncoder.encode("¡Exito! Usuario actualizado correctamente.", StandardCharsets.UTF_8);
 
@@ -107,10 +108,13 @@ public class ServletUser extends HttpServlet {
             case "/user/save":
                 name = req.getParameter("name");
                 surname = req.getParameter("surname");
-                lastname = req.getParameter("lastname");
-                username = req.getParameter("username");
-                birthday = req.getParameter("birthday");
-                User user1 = new User(0L, name, surname, lastname, birthday, username, "Activo");
+                curp = req.getParameter("curp");
+                status = req.getParameter("status");
+                type_user = req.getParameter("type_user");
+                mail = req.getParameter("mail");
+                enrollment = req.getParameter("enrollment");
+                password = req.getParameter("password");
+                User user1 = new User(0L, name, surname, curp, status, Long.parseLong(type_user), mail, enrollment, password);
                 boolean result = new DaoUser().save(user1);
                 if (result){
                     redirect = "/user/users?result="+result+"&message="+ URLEncoder.encode("¡Exito! Usuario registrado correctamente.", StandardCharsets.UTF_8);

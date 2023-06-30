@@ -29,13 +29,15 @@ public class DaoUser implements DaoRepository<User>{
             rs = pstm.executeQuery();
             while (rs.next()){
                 User user = new User();
-                user.setId(rs.getLong("id"));
+                user.setId(rs.getLong("id_user"));
                 user.setName(rs.getString("name"));
-                user.setLastname(rs.getString("lastname"));
                 user.setSurname(rs.getString("surname"));
-                user.setUsername(rs.getString("username"));
-                user.setBirthday(rs.getString("birthday"));
+                user.setCurp(rs.getString("curp"));
                 user.setStatus(rs.getString("status"));
+                user.setType_user(rs.getLong("type_user"));
+                user.setMail(rs.getString("mail"));
+                user.setEnrollment(rs.getString("enrollment"));
+                user.setPassword(rs.getString("password"));
                 users.add(user);
             }
         }catch (SQLException e){
@@ -56,13 +58,15 @@ public class DaoUser implements DaoRepository<User>{
             rs = pstm.executeQuery();
             User user = new User();
             if (rs.next()){
-                user.setId(rs.getLong("id"));
+                user.setId(rs.getLong("id_user"));
                 user.setName(rs.getString("name"));
-                user.setLastname(rs.getString("lastname"));
                 user.setSurname(rs.getString("surname"));
-                user.setUsername(rs.getString("username"));
-                user.setBirthday(rs.getString("birthday"));
+                user.setCurp(rs.getString("curp"));
                 user.setStatus(rs.getString("status"));
+                user.setType_user(rs.getLong("type_user"));
+                user.setMail(rs.getString("mail"));
+                user.setEnrollment(rs.getString("enrollment"));
+                user.setPassword(rs.getString("password"));
             }
             return user;
         }catch (SQLException e){
@@ -72,52 +76,53 @@ public class DaoUser implements DaoRepository<User>{
         }
         return null;
     }
+        @Override
+        public boolean save(User object) {
+            try {
+                conn = new MySQLConnection().connect();
+                String query = "INSERT INTO users (name, surname, curp, status, type_user, mail, enrollment, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+                pstm = conn.prepareStatement(query);
+                pstm.setString(1,object.getName());
+                pstm.setString(2,object.getSurname());
+                pstm.setString(3, object.getCurp());
+                pstm.setString(4,object.getStatus());
+                pstm.setLong(5, object.getType_user());
+                pstm.setString(6,object.getMail());
+                pstm.setString(7,object.getEnrollment());
+                pstm.setString(8,object.getPassword());
+                return pstm.executeUpdate() > 0; // == 1
 
-    @Override
-    public boolean save(User object) {
-        try {
-            conn = new MySQLConnection().connect();
-            String query = "insert into users (name, surname, lastname, username, birthday, status) Values (?,?,?,?,?,?);";
-            pstm = conn.prepareStatement(query);
-            pstm.setString(1,object.getName());
-            pstm.setString(2,object.getSurname());
-            pstm.setString(3, object.getLastname());
-            pstm.setString(4,object.getUsername());
-            pstm.setString(5, object.getBirthday());
-            pstm.setString(6,object.getStatus());
-            return pstm.executeUpdate() > 0; // == 1
-
-        }catch (SQLException e){
-            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE,"Error save"+e.getMessage());
-        }finally {
-            close();
+            }catch (SQLException e){
+                Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE,"Error save"+e.getMessage());
+            }finally {
+                close();
+            }
+            return false;
         }
-        return false;
-    }
 
-    @Override
-    public boolean update(User object) {
-        try {
-            conn = new MySQLConnection().connect();
-            String query = "UPDATE users SET name = ?, surname = ?, lastname = ?, username = ?, birthday = ?, status = ? where id = ?";
-            pstm = conn.prepareStatement(query);
-            pstm.setString(1,object.getName());
-            pstm.setString(2,object.getSurname());
-            pstm.setString(3, object.getLastname());
-            pstm.setString(4,object.getUsername());
-            pstm.setString(5,object.getBirthday());
-            pstm.setString(6,object.getStatus());
-            pstm.setLong(7,object.getId());
-            return pstm.executeUpdate() > 0; // == 1
-
-        }catch (SQLException e){
-            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE,"Error save"+e.getMessage());
-        }finally {
-            close();
+        @Override
+        public boolean update(User object) {
+            try {
+                conn = new MySQLConnection().connect();
+                String query = "UPDATE users SET name = ?, surname = ?, curp = ?, status = ?, type_user = ?, mail = ?, enrollment = ?, password = ? where id = ?";
+                pstm = conn.prepareStatement(query);
+                pstm.setString(1,object.getName());
+                pstm.setString(2,object.getSurname());
+                pstm.setString(3, object.getCurp());
+                pstm.setString(4,object.getStatus());
+                pstm.setLong(5,object.getType_user());
+                pstm.setString(6,object.getMail());
+                pstm.setString(7,object.getEnrollment());
+                pstm.setString(8,object.getPassword());
+                pstm.setLong(9,object.getId());
+                return pstm.executeUpdate() > 0; // == 1
+            }catch (SQLException e){
+                Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE,"Error save"+e.getMessage());
+            }finally {
+                close();
+            }
+            return false;
         }
-        return false;
-    }
-
     @Override
     public boolean delete(Long id) {
         try {
