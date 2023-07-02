@@ -11,11 +11,11 @@
 <style>
 
     .navbar-color{
-        background-color: #006cb0;
+        background-color: #002F5D;
     }
 
     .navbar-input{
-        border: solid #006cb0;
+        border: solid #002F5D;
     }
 
     .placeholder-name-exam {
@@ -37,10 +37,15 @@
         min-width: 500px;
     }
 
+    .input-high-size {
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+    }
+
 
 </style>
 
-<body style="background-color: #00aa83">
+<body style="background-color: #D8EAE3">
 
 <div>
     <nav class="navbar navbar-color">
@@ -48,10 +53,26 @@
         <div class="container">
             <div class="justify-content-xl-center col-xl-5">
                 <form>
-                    <input class="form-control navbar-input placeholder-name-exam" style="background-color:  #006cb0" type="text" placeholder="Nombre Examen" required>
+                    <input class="form-control navbar-input placeholder-name-exam" style="background-color:  #002F5D" type="text" placeholder="Nombre Examen" required>
                 </form>
             </div>
-            <button type="button" class="btn" onclick="" style="background-color: transparent; border: transparent">
+            <button type="button" class="btn" onclick="
+ Swal.fire({
+            title: '¿Deseas guardar los cambios?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'guardar',
+            denyButtonText: `no guardar`,
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                Swal.fire('EXAMEN GUARDADO', '', 'success')
+                //LA ALERTA APARECERÁ EN CASO DE QUE APRETEN EL BOTON DE REGRESAR Y NO SE HAYAN GUARDADOS LOS CAMBIOS
+                //REDIRIGIR A LA PAGINA PRINCIPAL CON LOS CAMBIOS GUARDADOS
+            } else if (result.isDenied) {
+               //REDIRIGIR SOLAMENTE A LA PAGINA PRINCIPAL
+            }
+        })" style="background-color: transparent; border: transparent">
                 <img src="../../assets/img/icons8-volver-48.png">
             </button>
         </div>
@@ -85,13 +106,15 @@
     </div>
 </div>
 
-<div class=" container mt-5" style="text-align: right">
-    <button type="submit" class="btn btn-success">Guardar</button>
-    <a href="/path/to/continue-creating.jsp" class="btn btn-secondary">Continuar Creando en Otro Momento</a><br>
+<div class="container mt-5 mb-5" style="background-color: white">
+    <div class=" container mt-5 mb-5 d-grid" style="text-align: center">
+        <button type="submit" class="btn btn-success">Guardar</button>
+    </div>
 </div>
 
 <jsp:include page="../../layouts/footer.jsp"/>
 <script>
+    
 
     function addQuestionClose() {
         var questionContainer = document.getElementById("questions-container");
@@ -153,53 +176,24 @@
 
         var questionTextarea = document.createElement("textarea");
         questionTextarea.className = "form-control";
-        questionTextarea.style ="resize: none";
+        questionTextarea.style.resize = "none";
         questionTextarea.contentEditable = "true";
         questionTextarea.maxLength = 255;
         questionTextarea.setAttribute("id", "closed-question");
         questionTextarea.setAttribute("name", "closed-question");
+        questionTextarea.style.overflow = "hidden";
+        questionTextarea.addEventListener("input", resizeInput);
+        questionTextarea.addEventListener("keyup", resizeInput);
+        function resizeInput(){
+            this.style.height = "auto";
+            this.style.height = this.scrollHeight + "px";
+        }
 
         formGroupQuestion.appendChild(questionLabel);
         formGroupQuestion.appendChild(questionTextarea);
 
         var answerContainer = document.createElement("div");
         answerContainer.setAttribute("id", "answer-container");
-
-        var answerLabel = document.createElement("label");
-        answerLabel.innerHTML = "Respuestas:";
-
-        var divInputGroup = document.createElement("div");
-        divInputGroup.className="input-group-text input-group-sm";
-        answerContainer.setAttribute("id", "answer-container");
-
-        var divInputGroupText = document.createElement("div");
-        divInputGroupText.className = "input-group-text";
-
-        var inputCheckbox = document.createElement("input");
-        inputCheckbox.className = "form-check-input mt-0";
-        inputCheckbox.type = "checkbox";
-        inputCheckbox.value = "";
-        inputCheckbox.setAttribute("aria-label", "correctAnswer");
-        inputCheckbox.setAttribute("name", "correct-answer");
-
-        divInputGroupText.appendChild(inputCheckbox);
-
-        var answerInput2 = document.createElement("input")
-        answerInput2.type = "text";
-        answerInput2.className ="form-control"
-        answerInput2.setAttribute("aria-label", "correctAnswer");
-        answerInput2.style ="resize: none";
-        answerInput2.maxLength = 255;
-        answerInput2.contentEditable = "true";
-        answerInput2.setAttribute("name", "answer");
-        answerInput2.setAttribute("placeholder", "Respuesta");
-        answerInput2.required = true;
-
-        divInputGroup.appendChild(divInputGroupText);
-        divInputGroup.appendChild(answerInput2);
-
-        answerContainer.appendChild(answerLabel);
-        answerContainer.appendChild(divInputGroup);
 
         cardBody.appendChild(formGroupQuestion);
         cardBody.appendChild(answerContainer);
@@ -247,7 +241,7 @@
         answerGroup.className = "form-group align-items-center";
 
         var divInputGroup = document.createElement("div");
-        divInputGroup.className="input-group-text  mb-2 input-group-sm mt-2";
+        divInputGroup.className="input-group-text  mb-2 input-group-sm mt-2 col-6";
 
         var divInputGroupText = document.createElement("div");
         divInputGroupText.className = "input-group-text ";
@@ -261,22 +255,30 @@
 
         divInputGroupText.appendChild(inputCheckbox);
 
-        var answerInput2 = document.createElement("input");
+
+        var answerInput2 = document.createElement("textarea");
         answerContainer.setAttribute("id", "answer-container");
-        answerInput2.className ="form-control"
+        answerInput2.className ="form-control input-high-size"
         answerInput2.setAttribute("aria-label", "correctAnswer");
-        answerInput2.style ="resize: none";
         answerInput2.maxLength = 255;
-        answerInput2.contentEditable = true;
         answerInput2.setAttribute("name", "answer");
         answerInput2.setAttribute("placeholder", "Respuesta");
+        answerInput2.style.resize = "none";
+        answerInput2.rows = 1;
         answerInput2.required = true;
+        answerInput2.style.overflow = "hidden";
+        answerInput2.addEventListener("input", resizeInput);
+        answerInput2.addEventListener("keyup", resizeInput);
+        function resizeInput(){
+            this.style.height = "auto";
+            this.style.height = this.scrollHeight + "px";
+        }
 
         divInputGroup.appendChild(divInputGroupText);
         divInputGroup.appendChild(answerInput2);
 
         var divRemoveButton = document.createElement("div");
-        divRemoveButton.className ="mb-2"
+        divRemoveButton.className ="mb-2";
 
         var removeButton = document.createElement("button");
         removeButton.className = "btn btn-danger";
@@ -363,6 +365,13 @@
         questionTextarea.maxLength = 255;
         questionTextarea.setAttribute("id", "open-question");
         questionTextarea.setAttribute("name", "open-question");
+        questionTextarea.style.overflow = "hidden";
+        questionTextarea.addEventListener("input", resizeInput);
+        questionTextarea.addEventListener("keyup", resizeInput);
+        function resizeInput(){
+            this.style.height = "auto";
+            this.style.height = this.scrollHeight + "px";
+        }
 
         formGroupQuestion.appendChild(questionLabel);
         formGroupQuestion.appendChild(questionTextarea);
@@ -386,6 +395,7 @@
         questionContainer.appendChild(card);
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
 </script>
 
 </script>
