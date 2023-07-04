@@ -64,11 +64,11 @@ public class ServletUser extends HttpServlet {
                 }
                 break;
             case "/user/prueba2":
-                redirect = "/views/student-views/home-students.jsp";
+                redirect = "/views/student-views/index.jsp";
 
                 break;
             case "/user/prueba3":
-                redirect="/views/admin-views/home-admin.jsp";
+                redirect="/views/admin-views/index.jsp";
                 break;
             case "/user/prueba4":
                 redirect="/views/admin-views/create-teacher.jsp";
