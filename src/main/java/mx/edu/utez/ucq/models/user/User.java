@@ -2,39 +2,101 @@ package mx.edu.utez.ucq.models.user;
 
 public class User {
     private Long id;
-    private String usuario;
-    private String contra;
+    private String name;
+    private String surname;
+    private String curp;
+    private String status;
+    private Long type_user;
+    private String mail;
+    private String enrollment;
+    private String password;
+
     public User() {
     }
 
-    public User(Long id, String usuario, String contra) {
+    public User(Long id, String name, String surname, String curp, String status, Long type_user, String mail, String enrollment, String password) {
         this.id = id;
-        this.usuario = usuario;
-        this.contra = contra;
+        this.name = name;
+        this.surname = surname;
+        this.curp = curp;
+        this.status = status;
+        this.type_user = type_user;
+        this.mail = mail;
+        this.enrollment = enrollment;
+        this.password = password;
+
     }
 
-    public String getId() {
-        return String.valueOf(id);
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getName() {
+        return name;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getContra() {
-        return contra;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setContra(String contra) {
-        this.contra = contra;
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getCurp() {
+        return curp;
+    }
+
+    public void setCurp(String curp) {
+        this.curp = curp;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Long getType_user() {
+        return type_user;
+    }
+
+    public void setType_user(Long type_user) {
+        this.type_user = type_user;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getEnrollment() {
+        return enrollment;
+    }
+
+    public void setEnrollment(String enrollment) {
+        this.enrollment = enrollment;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

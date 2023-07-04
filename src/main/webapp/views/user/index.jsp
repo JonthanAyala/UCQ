@@ -24,11 +24,11 @@
           <div class="card-body">
             <table class="table table-striped">
               <thead>
-              <th>#</th>
+              <th>Matricula</th>
               <th>Nombre</th>
-              <th>Fecha Nacimiento</th>
-              <th>Usuario</th>
-              <th>Estado</th>
+              <th>CURP</th>
+              <th>Status</th>
+              <th>EMAIl</th>
               <th>Acciones</th>
 
               </thead>
@@ -36,21 +36,33 @@
                 <c:forEach var="user" items="${users}" varStatus="s">
                   <tr>
                     <td>
-                      <c:out value="${s.count}"/>
+                      <c:out value="${user.enrollment}"/>
                     </td>
                     <td>
-                      <c:out value="${user.name}"/><c:out value="${user.surname}"/><c:out value="${user.lastname}"/>
+                      <c:out value="${user.name}"/> <br> <c:out value="${user.surname}"/>
                     </td>
                     <td>
-                      <c:out value="${user.birthday}"/>
-                    </td>
-                    <td>
-                      <c:out value="${user.username}"/>
+                      <c:out value="${user.curp}"/>
                     </td>
                     <td>
                       <c:out value="${user.status}"/>
                     </td>
                     <td>
+                      <c:out value="${user.mail}"/>
+                    </td>
+                    <td>
+                      <form method="get" action="/user/user-view-update">
+                        <input hidden value="${user.id}" name="id">
+                        <button type="submit" class="btn btn-outline-warning btn-sm">
+                          Editar
+                        </button>
+                      </form>
+                      <form method="post" action="/user/delete">
+                        <input hidden value="${user.id}" name="id">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                          Eliminar
+                        </button>
+                      </form>
                     </td>
                   </tr>
                 </c:forEach>
@@ -66,6 +78,6 @@
       </div>
     </div>
   </div>
-  <jsp:include page="../../layouts/head.jsp"/>
+  <jsp:include page="../../layouts/footer.jsp"/>
 </body>
 </html>
