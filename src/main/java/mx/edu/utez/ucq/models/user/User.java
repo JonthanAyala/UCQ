@@ -24,6 +24,7 @@ public class User {
         this.mail = mail;
         this.enrollment = enrollment;
         this.password = password;
+
     }
 
     public Long getId() {
@@ -97,4 +98,5 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

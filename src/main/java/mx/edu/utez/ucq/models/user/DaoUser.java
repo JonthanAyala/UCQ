@@ -39,6 +39,7 @@ public class DaoUser implements DaoRepository<User>{
                 user.setEnrollment(rs.getString("enrollment"));
                 user.setPassword(rs.getString("password"));
                 users.add(user);
+
             }
         }catch (SQLException e){
             Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
@@ -99,6 +100,7 @@ public class DaoUser implements DaoRepository<User>{
             }
             return false;
         }
+
 
         @Override
         public boolean update(User object) {

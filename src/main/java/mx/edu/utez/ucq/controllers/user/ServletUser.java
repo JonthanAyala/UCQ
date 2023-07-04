@@ -14,6 +14,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+
     @WebServlet(name = "users",urlPatterns = {
         "/user/users",
         "/user/user",
@@ -85,6 +86,12 @@ public class ServletUser extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html");
         action = req.getServletPath();
+        if(action=){
+
+            else{
+
+            }
+        }
         switch (action){
             case "/user/update":
                 id = req.getParameter("id");
@@ -115,6 +122,7 @@ public class ServletUser extends HttpServlet {
                 enrollment = req.getParameter("enrollment");
                 password = req.getParameter("password");
                 User user1 = new User(0L, name, surname, curp, status, Long.parseLong(type_user), mail, enrollment, password);
+
                 boolean result = new DaoUser().save(user1);
                 if (result){
                     redirect = "/user/users?result="+result+"&message="+ URLEncoder.encode("¡Exito! Usuario registrado correctamente.", StandardCharsets.UTF_8);
