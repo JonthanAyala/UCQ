@@ -65,7 +65,7 @@
         </div>
     </div>
 </div>
-<jsp:include page="../../layouts/footer.jsp"/>
+    <jsp:include page="../../layouts/footer.jsp"/>
 <script>
     (function (){
         const form = document.getElementById("user-form");
