@@ -4,22 +4,27 @@ public class User {
     private Long id;
     private String name;
     private String surname;
-    private String lastname;
-    private String birthday;
-    private String username;
+    private String curp;
     private String status;
+    private Long type_user;
+    private String mail;
+    private String enrollment;
+    private String password;
 
     public User() {
     }
 
-    public User(Long id, String name, String surname, String lastname, String birthday, String username, String status) {
+    public User(Long id, String name, String surname, String curp, String status, Long type_user, String mail, String enrollment, String password) {
         this.id = id;
         this.name = name;
         this.surname = surname;
-        this.lastname = lastname;
-        this.birthday = birthday;
-        this.username = username;
+        this.curp = curp;
         this.status = status;
+        this.type_user = type_user;
+        this.mail = mail;
+        this.enrollment = enrollment;
+        this.password = password;
+
     }
 
     public Long getId() {
@@ -46,28 +51,12 @@ public class User {
         this.surname = surname;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getCurp() {
+        return curp;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setCurp(String curp) {
+        this.curp = curp;
     }
 
     public String getStatus() {
@@ -77,4 +66,37 @@ public class User {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public Long getType_user() {
+        return type_user;
+    }
+
+    public void setType_user(Long type_user) {
+        this.type_user = type_user;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getEnrollment() {
+        return enrollment;
+    }
+
+    public void setEnrollment(String enrollment) {
+        this.enrollment = enrollment;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }

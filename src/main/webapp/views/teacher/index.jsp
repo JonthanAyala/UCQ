@@ -15,13 +15,7 @@
   <jsp:include page="../../layouts/head.jsp"/>
 </head>
 <body>
-<nav class="navbar bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" >
-      Ultimate Custom Quiz
-    </a>
-  </div>
-</nav>
+
 
 <jsp:include page="../../layouts/footer.jsp"/>
 </body>
