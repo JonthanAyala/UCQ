@@ -23,6 +23,12 @@ import java.util.List;
         "/user/user-view-update",
         "/user/update",
         "/user/delete",
+            //URLS de prueba para vistas
+        "/user/prueba2",
+        "/user/prueba3",
+        "/user/prueba4",
+        "/user/prueba5",
+            // fin de pruebas de url
         "/user/teacher",
         "/user/pruebas",
         "/user/student",
@@ -63,6 +69,20 @@ public class ServletUser extends HttpServlet {
                             "&messages" + URLEncoder.encode("", StandardCharsets.UTF_8);
                 }
                 break;
+                ///PRuebas de vistas
+            case "/user/prueba2":
+                redirect = "/views/student-views/index.jsp";
+
+                break;
+            case "/user/prueba3":
+                redirect="/views/admin-views/index.jsp";
+                break;
+            case "/user/prueba4":
+                redirect="/views/admin-views/create-teacher.jsp";
+                break;
+            case "/user/prueba5":
+                redirect="/views/admin-views/create-students.jsp";
+        ///FIn de PRuebas de vistas
             case "/user/teacher":
                 redirect = "/views/teacher/exam.jsp";
                 break;
@@ -86,12 +106,12 @@ public class ServletUser extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html");
         action = req.getServletPath();
-        if(action=){
+/*      if(action=){
 
             else{
 
             }
-        }
+      }*/
         switch (action){
             case "/user/update":
                 id = req.getParameter("id");
