@@ -13,9 +13,9 @@
     <jsp:include page="../../layouts/head.jsp"/>
 </head>
 <body style="background-color: #D8EAE3;">
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
     <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
-        <a class="navbar-brand position-absolute top-50 start-50 translate-middle">
+        <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
             <h3 class="text-center">Ultimate Custom Quiz</h3>
         </a>
         <a class="navbar-brand position-absolute top-0 end-0">
@@ -24,6 +24,7 @@
         <br><br>
     </div>
 </nav>
+
 <br><br>
 <div class="container-fluid">
     <div class="row">
