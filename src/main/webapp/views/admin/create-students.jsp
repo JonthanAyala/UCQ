@@ -40,13 +40,13 @@
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
-                                    <label for="surnames" class="fw-bold">Apellidos:</label>
-                                    <input type="text" name="surnames" id="surnames" class="form-control" required/>
+                                    <label for="surname" class="fw-bold">Apellidos:</label>
+                                    <input type="text" name="surname" id="surname" class="form-control" required/>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
-                                    <label for="tuition" class="fw-bold">Matricula:</label>
-                                    <input type="text" name="tuition" id="tuition" class="form-control" required/>
+                                    <label for="enrollment" class="fw-bold">Matricula:</label>
+                                    <input type="text" name="enrollment" id="enrollment" class="form-control" required/>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                             </div>
@@ -114,7 +114,7 @@
                         <div class="form-group mb-3">
                             <div class="row justify-content-end">
                                 <div class="col-auto">
-                                    <a href="/user/users" class="btn btn-outline-danger btn-sm">CANCELAR</a>
+                                    <a href="/user/admin" class="btn btn-outline-danger btn-sm">CANCELAR</a>
                                     <button type="submit" class="btn btn-outline-success btn-sm">ACEPTAR</button>
                                 </div>
                             </div>

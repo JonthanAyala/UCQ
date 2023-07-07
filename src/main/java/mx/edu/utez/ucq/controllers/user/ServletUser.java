@@ -16,23 +16,23 @@ import java.util.List;
 
 
     @WebServlet(name = "users",urlPatterns = {
+        "/user/admin",//admin index
+        "/user/user",//
+        "/user/user-view",//crear alumnos
+        "/user/save",//guardar alumnos
+        "/user/user-view-update", //actualizar alumnos
+        "/user/update",// guardar actualizar alumnos
+        "/user/delete",//borrar
+            //Profesores
+        "/user/view-view-teacher", //crear profesores
+            //Students
+        "/user/student",//index student
+
+        "/user/login",
         "/user/users",
-        "/user/user",
-        "/user/user-view",
-        "/user/save",
-        "/user/user-view-update",
-        "/user/update",
-        "/user/delete",
-            //URLS de prueba para vistas
-        "/user/prueba2",
-        "/user/prueba3",
-        "/user/prueba4",
-        "/user/prueba5",
             // fin de pruebas de url
         "/user/teacher",
         "/user/pruebas",
-        "/user/student",
-        "/user/admin"
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 
@@ -48,14 +48,19 @@ public class ServletUser extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         action = req.getServletPath();
         switch (action){
-            case "/user/users":
+            /*case "/user/users":
+                redirect = "/WEB-INF/index.jsp";
+                break;*/
+            case "/user/admin":
                 List<User> users = new DaoUser().findAll();
                 req.setAttribute("users", users);
-                redirect = "/views/user/index.jsp";
-
+                redirect = "/views/admin/index.jsp";
                 break;
             case "/user/user-view":
-                redirect = "/views/user/create.jsp";
+                redirect = "/views/admin/create-students.jsp";
+                break;
+            case "/user/view-view-teacher":
+                redirect="/views/admin/create-teacher.jsp";
                 break;
             case "/user/user-view-update":
                 id= req.getParameter("id");
@@ -68,32 +73,18 @@ public class ServletUser extends HttpServlet {
                             "&messages" + URLEncoder.encode("", StandardCharsets.UTF_8);
                 }
                 break;
-
-                ///PRuebas de vistas
-            case "/user/prueba2":
+            case "/user/student":
                 redirect = "/views/student/index.jsp";
                 break;
-            case "/user/prueba3":
-                redirect="/views/admin/index.jsp";
+            case "/user/login":
+                redirect="/views/logIn/createLogIn.jsp";
                 break;
-            case "/user/prueba4":
-                redirect="/views/admin/create-teacher.jsp";
-                break;
-            case "/user/prueba5":
-                redirect="/views/admin/create-students.jsp";
-                break;
-
         ///FIn de PRuebas de vistas
             case "/user/teacher":
                 redirect = "/views/teacher/exam.jsp";
                 break;
             case "/user/pruebas":
                 redirect = "/views/user/pruebas.jsp";
-            case "/user/student":
-                redirect = "/views/student/index.jsp";
-                break;
-            case "/user/admin":
-                redirect="/views/admin/index.jsp";
                 break;
             default:
                 System.out.println(action);

@@ -53,7 +53,7 @@
                                 <tr style="background-color: white;">
                                     <th style="border: 2px solid #374b43;">
                                         <div class="form-outline ">
-                                            <input id="user" name="user" type="text" class="form-control" style="background-color: #D9D9D9;" required/>
+                                            <input id="user" name="user/user" type="text" class="form-control" style="background-color: #D9D9D9;" required/>
                                             <label class="form-label"> Usuario </label>
                                         </div>
 

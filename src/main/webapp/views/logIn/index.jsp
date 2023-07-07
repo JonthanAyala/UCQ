@@ -5,7 +5,7 @@
 <html>
 <head>
   <title>Usuarios</title>
-  <jsp:include page="./layouts/head.jsp"/>
+  <jsp:include page="../../layouts/head.jsp"/>
 </head>
 <body style="background-color: #D8EAE3">
 <nav class="navbar" style="background-color: #ffffff;">
@@ -20,10 +20,13 @@
         Inicio de sesíon
       </button>
       <ul class="dropdown-menu text-center" >
-        <li class="list-group-item"><a href="user/login">Login</a></li>
+        <li class="list-group-item"><a href="user/users">Usuarios</a></li>
+        <li class="list-group-item"><a href="exam/exams">Pruebas</a></li>
         <li class="list-group-item"><a href="user/teacher">Examen</a></li>
         <li class="list-group-item"><a href="user/student">Alumnos</a></li>
         <li class="list-group-item"><a href="user/admin">Admin</a></li>
+        <li class="list-group-item"><a href="user/prueba4">Admin-maestros</a></li>
+        <li class="list-group-item"><a href="user/prueba5">Admin-alumnos</a></li>
       </ul>
     </div>
   </div>
@@ -35,10 +38,13 @@
     <div class="col-6">UCQ<br>El objetivo de nuestro proyecto es el poder crear una aplicación web para la gestión y resolución de exámenes
       evitando el plagio mediante la selección aleatoria de preguntas de un banco preexistente
       <ul class="text-center" >
-        <li class="list-group-item"><a href="user/login">Login</a></li>
+        <li class="list-group-item"><a href="user/users">Usuarios</a></li>
+        <li class="list-group-item"><a href="exam/exams">Pruebas</a></li>
         <li class="list-group-item"><a href="user/teacher">Examen</a></li>
         <li class="list-group-item"><a href="user/student">Alumnos</a></li>
         <li class="list-group-item"><a href="user/admin">Admin</a></li>
+        <li class="list-group-item"><a href="user/prueba4">Admin-maestros</a></li>
+        <li class="list-group-item"><a href="user/prueba5">Admin-alumnos</a></li>
       </ul>
     </div>
     <div class="col-4"><img src="/assets/img/examen.jpg" width="700" height="320" ></div>
@@ -65,6 +71,6 @@
 </footer>
 <!-- Footer -->
 
-<jsp:include page="./layouts/footer.jsp"/>
+<jsp:include page="../../layouts/footer.jsp"/>
 </body>
 </html>

@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: angry
-  Date: 18/06/2023
-  Time: 07:10 p. m.
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
@@ -18,7 +12,7 @@
         <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
             <h3 class="text-center">Ultimate Custom Quiz</h3>
         </a>
-        <a class="navbar-brand position-absolute top-0 end-0">
+        <a  class="navbar-brand position-absolute top-0 end-0">
             <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
         </a>
         <br><br>
@@ -43,7 +37,7 @@
             <div class="card">
                 <img src="../../assets/img/teacher.png" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">Crear profesores</h5>
+                    <h5 class="card-title"><a href="/user/view-view-teacher">Crear profesores</a></h5>
                     <p class="card-text"> </p>
                 </div>
             </div>
@@ -52,7 +46,7 @@
             <div class="card">
                 <img src="../../assets/img/student.png" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">Crear alumno</h5>
+                    <h5 class="card-title"><a href="/user/user-view">Crear alumno</a></h5>
                     <p class="card-text"></p>
                 </div>
             </div>
@@ -72,25 +66,36 @@
                     <table class="table table-stripped">
                         <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
                             <th>Matricula</th>
-                            <th>Grado</th>
-                            <th>Grupo</th>
-                            <th>Carrera</th>
-                            <th>Rol</th>
+                            <th>Nombre</th>
+                            <th>CURP</th>
+                            <th>status</th>
+                            <th>Correo</th>
+                            <th>Tipo de usuario</th>
                             <th>Acciones</th>
                         </tr>
                         </thead>
                         <tbody>
+                            <c:forEach var="user" items="${users}" varStatus="s">
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                                <td>
+                                <c:out value="${user.enrollment}"/>
+                                </td>
+                                <td>
+                                <c:out value="${user.name}"/> <br> <c:out value="${user.surname}"/>
+                                </td>
+                                <td>
+                                <c:out value="${user.curp}"/>
+                                </td>
+                                <td>
+                                <c:out value="${user.status}"/>
+                                </td>
+                                <td>
+                                <c:out value="${user.mail}"/>
+                                </td>
+                                <td>
+                                <c:out value="${user.type_user}"/>
+                                </td>
                             <td>
                                 <form method="GET" action="...">
                                     <input hidden value="${user.id}" name="id">
@@ -106,6 +111,7 @@
                                 </form>
                             </td>
                         </tr>
+                            </c:forEach>
                         <tr>
                             <td colspan="8">
                                 Sin registros

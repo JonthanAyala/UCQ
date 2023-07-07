@@ -84,7 +84,7 @@
             <div class="form-group mb-3">
               <div class="row justify-content-end">
                 <div class="col-auto">
-                  <a href="/user/users" class="btn btn-outline-danger btn-sm">CANCELAR</a>
+                  <a href="/user/admin" class="btn btn-outline-danger btn-sm">CANCELAR</a>
                   <button type="submit" class="btn btn-outline-success btn-sm">ACEPTAR</button>
                 </div>
               </div>
