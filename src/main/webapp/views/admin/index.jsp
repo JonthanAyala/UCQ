@@ -1,6 +1,6 @@
-
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <html>
 <head>
     <title>Inicio Admin</title>
@@ -75,49 +75,49 @@
                             <th>Acciones</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <thbody>
                             <c:forEach var="user" items="${users}" varStatus="s">
-                        <tr>
-                                <td>
-                                <c:out value="${user.enrollment}"/>
-                                </td>
-                                <td>
-                                <c:out value="${user.name}"/> <br> <c:out value="${user.surname}"/>
-                                </td>
-                                <td>
-                                <c:out value="${user.curp}"/>
-                                </td>
-                                <td>
-                                <c:out value="${user.status}"/>
-                                </td>
-                                <td>
-                                <c:out value="${user.mail}"/>
-                                </td>
-                                <td>
-                                <c:out value="${user.type_user}"/>
-                                </td>
-                            <td>
-                                <form method="GET" action="...">
-                                    <input hidden value="${user.id}" name="id">
-                                    <button type="submit" class="btn btn-outline-warning btn-sm">
-                                        Agregar
-                                    </button>
-                                </form>
-                                <form method="post" action="...">
-                                    <input hidden value="${user.id}" name="id">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                                        ELIMINAR
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
+                                <tr>
+                                    <td>
+                                        <c:out value="${user.enrollment}"/>
+                                    </td>
+                                    <td>
+                                        <c:out value="${user.name}"/> <br> <c:out value="${user.surname}"/>
+                                    </td>
+                                    <td>
+                                        <c:out value="${user.curp}"/>
+                                    </td>
+                                    <td>
+                                        <c:out value="${user.status}"/>
+                                    </td>
+                                    <td>
+                                        <c:out value="${user.mail}"/>
+                                    </td>
+                                    <td>
+                                        <c:out value="${user.type_user}"/>
+                                    </td>
+                                    <td>
+                                        <form method="get" action="/user/user-view-update">
+                                            <input hidden value="${user.id}" name="id">
+                                            <button type="submit" class="btn btn-outline-warning btn-sm">
+                                                Editar
+                                            </button>
+                                        </form>
+                                        <form method="post" action="/user/delete">
+                                            <input hidden value="${user.id}" name="id">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
                             </c:forEach>
-                        <tr>
-                            <td colspan="8">
-                                Sin registros
-                            </td>
-                        </tr>
-                        </tbody>
+                            <tr>
+                                <td colspan="6">
+                                    SIn registros
+                                </td>
+                            </tr>
+                        </thbody>
                     </table>
                 </div>
             </div>

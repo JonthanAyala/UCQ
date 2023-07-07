@@ -39,6 +39,7 @@
         <li class="list-group-item"><a href="user/teacher">Examen</a></li>
         <li class="list-group-item"><a href="user/student">Alumnos</a></li>
         <li class="list-group-item"><a href="user/admin">Admin</a></li>
+        <li class="list-group-item"><a href="user/apoco">Admin</a></li>
       </ul>
     </div>
     <div class="col-4"><img src="/assets/img/examen.jpg" width="700" height="320" ></div>

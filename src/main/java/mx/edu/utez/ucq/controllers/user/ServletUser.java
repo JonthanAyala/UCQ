@@ -33,6 +33,7 @@ import java.util.List;
             // fin de pruebas de url
         "/user/teacher",
         "/user/pruebas",
+            "/user/apoco"
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 
@@ -48,9 +49,6 @@ public class ServletUser extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         action = req.getServletPath();
         switch (action){
-            /*case "/user/users":
-                redirect = "/WEB-INF/index.jsp";
-                break;*/
             case "/user/admin":
                 List<User> users = new DaoUser().findAll();
                 req.setAttribute("users", users);
@@ -67,7 +65,7 @@ public class ServletUser extends HttpServlet {
                 User user3 = new DaoUser().findOne(id != null ? Long.parseLong(id):0);
                 if(user3 !=null){
                     req.setAttribute("user",user3);
-                    redirect = "/views/user/update.jsp";
+                    redirect = "/views/admin/";
                 }else {
                     redirect = "/user/users?result" + false +
                             "&messages" + URLEncoder.encode("", StandardCharsets.UTF_8);
@@ -83,8 +81,10 @@ public class ServletUser extends HttpServlet {
             case "/user/teacher":
                 redirect = "/views/teacher/exam.jsp";
                 break;
-            case "/user/pruebas":
-                redirect = "/views/user/pruebas.jsp";
+            case "/user/apoco":
+                List<User> users2 = new DaoUser().findAll();
+                req.setAttribute("users", users2);
+                redirect = "/views/user/index.jsp";
                 break;
             default:
                 System.out.println(action);
