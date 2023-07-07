@@ -14,15 +14,18 @@
 </head>
 <body style="background-color: #D8EAE3;">
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary"   >
-  <div class="container-fluid h-20 d-inline-block" style="width: 120px;" >
-    <a class="navbar-brand position-absolute top-50 start-50 translate-middle"><h3 class="text-center"  >Ultimate Custom Quiz</h3></a>
-        <a class="navbar-brand position-absolute top-0 end-0">
-          <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
-        </a>
-        <br><br>
+<nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
+  <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
+    <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
+      <h3 class="text-center">Ultimate Custom Quiz</h3>
+    </a>
+    <a class="navbar-brand position-absolute top-0 end-0">
+      <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
+    </a>
+    <br><br>
   </div>
 </nav>
+
 
 
 <div class="container-fluid w-25 p-3  ">
