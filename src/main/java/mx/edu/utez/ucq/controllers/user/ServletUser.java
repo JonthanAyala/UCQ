@@ -55,7 +55,6 @@ public class ServletUser extends HttpServlet {
 
                 break;
             case "/user/user-view":
-                //Consultas catalogos
                 redirect = "/views/user/create.jsp";
                 break;
             case "/user/user-view-update":
@@ -69,26 +68,27 @@ public class ServletUser extends HttpServlet {
                             "&messages" + URLEncoder.encode("", StandardCharsets.UTF_8);
                 }
                 break;
+
                 ///PRuebas de vistas
             case "/user/prueba2":
-                redirect = "/views/student-views/index.jsp";
-
+                redirect = "/views/student/index.jsp";
                 break;
             case "/user/prueba3":
-                redirect="/views/admin-views/index.jsp";
+                redirect="/views/admin/index.jsp";
                 break;
             case "/user/prueba4":
-                redirect="/views/admin-views/create-teacher.jsp";
+                redirect="/views/admin/create-teacher.jsp";
                 break;
             case "/user/prueba5":
-                redirect="/views/admin-views/create-students.jsp";
+                redirect="/views/admin/create-students.jsp";
+                break;
+
         ///FIn de PRuebas de vistas
             case "/user/teacher":
                 redirect = "/views/teacher/exam.jsp";
                 break;
             case "/user/pruebas":
                 redirect = "/views/user/pruebas.jsp";
-
             case "/user/student":
                 redirect = "/views/student/index.jsp";
                 break;
