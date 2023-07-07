@@ -80,7 +80,7 @@
 
 </div>
 
-<div class="container" style="background-color: white">
+<div class="container mt-5 w-75 p-3" style="background-color: white">
 
     <div id="questions-container">
 
