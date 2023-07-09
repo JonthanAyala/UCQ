@@ -14,18 +14,26 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+
     @WebServlet(name = "users",urlPatterns = {
+        "/user/admin",//admin index
+        "/user/user",//
+        "/user/user-view",//crear alumnos
+        "/user/save",//guardar alumnos
+        "/user/user-view-update", //actualizar alumnos
+        "/user/update",// guardar actualizar alumnos
+        "/user/delete",//borrar
+            //Profesores
+        "/user/view-view-teacher", //crear profesores
+            //Students
+        "/user/student",//index student
+
+        "/user/login",
         "/user/users",
-        "/user/user",
-        "/user/user-view",
-        "/user/save",
-        "/user/user-view-update",
-        "/user/update",
-        "/user/delete",
+            // fin de pruebas de url
         "/user/teacher",
         "/user/pruebas",
-        "/user/student",
-        "/user/admin"
+            "/user/apoco"
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 
@@ -41,38 +49,42 @@ public class ServletUser extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         action = req.getServletPath();
         switch (action){
-            case "/user/users":
+            case "/user/admin":
                 List<User> users = new DaoUser().findAll();
                 req.setAttribute("users", users);
-                redirect = "/views/user/index.jsp";
-
+                redirect = "/views/admin/index.jsp";
                 break;
             case "/user/user-view":
-                //Consultas catalogos
-                redirect = "/views/user/create.jsp";
+                redirect = "/views/admin/create-students.jsp";
+                break;
+            case "/user/view-view-teacher":
+                redirect="/views/admin/create-teacher.jsp";
                 break;
             case "/user/user-view-update":
                 id= req.getParameter("id");
                 User user3 = new DaoUser().findOne(id != null ? Long.parseLong(id):0);
                 if(user3 !=null){
                     req.setAttribute("user",user3);
-                    redirect = "/views/user/update.jsp";
+                    redirect = "/views/admin/";
                 }else {
                     redirect = "/user/users?result" + false +
                             "&messages" + URLEncoder.encode("", StandardCharsets.UTF_8);
                 }
                 break;
-            case "/user/teacher":
-                redirect = "/views/teacher/exam.jsp";
-                break;
-            case "/user/pruebas":
-                redirect = "/views/user/pruebas.jsp";
-
             case "/user/student":
                 redirect = "/views/student/index.jsp";
                 break;
-            case "/user/admin":
-                redirect="/views/admin/index.jsp";
+            case "/user/login":
+                redirect="/views/logIn/createLogIn.jsp";
+                break;
+        ///FIn de PRuebas de vistas
+            case "/user/teacher":
+                redirect = "/views/teacher/exam.jsp";
+                break;
+            case "/user/apoco":
+                List<User> users2 = new DaoUser().findAll();
+                req.setAttribute("users", users2);
+                redirect = "/views/user/index.jsp";
                 break;
             default:
                 System.out.println(action);
@@ -85,6 +97,12 @@ public class ServletUser extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html");
         action = req.getServletPath();
+/*      if(action=){
+
+            else{
+
+            }
+      }*/
         switch (action){
             case "/user/update":
                 id = req.getParameter("id");
@@ -115,6 +133,7 @@ public class ServletUser extends HttpServlet {
                 enrollment = req.getParameter("enrollment");
                 password = req.getParameter("password");
                 User user1 = new User(0L, name, surname, curp, status, Long.parseLong(type_user), mail, enrollment, password);
+
                 boolean result = new DaoUser().save(user1);
                 if (result){
                     redirect = "/user/users?result="+result+"&message="+ URLEncoder.encode("¡Exito! Usuario registrado correctamente.", StandardCharsets.UTF_8);

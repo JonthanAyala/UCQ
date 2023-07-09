@@ -100,6 +100,7 @@ public class DaoUser implements DaoRepository<User>{
             return false;
         }
 
+
         @Override
         public boolean update(User object) {
             try {
