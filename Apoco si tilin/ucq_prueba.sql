@@ -20,6 +20,7 @@ create table Users(
     password varchar(254),
     primary key (id_user)
 );
+select * from users;
 insert into users values (0,'Emilio','alpizar','Garcia','AIGE041218HMSLRMA3','ACTIVO',1,'20223tn084@utez.edu.mx','20223tn084','Admin');
 insert into users values (0,'Axel','Ocampo','Galvez','OCGA040719HMSLRMA3','ACTIVO',2,'20223tn086@utez.edu.mx','20223tn086','12345678');
 insert into users values (0,'Cristian','Castañeda','Lopez','CTCB040719HMSLRMA3','ACTIVO',3,'20223tn089@utez.edu.mx','20223tn089','12345678');
@@ -283,7 +284,7 @@ BEFORE DELETE ON Users
 FOR EACH ROW
 BEGIN
     DECLARE type_u INT(1);
-    SELECT type_user INTO type_u FROM users WHERE id_user = old.id_user;				#REVISAAAAAAAAAAAR
+    SELECT type_user INTO type_u FROM users WHERE id_user = old.id_user;				#REVISAAAAAAAAAAAR logica
     IF type_u > 3 THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Usuario no existe';
@@ -349,8 +350,9 @@ CREATE TRIGGER user_created
 AFTER INSERT
 ON Users FOR EACH ROW
 BEGIN
+
 	DECLARE diferent_name VARCHAR(100);
-    DECLARE diferent_lastname VARCHAR(100);				#creo ya quedo
+    DECLARE diferent_lastname VARCHAR(100);				#ya quedo 
     DECLARE diferent_surname VARCHAR(100);
 		SET diferent_name = NEW.name;
         set diferent_lastname = new.lastname;
@@ -358,11 +360,11 @@ BEGIN
 	IF ( diferent_name REGEXP '[^a-zA-Z0-9 ]') or (diferent_lastname REGEXP '[^a-zA-Z0-9 ]') 
     or (diferent_surname REGEXP '[^a-zA-Z0-9 ]') THEN
 	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Se detectaron caracteres especiales';
-END IF;
-END$$
+END IF; 
+ END$$
 select * from users;
 delete from users where id_user=4;
-insert into users values (0,'Cristi053n','Cast09ñeda','Lopez','CTCB04071MSLRMA3','ACTIVO',3,'20223tn089@utez.edu.mx','20223tn129','12345678');
+insert into users values (0,'Cristin','Casteda','Lopez','CTCB04071MSLRMA3','ACTIVO',3,'20223tn089@utez.edu.mx','20223tn19','12345678');
 
 #-----------------------disparador before insert exams----------------------
 /*Este trigger funciona para cuando inserte un examen, el código debe ser de 5 caracteres.
@@ -392,7 +394,7 @@ BEGIN
 DECLARE exams_count INT;
 	SELECT COUNT(*) INTO exams_count
 	FROM exams
-	WHERE id_exam = NEW.id_exam;									#creo que ya pero aun asi no va a dejar insertar otro examen con un mismo id
+	WHERE id_exam = NEW.id_exam;									#creo que ya pero aún así no va a dejar insertar otro examen
 	IF exams_count = 0 THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El registro del examen fracaso.';
 	END IF;
@@ -425,7 +427,7 @@ BEFORE DELETE ON exams
 FOR EACH ROW
 BEGIN
     DECLARE exam_count INT;
-    SET exam_count = (SELECT COUNT(*) FROM exams WHERE id_exam = OLD.id_exam);			#creo que ya quedo
+    SET exam_count = (SELECT COUNT(*) FROM exams WHERE id_exam = OLD.id_exam);			#revisar logica, pero creo ya
     IF exam_count = 0 THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Error: El ID del examen no existe.';
@@ -433,7 +435,7 @@ BEGIN
 END$$
 insert into exams values(2,'BD','XQg210','2020-07-04','2020-07-05',2);
 select * from exams;
-delete from exams where id_exam=1;
+delete from exams where id_exam=3;
 
 #--------------------disparador AFTER delete exams-------------------------
 /*En este trigger funciona para que despues de eliminar el examen, también elimine la relacion que 
@@ -457,7 +459,7 @@ insert into questions values(3,'http',1,'QUE ES UN insert?',20);
 CREATE TRIGGER delete_question
 AFTER DELETE ON exam_questions
 FOR EACH ROW
-BEGIN
+BEGIN																#no hagas caso a esto.
     #DELETE FROM exam_questions WHERE fk_exam = OLD.id_Exam;
     declare id_ques int;
     set id_ques = old.fk_question;									#PUEDES PONERLO EN LA TABLA QUESTIONS EN AFTER DELETE
@@ -490,7 +492,7 @@ AFTER INSERT
 ON Students_exam FOR EACH ROW
 BEGIN
     declare type_u int(1);
-    select type_user into type_u from users where id_user=fk_user;							#VERIFICAAAAAR y creo el rollback no es posible segun chatgpt.
+    select type_user into type_u from users where id_user=fk_user;							#es el mismo de arriba tons yo creo ya quedo
     if type_u!=3 then
     SIGNAL SQLSTATE '45000'
       SET MESSAGE_TEXT = 'No es un estudiante el tipo de usuario.';
@@ -506,7 +508,7 @@ CREATE TRIGGER validate_student_exam
 before delete
 ON Students_exam FOR EACH ROW
 BEGIN
-	IF NOT EXISTS (SELECT * FROM Students_exam WHERE fk_user = 3) THEN				#segun ya quedo
+	IF NOT EXISTS (SELECT * FROM Students_exam WHERE fk_user = 3) THEN				#creo ya quedo pero checa logica plis
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Error: El ID del estudiante no existe.';
     END IF;
@@ -573,17 +575,22 @@ BEGIN
 END;$$
 
 #-----------------disparador before update questions---------------------
+/*La funcion de este trigger es para los tipos de preguntas que hay (1 = opcional y 2 = abierta),
+si actualiza y esta con el mismo numero que contenia anteriormente, le mande un mensaje de error diciendo
+que es el mismo valor que estaba anteriormente.*/
+drop trigger validate_type_question;
 delimiter $$
-CREATE TRIGGER validate_type_question_trigger
+CREATE TRIGGER validate_type_question
 BEFORE UPDATE ON questions
 FOR EACH ROW
 BEGIN
-    -- Verificar si el nuevo valor de type_question es igual al valor existente			#creo ya
+    -- Verificar si el nuevo valor de type_question es igual al valor existente						#ya quedo pero checale a mi explicación xd
     IF NEW.type_question = OLD.type_question THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se permite actualizar con el mismo valor de type_question';
     END IF;
 END;$$
-
+update questions set type_question =2 where id_question=2;
+select * from questions;
 #------------------disparador after update questions-------------------------
 
 DELIMITER $$
@@ -593,7 +600,7 @@ FOR EACH ROW
 BEGIN
 IF NEW.id_Question <> OLD.id_Question THEN
         -- Actualizar la clave foránea en la tabla Questions_answer
-        UPDATE Questions_answer SET fk_question = NEW.id_Question WHERE fk_question = OLD.id_Question;		#creo ya
+        UPDATE Questions_answer SET fk_question = NEW.id_Question WHERE fk_question = OLD.id_Question;		#no lo he probado, wachale la logica
         
         -- Actualizar la clave foránea en la tabla Students_exam_answer
         UPDATE Students_exam_answer SET fk_question = NEW.id_Question WHERE fk_question = OLD.id_Question;
@@ -604,22 +611,26 @@ IF NEW.id_Question <> OLD.id_Question THEN
 END;$$
 
 #--------------------disparador before delete questions--------------------------
+/*La funcion de este trigger es para cuando se quiera eliminar una pregunta, 
+no lo deje ya que estara relacionado a un examen*/
+drop trigger check_questions_correct;
 DELIMITER $$
 CREATE TRIGGER check_questions_correct
 BEFORE DELETE ON Questions
 FOR EACH ROW
 BEGIN
   DECLARE questions_count INT;
-  SELECT COUNT(*) INTO questions_count												#creo ya pero el rollback no va segun chatgpt
+  SELECT COUNT(*) INTO questions_count												#ya quedo
   FROM exam_Questions
   WHERE fk_Question = OLD.id_Question;
   IF questions_count > 0 THEN
     SIGNAL SQLSTATE '45000'
       SET MESSAGE_TEXT = 'La pregunta ya esta asignada con un id en un examen no puede borrarse.';
-      rollback;
   END IF;
 END; $$
+use ucq_chido;
 #--------------------disparador after delete questions---------------------
+drop trigger after_delete_trigger;
 DELIMITER $$
 CREATE TRIGGER after_delete_trigger
 AFTER DELETE ON Questions
@@ -627,16 +638,20 @@ FOR EACH ROW
 BEGIN
     DECLARE questions_count INT;
   SELECT COUNT(*) INTO questions_count
-  FROM exam_Questions														#segu ya
+  FROM exam_Questions														#si jala
   WHERE fk_Question = OLD.id_Question;
-  IF questions_count >=1  THEN
+  IF questions_count >0 THEN
       delete from Questions where id_Question;
   END IF;
 END;$$
+select*from Questions;
+delete from Questions where id_question=1;
+select * from exam_questions;
+use ucq_chido;
 
-
--- Triggers Students_Exam_answer
+-- Triggers Students_Exam_answer--------------------------
 -- BEFORE insert
+drop trigger before_insert_answer;
 DELIMITER $$
 CREATE TRIGGER before_insert_answer
 BEFORE INSERT ON students_exam_answer
@@ -649,10 +664,15 @@ BEGIN
  Permite buscar y comparar cadenas de texto utilizando patrones más complejos que una simple comparación de igualdad.
  */
  IF (answer_name REGEXP '[^a-zA-Z0-9 ]') THEN
- SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Se detectaron caracteres especiales en la respuesta';
+ SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Se detectaron caracteres especiales en la respuesta';					#ya quedo
  END IF;
 END;$$
-select from students_exam_answer;
+select * from students_exam;
+select * from students_exam_answer;
+insert into students_exam_answer values(1,5,'no c',1,2);
+select *from Questions;
+select * from questions_answer;
+insert into questions_answer values(1,'si',1,2);
 
 # ------------------after insert Students_exam_answer
 DELIMITER $$
@@ -661,7 +681,7 @@ AFTER INSERT ON students_exam_answer
 FOR EACH ROW
 BEGIN
  DECLARE answer_count INT;
- SELECT COUNT(*) INTO answer_count
+ SELECT COUNT(*) INTO answer_count											#no lo he probado, wachale la logica
  FROM students_exam_answer
  WHERE id_student_exam_answer = NEW.id_student_exam_answer;
  IF address_count = 0 THEN
@@ -675,7 +695,7 @@ DELIMITER $$
 CREATE TRIGGER trigger_after_delete_students_exam_answer
 AFTER DELETE ON students_exam
 FOR EACH ROW
-BEGIN
+BEGIN																#no lo he probado pero por lo que veo, creo si va a jalar
 DELETE FROM students_exam_answer WHERE fk_student_exam = OLD.id_Student_exam;
 END;$$
 
@@ -686,7 +706,7 @@ CREATE TRIGGER before_delete_students_exam_answer
 BEFORE DELETE ON Students_exam_answer
 FOR EACH ROW
 BEGIN
-    IF OLD.fk_student_exam > 0 THEN
+    IF OLD.fk_student_exam > 0 THEN											#wachale la logica bro
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Error: no se pudo eliminar ';
     END IF;
