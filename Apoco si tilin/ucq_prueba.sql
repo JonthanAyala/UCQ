@@ -28,7 +28,7 @@ insert into users values (0,'Cristian','Castañeda','Lopez','CTCB040719HMSLRMA3'
 #-----------------------tablas exams---------------------
 drop table exams;
 CREATE TABLE exams (
-    id_exam INT NOT NULL,
+    id_exam INT NOT NULL auto_increment,
     name_exam VARCHAR(254) NOT NULL,
     code VARCHAR(5) NOT NULL,
     start_time datetime NULL,
@@ -62,18 +62,18 @@ CREATE TABLE Students_exam (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
-insert into students_exam (start_date,end_date,fk_user,fk_exam)values('','',3,1);
+insert into students_exam (start_date,end_date,fk_user,fk_exam)values(sysdate(),'',3,1);
 select * from view_Students_exam;
 #-----------------------tablas questions---------------------
 drop table questions;
 CREATE TABLE Questions (
-  id_Question INT(5) NOT NULL,
+  id_Question INT(5) NOT NULL auto_increment,
   url_image VARCHAR(254) NULL,
   type_question INT(1) NOT NULL,
   description VARCHAR(254) NOT NULL,
   points INT(2) NOT NULL,
   PRIMARY KEY (id_Question)
-  );
+);
 insert into questions values(1,'http/sf',1,'¿que es java?',20);
 insert into questions values(2,'http/sfg',2,'¿que es deadlock?',40);
 insert into questions values(3,'http/sfq',1,'¿que es SQL?',40);
@@ -82,7 +82,7 @@ select * from view_exam_questions;
   #-----------------------tablas questions_answer---------------------
   drop table questions_answer;
 CREATE TABLE Questions_answer (
-  id_Question_answer INT NOT NULL,
+  id_Question_answer INT NOT NULL auto_increment,
   answer VARCHAR(254) NOT NULL,
   if_answer TINYINT NOT NULL,
   fk_question INT(5) NOT NULL,
@@ -97,7 +97,7 @@ select * from questions_answer;
 #-----------------------tablas Students_exam_answer---------------------
 drop table Students_exam_answer;
 CREATE TABLE Students_exam_answer (
-  id_Student_exam_answer INT NOT NULL,
+  id_Student_exam_answer INT NOT NULL auto_increment,
   fk_student_exam INT NOT NULL,
   answer VARCHAR(254) NOT NULL,
   fk_answer INT(5) NOT NULL,
@@ -284,7 +284,7 @@ BEFORE DELETE ON Users
 FOR EACH ROW
 BEGIN
     DECLARE type_u INT(1);
-    SELECT type_user INTO type_u FROM users WHERE id_user = old.id_user;				#REVISAAAAAAAAAAAR logica
+    SELECT type_user INTO type_u FROM users WHERE id_user = old.id_user;                #Ya quedo
     IF type_u > 3 THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Usuario no existe';
@@ -392,12 +392,12 @@ AFTER INSERT ON exams
 FOR EACH ROW
 BEGIN
 DECLARE exams_count INT;
-	SELECT COUNT(*) INTO exams_count
-	FROM exams
-	WHERE id_exam = NEW.id_exam;									#creo que ya pero aún así no va a dejar insertar otro examen
-	IF exams_count = 0 THEN
-		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El registro del examen fracaso.';
-	END IF;
+    SELECT COUNT(*) INTO exams_count                                               #ya quedo
+    FROM exams
+    WHERE id_exam = NEW.id_exam;
+    IF exams_count > 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El registro del examen fracasó.';
+    END IF;
 END;$$
 insert into exams values(1,'BD','XQC210','2020-07-04','2020-07-05',2);
 select * from exams;
@@ -426,17 +426,17 @@ CREATE TRIGGER validate_id_exam
 BEFORE DELETE ON exams
 FOR EACH ROW
 BEGIN
+																							#Ya quedo
     DECLARE exam_count INT;
-    SET exam_count = (SELECT COUNT(*) FROM exams WHERE id_exam = OLD.id_exam);			#revisar logica, pero creo ya
-    IF exam_count = 0 THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Error: El ID del examen no existe.';
+    SELECT COUNT(*) INTO exam_count FROM exams WHERE id_exam = OLD.id_exam;
+    IF exam_count > 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: El ID del examen no existe.';
     END IF;
 END$$
 insert into exams values(2,'BD','XQg210','2020-07-04','2020-07-05',2);
 select * from exams;
 delete from exams where id_exam=3;
-
+user 
 #--------------------disparador AFTER delete exams-------------------------
 /*En este trigger funciona para que despues de eliminar el examen, también elimine la relacion que 
 tenga en la tabla de intersección llamada exam_questions.*/
@@ -491,33 +491,37 @@ CREATE TRIGGER trigger_inserted_student_exam
 AFTER INSERT
 ON Students_exam FOR EACH ROW
 BEGIN
-    declare type_u int(1);
-    select type_user into type_u from users where id_user=fk_user;							#es el mismo de arriba tons yo creo ya quedo
-    if type_u!=3 then
-    SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'No es un estudiante el tipo de usuario.';
-    end if;
+																							#ya quedo
+    DECLARE type_u INT(1);
+    SELECT type_user INTO type_u FROM users WHERE id_user = NEW.fk_user;
+    IF type_u != 3 AND type_u >3 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No es un estudiante el tipo de usuario.';
+    END IF;
 END$$
-insert into students_exam (id_student_exam,start_date,end_date,fk_user,fk_exam)values(2,'','',3,1);
+insert into students_exam (id_student_exam,start_date,end_date,fk_user,fk_exam)values(3,sysdate(),'',3,1);
 select * from students_exam;
+select * from users;
 delete from students_exam where id_student_exam=2;
 #-----------------------disparador before delete Students_exam--------------------
-drop trigger validate_student_exam;
+/*La función de este trigger es de que antes de eliminar a algun id del estudiante, verifica 
+si esta haciendo un examen. En caso de que aún no termine su examen, no podra eliminarlo y 
+mandara un mensaje de error.*/
+drop trigger validate_time_exam;
 delimiter $$
-CREATE TRIGGER validate_student_exam
+CREATE TRIGGER validate_time_exam
 before delete
 ON Students_exam FOR EACH ROW
 BEGIN
-	IF NOT EXISTS (SELECT * FROM Students_exam WHERE fk_user = 3) THEN				#creo ya quedo pero checa logica plis
+	IF old.end_date = '0000-00-00 00:00:00' THEN
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Error: El ID del estudiante no existe.';
+		SET MESSAGE_TEXT = 'el estudiante aun tiene un examen en progreso';
     END IF;
 END;$$
+insert into students_exam (start_date,end_date,fk_user,fk_exam)values(sysdate(),'',3,1);					#YA QUEDO
 insert into students_exam (start_date,end_date,fk_user,fk_exam)values(sysdate(),'',3,1);
-select * from view_Students_exam;
-select * from students_exam;
+select * from Students_exam;
 DELETE FROM students_exam WHERE id_student_exam = 5;
-
+use ucq_chido;
 #-------------------disparador after delete Students_exam----------------------
 /*El trigger se encarga de eliminar la relación existente entre un estudiante y un examen, así 
 como las respuestas proporcionadas por el estudiante a una pregunta particular.*/
@@ -544,23 +548,27 @@ FOR EACH ROW
 BEGIN
   SET NEW.end_date = NOW();
 END $$
-update Students_exam set score=100 where id_student_exam=1;
+update Students_exam set score=100 where id_student_exam=5;
 select * from students_exam;
 #--------------disparador before insert questions----------------
+drop trigger count_points;
 delimiter $$
-CREATE TRIGGER count_points_trigger
+CREATE TRIGGER count_points
 BEFORE INSERT ON questions
 FOR EACH ROW
 BEGIN
 	DECLARE total_points INT;
-	-- Calcular la suma de los puntos de todas las preguntas			#segun ya
+	-- Calcular la suma de los puntos de todas las preguntas			#ya quedo
 	SELECT SUM(points) INTO total_points FROM questions;
 	-- Verificar si la suma total excede los 100 puntos
-	IF total_points >= 100 THEN
+	IF total_points > 100 THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La suma de puntos excede los 100';
 	END IF;
 END;$$
-
+delete from questions where id_question=3;
+insert into questions values(5,'http',2,'QUIEN ES el pepe?',1);
+select * from questions;
+use ucq_chido;
 #--------------------disparador after insert questions---------------------------
 delimiter $$
 CREATE TRIGGER validate_type_question_trigger
@@ -584,7 +592,7 @@ CREATE TRIGGER validate_type_question
 BEFORE UPDATE ON questions
 FOR EACH ROW
 BEGIN
-    -- Verificar si el nuevo valor de type_question es igual al valor existente						#ya quedo pero checale a mi explicación xd
+    -- Verificar si el nuevo valor de type_question es igual al valor existente						#ya quedo 
     IF NEW.type_question = OLD.type_question THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se permite actualizar con el mismo valor de type_question';
     END IF;
@@ -600,7 +608,7 @@ FOR EACH ROW
 BEGIN
 IF NEW.id_Question <> OLD.id_Question THEN
         -- Actualizar la clave foránea en la tabla Questions_answer
-        UPDATE Questions_answer SET fk_question = NEW.id_Question WHERE fk_question = OLD.id_Question;		#no lo he probado, wachale la logica
+        UPDATE Questions_answer SET fk_question = NEW.id_Question WHERE fk_question = OLD.id_Question;		#ya quedo
         
         -- Actualizar la clave foránea en la tabla Students_exam_answer
         UPDATE Students_exam_answer SET fk_question = NEW.id_Question WHERE fk_question = OLD.id_Question;
@@ -680,23 +688,20 @@ CREATE TRIGGER after_insert_students_exam_answer
 AFTER INSERT ON students_exam_answer
 FOR EACH ROW
 BEGIN
- DECLARE answer_count INT;
- SELECT COUNT(*) INTO answer_count											#no lo he probado, wachale la logica
- FROM students_exam_answer
- WHERE id_student_exam_answer = NEW.id_student_exam_answer;
- IF address_count = 0 THEN
- SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El registro de la dirección ha fallado.';
- END IF;
-
-
-
+																												#ya quedo
+    DECLARE type_u INT(1);
+    SELECT type_user INTO type_u FROM users WHERE id_user = NEW.fk_user;
+    IF type_u != 3 AND type_u >3 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No es un estudiante el tipo de usuario.';
+    END IF;
+END$$
 -- BEFORE DELETE Students_exam_answer
 DELIMITER $$
 CREATE TRIGGER trigger_after_delete_students_exam_answer
 AFTER DELETE ON students_exam
 FOR EACH ROW
-BEGIN																#no lo he probado pero por lo que veo, creo si va a jalar
-DELETE FROM students_exam_answer WHERE fk_student_exam = OLD.id_Student_exam;
+BEGIN																
+	DELETE FROM students_exam_answer WHERE fk_student_exam = OLD.id_Student_exam;		#ya quedo
 END;$$
 
 
@@ -705,10 +710,9 @@ DELIMITER $$
 CREATE TRIGGER before_delete_students_exam_answer
 BEFORE DELETE ON Students_exam_answer
 FOR EACH ROW
-BEGIN
-    IF OLD.fk_student_exam > 0 THEN											#wachale la logica bro
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Error: no se pudo eliminar ';
+BEGIN																						#ya quedo
+    IF OLD.fk_student_exam >0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: no se pudo eliminar.';
     END IF;
 END;
 $$
