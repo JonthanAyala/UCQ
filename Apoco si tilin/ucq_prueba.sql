@@ -152,7 +152,7 @@ select * from exams
 group by id_exam
 order by  start_time asc;
 select * from view_exams;
-
+use ucq_chido;
 /*----------------vista de estudiantes tienen examen--------------------*/
 create view view_Students_exam as select Students_exam.id_Student_exam , Users.type_user ,Users.name , Users.lastname, 
 Users.surname, Users.enrollment , Users.mail , exams.id_exam , exams.name_exam , Students_exam.score , 
@@ -165,16 +165,16 @@ order by users.name asc;
 select * from view_Students_exam;
 
 /*----------------vista preguntas respuesta-----------------------------------*/
-drop table view_questions_answer;
-create view view_questions_answer as 
-select questions_answer.id_Question_answer, students_exam_answer.fk_student_exam,
-questions.type_question, questions.description, questions.points,
-students_exam_answer.answer, questions_answer.answer, questions_answer.if_answer from questions_answer 				
-join students_exam_answer on questions_answer.id_Question_answer = students_exam_answer.fk_answer
-join questions on questions_answer.fk_question= questions.id_Question
-group by questions.type_question
-order by questions.points asc;
-select * from view_questions_answer;
+drop view view_questions_answer;
+CREATE VIEW view_questions_answer AS
+SELECT questions_answer.id_Question_answer,students_exam_answer.fk_student_exam,
+  questions.type_question, questions.description, questions.points, 
+  questions_answer.answer,questions_answer.if_answer
+FROM questions_answer
+  JOIN students_exam_answer ON questions_answer.id_Question_answer = students_exam_answer.fk_answer
+  JOIN questions ON questions_answer.fk_question = questions.id_Question
+GROUP BY questions.type_question
+ORDER BY questions.points ASC;
 
 /*---------------vista estudiantes con sus respuestas-------------------------*/
 drop view view_students_exam_answer;
@@ -508,7 +508,7 @@ si esta haciendo un examen. En caso de que aún no termine su examen, no podra e
 mandara un mensaje de error.*/
 drop trigger validate_time_exam;
 delimiter $$
-CREATE TRIGGER validate_time_exam
+CREATE TRIGGER validated_time_exam
 before delete
 ON Students_exam FOR EACH ROW
 BEGIN
@@ -540,9 +540,9 @@ select * from students_exam_answer;
 
 #--------------Disparador before update students_exam---------------
 /*Este trigger sirve para cuando se actualize la calificacion, ponga la fecha y hora en la que termino el examen el estudiante*/
-drop trigger end_exam;
+drop trigger calification_exam;
 DELIMITER $$
-CREATE TRIGGER end_exam
+CREATE TRIGGER calification_exam
 before UPDATE ON Students_exam											#YA QUEDO
 FOR EACH ROW
 BEGIN
@@ -688,11 +688,12 @@ CREATE TRIGGER after_insert_students_exam_answer
 AFTER INSERT ON students_exam_answer
 FOR EACH ROW
 BEGIN
-																												#ya quedo
-    DECLARE type_u INT(1);
-    SELECT type_user INTO type_u FROM users WHERE id_user = NEW.fk_user;
-    IF type_u != 3 AND type_u >3 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No es un estudiante el tipo de usuario.';
+    DECLARE answer_count INT;
+    SELECT COUNT(*) INTO answer_count																								#este we
+    FROM students_exam_answer
+    WHERE id_student_exam_answer = NEW.id_student_exam_answer;
+    IF answer_count > 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El registro de la respuesta ha fallado.';
     END IF;
 END$$
 -- BEFORE DELETE Students_exam_answer
@@ -706,6 +707,7 @@ END;$$
 
 
 -- AFTER DELETE Students_exam_answer
+drop trigger before_delete_students_exam_answer;
 DELIMITER $$
 CREATE TRIGGER before_delete_students_exam_answer
 BEFORE DELETE ON Students_exam_answer
@@ -998,7 +1000,7 @@ DELIMITER ;
 drop procedure eliminar_examen;
 select * from exams;
  call eliminar_examen(4);
- 
+ use ucq_chido;
  
 DELIMITER $$
 CREATE PROCEDURE consultar_examenes(
