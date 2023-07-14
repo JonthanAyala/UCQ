@@ -683,13 +683,14 @@ select * from questions_answer;
 insert into questions_answer values(1,'si',1,2);
 
 # ------------------after insert Students_exam_answer
+
 DELIMITER $$
 CREATE TRIGGER after_insert_students_exam_answer
 AFTER INSERT ON students_exam_answer
 FOR EACH ROW
 BEGIN
     DECLARE answer_count INT;
-    SELECT COUNT(*) INTO answer_count																								#este we
+    SELECT COUNT(*) INTO answer_count									#este ya no wey
     FROM students_exam_answer
     WHERE id_student_exam_answer = NEW.id_student_exam_answer;
     IF answer_count > 1 THEN
