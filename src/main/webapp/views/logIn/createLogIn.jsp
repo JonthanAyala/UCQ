@@ -48,18 +48,19 @@
 
                         <tbody>
                         <tr>
-                            <form action="login" method="post">
+                            <form action="/user/login-view" class="needs-validation" novalidate method="post">
 
                                 <tr style="background-color: white;">
                                     <th style="border: 2px solid #374b43;">
                                         <div class="form-outline ">
-                                            <input id="user" name="user/user" type="text" class="form-control" style="background-color: #D9D9D9;" required/>
-                                            <label class="form-label"> Usuario </label>
+                                            <input id="user" name="user" type="text" class="form-control" style="background-color: #D9D9D9;" required/>
+                                            <label for="user" class="form-label"> Correo </label>
                                         </div>
+
 
                                         <div class="form-outline">
                                             <input id="passwordUser" name="passwordUser" type="password" class="form-control" style="background-color: #D9D9D9;" required/>
-                                            <label class="form-label"> Contraseña </label>
+                                            <label for="passwordUser" class="form-label"> Contraseña </label>
                                         </div>
 
                                     </th>

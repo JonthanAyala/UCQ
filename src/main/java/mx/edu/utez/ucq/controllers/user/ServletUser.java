@@ -86,6 +86,22 @@ public class ServletUser extends HttpServlet {
                 req.setAttribute("users", users2);
                 redirect = "/views/user/index.jsp";
                 break;
+                //prueba de inicio de sesion
+            /*case "user/login-view":
+                mail = req.getParameter("mail");
+                password = req.getParameter("passwordUser");
+                User user4 = new DaoUser().findOne(mail != null ? Long.parseLong(mail) :0);
+                if(user4 != null){
+                    req.setAttribute("type_user",type_user);
+                    if (type_user = 2){
+
+                    }
+                    redirect = "/views/login";
+                }else {
+                    redirect = "/user/users?result" + false +
+                            "&messages" + URLEncoder.encode("", StandardCharsets.UTF_8);
+                }
+                break;*/
             default:
                 System.out.println(action);
         }
