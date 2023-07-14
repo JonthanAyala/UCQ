@@ -106,7 +106,7 @@
     </div>
 </div>
 
-<div class="container mt-5 mb-5" style="background-color: white">
+<div class="container mt-5 mb-5">
     <div class=" container mt-5 mb-5 d-grid" style="text-align: center">
         <button type="submit" class="btn btn-success">Guardar</button>
     </div>

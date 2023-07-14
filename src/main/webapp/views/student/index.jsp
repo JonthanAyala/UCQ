@@ -14,21 +14,51 @@
 </head>
 <body style="background-color: #D8EAE3;">
 
-<nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
-  <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
-    <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
-      <h3 class="text-center">Ultimate Custom Quiz</h3>
-    </a>
-    <a class="navbar-brand position-absolute top-0 end-0">
-      <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
-    </a>
-    <br><br>
+<style>
+
+  .navbar.bg-body-tertiary{
+    background-color: #002F5D !important;
+
+
+  }
+</style>
+
+<nav class="navbar bg-body-tertiary fixed-top mb-5">
+  <div class="container d-flex align-content-between">
+    <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
+      <a class="navbar-brand position-absolute top-50 start-50 translate-middle"
+         style="color: white;"> <h3> Ultimate Custom Quiz </h3></a>
+    </div>
+    <div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
+              aria-label="Toggle navigation" style="border-color: white">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-color: #002F5D">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel" style="color: white;">ULTIMATE CUSTOME QUIZ</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#" style="color: white;"> Perfil </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" style="color: white">Cerrar sesion </a>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
+  <br>
+  <br>
 </nav>
 
 
-
-<div class="container-fluid w-25 p-3  ">
+<div class="container-fluid w-25 p-3 mt-5">
   <div class="row">
     <div class="col">
       <div class="card mt-5 ">

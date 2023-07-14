@@ -33,7 +33,10 @@ import java.util.List;
             // fin de pruebas de url
         "/user/teacher",
         "/user/pruebas",
-            "/user/apoco"
+            "/user/apoco",
+            "/user/index-teacher",//menú principal maestros
+            "/user/mark-exam"
+
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 
@@ -59,6 +62,12 @@ public class ServletUser extends HttpServlet {
                 break;
             case "/user/view-view-teacher":
                 redirect="/views/admin/create-teacher.jsp";
+                break;
+            case "/user/index-teacher":
+                redirect="/views/teacher/index.jsp";
+                break;
+            case "/user/mark-exam":
+                redirect="/views/teacher/markExam.jsp";
                 break;
             case "/user/user-view-update":
                 id= req.getParameter("id");
