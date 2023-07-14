@@ -80,7 +80,7 @@
 
 </div>
 
-<div class="container mt-5 w-75 p-3" style="background-color: white">
+<div class="container mt-5 w-50 p-3" style="background-color: white">
 
     <div id="questions-container">
 
@@ -119,8 +119,13 @@
     function addQuestionClose() {
         var questionContainer = document.getElementById("questions-container");
 
+        let idCard = 1;
+
         var card = document.createElement("div");
         card.className = "card mt-3 card-color";
+        card.setAttribute = ("id", idCard);
+
+
 
         var cardHeader = document.createElement("div");
         cardHeader.className = "card-header card-header-color";
@@ -220,7 +225,7 @@
         });
 
         divButtons.appendChild(addButton);
-        cardBody.appendChild(divButtons);
+        answerContainer.appendChild(divButtons);
         divRemoveQuestion.appendChild(removeQuestion);
 
         divButtons.appendChild(divRemoveQuestion);
@@ -231,6 +236,10 @@
 
         questionContainer.appendChild(card);
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        if (removeQuestion.addEventListener("click"))
+
+        idCard ++;
     }
 
 
