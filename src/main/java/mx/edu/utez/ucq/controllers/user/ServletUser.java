@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import mx.edu.utez.ucq.models.user.DaoUser;
 import mx.edu.utez.ucq.models.user.User;
 
@@ -12,7 +13,9 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
     @WebServlet(name = "users",urlPatterns = {
@@ -40,7 +43,7 @@ import java.util.List;
 public class ServletUser extends HttpServlet {
     private String action;
     private String redirect = "/user/users";
-
+    HttpSession session;
     private  String id, name, surname, curp,status, type_user, mail, enrollment, password;
     private User user;
 
@@ -74,9 +77,9 @@ public class ServletUser extends HttpServlet {
             case "/user/student":
                 redirect = "/views/student/index.jsp";
                 break;
-            case "/user/login":
+            /*case "/user/login":
                 redirect="/views/logIn/createLogIn.jsp";
-                break;
+                break;*/
         ///FIn de PRuebas de vistas
             case "/user/teacher":
                 redirect = "/views/teacher/exam.jsp";
@@ -120,6 +123,32 @@ public class ServletUser extends HttpServlet {
             }
       }*/
         switch (action){
+            case "/user/login":
+                enrollment = req.getParameter("enrollment");
+                password = req.getParameter("password");
+                try {
+                    user = new DaoUser()
+                            .loadUserByUsernameAndPassword(enrollment, password);
+                    if (user != null) {
+                        session = req.getSession();
+                        session.setAttribute("user", user);
+                        switch (Math.toIntExact(user.getType_user())) {
+                            case 1:
+                                redirect = "/user/admin";
+                                break;
+                            case 2:
+                                redirect = "/user/student";
+                                break;
+                        }
+                    } else {
+                        throw new Exception("Credentials mismatch");
+                    }
+                } catch (Exception e) {
+                    redirect = "/api/auth?result=false&message=" + URLEncoder
+                            .encode("Usuario y/o contraseña incorrecta",
+                                    StandardCharsets.UTF_8);
+                }
+                break;
             case "/user/update":
                 id = req.getParameter("id");
                 name = req.getParameter("name");

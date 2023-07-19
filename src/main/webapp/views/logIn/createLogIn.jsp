@@ -48,7 +48,7 @@
 
                         <tbody>
                         <tr>
-                            <form action="/user/login-view" class="needs-validation" novalidate method="post">
+                            <form action="/user/login" class="needs-validation" novalidate method="post">
 
                                 <tr style="background-color: white;">
                                     <th style="border: 2px solid #374b43;">
