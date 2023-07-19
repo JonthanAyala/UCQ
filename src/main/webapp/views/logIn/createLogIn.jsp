@@ -26,7 +26,7 @@
 
 </style>
 
-<body style="background-color: #D8EAE3;">
+<body style="background-color: #D8EAE3;overflow: hidden">
 
 
 <div class="centrado mt-5">
@@ -62,38 +62,47 @@
 
             <div class="card-body">
 
-                <form action="login" method="post">
+                <form  class="needs-validation" id="loginForm" action="user/login" novalidate method="post">
 
                     <tr style="background-color: white;">
                         <th style="border: 2px solid #374b43;">
                             <div class="form-outline ">
-                                <input name="user/user" type="text" class="form-control" style="background-color: #D9D9D9;" required/>
+                                <input  id="user" name="user" type="text" class="form-control" style="background-color: #D9D9D9;" required/>
                                 <label class="form-label"> Usuario </label>
                             </div>
 
                             <div class="form-outline">
-                                <input name="passwordUser" type="password" class="form-control" style="background-color: #D9D9D9;" required/>
+                                <input id="password" name="password"  maxlength="8" type="password" class="form-control" style="background-color: #D9D9D9;" required/>
                                 <label class="form-label"> Contraseña </label>
                             </div>
 
                         </th>
 
                     </tr>
-                </form>
 
-                <h6 style="color: #002F5D" href=""> ¿olvidaste tu contraseña? </h6>
-                <div class="card-footer">
+                    <h6 style="color: #002F5D" href=""> ¿olvidaste tu contraseña? </h6>
+                    <div class="card-footer">
+                        <div class="d-grid ">
+                            <button id="login" type="submit" class="btn btn-primary btn-block " value="login" style="background-color: #00AA83 !important;">
+                                <i data-feather="log-in"></i> Iniciar sesion
+                            </button>
 
-                    <div class="d-grid ">
-
-                        <button type="submit" class="btn btn-primary btn-block " value="login" style="background-color: #00AA83 !important;">
-                            <h6 class="mt-2 mb-2"> Iniciar sesion </h6>
-                        </button>
-
+                        </div>
                     </div>
 
-                </div>
+                </form>
             </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div class="position-relative">
+    <div class="container">
+        <div class="position-absolute top-100 start-100 translate-middle"
+        style="bottom: 90%">
+            <div class="circulo"></div>
         </div>
     </div>
 </div>
@@ -101,6 +110,37 @@
 
 
 <jsp:include page="../../layouts/footer.jsp"/>
+
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        feather.replace();
+        const form = document.getElementById("loginForm");
+        const btn = document.getElementById("login");
+        form.addEventListener('submit', event => {
+            btn.innerHTML = `<div class="d-flex justify-content-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>`;
+            btn.classList.add("disabled");
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                btn.classList.remove("disabled");
+                btn.innerHTML = `<i data-feather="log-in"></i> Iniciar sesion`;
+            }
+            form.classList.add('was-validated');
+        }, false);
+        if (!${param['result'] != null ? param['result']: true}) {
+            Swal.fire({
+                title: 'Acceso denegado',
+                text: '${param['message']}',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+        }
+    }, false);
+</script>
 
 </body>
 </html>
