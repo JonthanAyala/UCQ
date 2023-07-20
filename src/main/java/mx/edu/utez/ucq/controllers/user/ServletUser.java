@@ -35,7 +35,8 @@ import java.util.List;
         "/user/pruebas",
             "/user/apoco",
             "/user/index-teacher",//menú principal maestros
-            "/user/mark-exam"
+            "/user/mark-exam",
+            "/user/profile"
 
 }) // Endpoints --> Acceso para el CRUD usuarios
 
@@ -94,6 +95,9 @@ public class ServletUser extends HttpServlet {
                 List<User> users2 = new DaoUser().findAll();
                 req.setAttribute("users", users2);
                 redirect = "/views/user/index.jsp";
+                break;
+            case  "/user/profile":
+                redirect = "/views/teacher/profileTeacher.jsp";
                 break;
             default:
                 System.out.println(action);

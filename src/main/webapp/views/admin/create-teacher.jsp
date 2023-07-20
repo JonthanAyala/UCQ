@@ -33,15 +33,16 @@
         <div class="card-body">
           <form id="user-form" class="needs-validation" novalidate action="/user/save" method="post">
             <div class="form-group mb-3">
+
               <div class="row">
                 <div class="col">
                   <label for="name" class="fw-bold">Nombre:</label>
-                  <input type="text" name="name" id="name" class="form-control" required/>
+                  <input type="text" name="name" id="name" class="form-control" required>
                   <div class="invalid-feedback">Campo obligatorio</div>
                 </div>
                 <div class="col">
                   <label for="surnames" class="fw-bold">Apellidos:</label>
-                  <input type="text" name="surnames" id="surnames" class="form-control" required/>
+                  <input type="text" name="surnames" id="surnames" class="form-control" required>
                   <div class="invalid-feedback">Campo obligatorio</div>
                 </div>
                 <div class="col">
@@ -51,6 +52,7 @@
                 </div>
               </div>
             </div>
+
             <div class="form-group mb-3">
               <div class="row">
                 <div class="col">
@@ -65,7 +67,7 @@
                 </div>
 
                 <div class="col">
-                  <label for="status" class="fw-bold">Status:</label>
+                  <label class="fw-bold">Status:</label>
                   <div class="dropdown">
                     <button class="btn btn-success btn-white dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Seleccionar

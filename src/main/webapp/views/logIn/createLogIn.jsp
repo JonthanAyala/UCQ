@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="s" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
 <head>
@@ -62,18 +63,24 @@
 
             <div class="card-body">
 
-                <form  class="needs-validation" id="loginForm" action="user/login" novalidate method="post">
+                <form  class="needs-validation" id="loginForm" action="/user/login" novalidate method="post">
 
                     <tr style="background-color: white;">
                         <th style="border: 2px solid #374b43;">
                             <div class="form-outline ">
-                                <input  id="user" name="user" type="text" class="form-control" style="background-color: #D9D9D9;" required/>
-                                <label class="form-label"> Usuario </label>
+                                <input  id="user" name="user" type="text" class="form-control" style="background-color: #D9D9D9;" required>
+                                <label class="form-label" for="user"> Usuario </label>
+                                <div class="invalid-feedback text-start">
+                                    Campo obligatorio
+                                </div>
                             </div>
 
                             <div class="form-outline">
-                                <input id="password" name="password"  maxlength="8" type="password" class="form-control" style="background-color: #D9D9D9;" required/>
-                                <label class="form-label"> Contraseña </label>
+                                <input id="password" name="password"  maxlength="8" type="password" class="form-control" style="background-color: #D9D9D9;" required>
+                                <label class="form-label" for="password"> Contraseña </label>
+                                <div class="invalid-feedback text-start">
+                                    Campo obligatorio
+                                </div>
                             </div>
 
                         </th>

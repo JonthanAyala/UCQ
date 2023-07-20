@@ -51,7 +51,7 @@
 
 </style>
 
-<body style="background-color: #D8EAE3";>
+<body style="background-color: #D8EAE3">
 
 <div class="overflow-hidden fixed-top">
 
