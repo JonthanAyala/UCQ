@@ -96,6 +96,9 @@ public class ServletUser extends HttpServlet {
             case  "/user/profile":
                 redirect = "/views/teacher/profileTeacher.jsp";
                 break;
+            case "user/view-exam":
+                redirect = "/views/student/view-exam";
+                break;
             default:
                 System.out.println(action);
 

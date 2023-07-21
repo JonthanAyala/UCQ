@@ -20,6 +20,7 @@
         Inicio de sesíon
       </button>
       <ul class="dropdown-menu text-center" >
+        <li class="list-group-item"><a href="user/view-exam">Examen-Estudiantes</a></li>
         <li class="list-group-item"><a href="user/view-login">Login</a></li>
       </ul>
     </div>
