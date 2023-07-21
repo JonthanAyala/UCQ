@@ -34,6 +34,10 @@ import java.util.Objects;
             "/user/login",
             "/user/view-login",
             "/user/users"
+              //Nuevas Bojita
+            "/user/index-teacher",//menú principal maestros
+            "/user/mark-exam",
+            "/user/profile"
 })
 
 
@@ -82,6 +86,19 @@ public class ServletUser extends HttpServlet {
             case "/user/view-login":
                 redirect="/views/logIn/createLogIn.jsp";
                 break;
+            //AXEL-VIEWS
+            case "/user/index-teacher":
+                redirect="/views/teacher/index.jsp";
+                break;
+            case "/user/mark-exam":
+                redirect="/views/teacher/markExam.jsp";
+                break;
+            case  "/user/profile":
+                redirect = "/views/teacher/profileTeacher.jsp";
+                break;
+            default:
+                System.out.println(action);
+
         }
         req.getRequestDispatcher(redirect).forward(req, resp);
     }

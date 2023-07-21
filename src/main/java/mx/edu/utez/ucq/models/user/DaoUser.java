@@ -1,5 +1,6 @@
 package mx.edu.utez.ucq.models.user;
 
+import com.mysql.cj.MysqlConnection;
 import mx.edu.utez.ucq.models.crud.DaoRepository;
 import mx.edu.utez.ucq.utils.MySQLConnection;
 

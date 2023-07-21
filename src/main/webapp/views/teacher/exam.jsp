@@ -19,7 +19,7 @@
     }
 
     .placeholder-name-exam {
-        color: black;
+        color: #D8EAE3;
         font-size: 1.5em;
     }
 
@@ -42,12 +42,19 @@
         overflow-wrap: break-word;
     }
 
+    .containerExam {
+
+        margin-top: 3cm !important;
+    }
+
+
 
 </style>
 
 <body style="background-color: #D8EAE3">
 
-<div>
+<div class="overflow-hidden fixed-top">
+
     <nav class="navbar navbar-color">
 
         <div class="container">
@@ -77,50 +84,61 @@
             </button>
         </div>
     </nav>
-
 </div>
 
-<div class="container mt-5 w-75 p-3" style="background-color: white">
 
-    <div id="questions-container">
+<div class="d-flex">
+    <div class="container col-xl-4 vh-100 m-0 sticky-top"
+         style="text-align: left; background-color: #00AA83;">
 
-    </div>
+        <br>
+        <br>
 
-    <div class="container mt-5" style="background-color: white">
-        <div class="row">
-            <div class="col mb-5">
-                <form action="/path/to/save-exam.jsp" method="post">
-                    <div class="d-grid">
-                        <button type="button" class="btn mt-5" onclick="addQuestionClose()" style="background-color: #d9d9d9" >
-                            Agregar pregunta cerrada
-                            <img src="../../assets/img/icons8-add-48.png">
-                        </button>
-                        <button type="button" class="btn mt-5" onclick="addQuestionOpen()" style="background-color: #d9d9d9" >
-                            Agregar pregunta abierta
-                            <img src="../../assets/img/icons8-add2-48.png">
-                        </button>
-                    </div>
-                </form>
+        <form action="/path/to/save-exam.jsp" method="post">
+            <div class="d-grid">
+                <button type="button" class="btn mt-5" onclick="addQuestionClose()" style="background-color: #d9d9d9" >
+                    Agregar pregunta cerrada
+                    <img src="../../assets/img/icons8-add-48.png">
+                </button>
+                <button type="button" class="btn mt-5" onclick="addQuestionOpen()" style="background-color: #d9d9d9" >
+                    Agregar pregunta abierta
+                    <img src="../../assets/img/icons8-add2-48.png">
+                </button>
+            </div>
+        </form>
+
+        <div class="container mb-5">
+            <div class=" container mt-5 mb-5 d-grid" style="text-align: center">
+                <button type="submit" class="btn btn-success" disabled>Guardar</button>
             </div>
         </div>
     </div>
+
+
+    <div class="container mt-5 w-50 p-3 containerExam mb-5" style="background-color: white;">
+
+        <div id="questions-container" class="overflow-y-auto">
+
+        </div>
+    </div>
+
 </div>
 
-<div class="container mt-5 mb-5" style="background-color: white">
-    <div class=" container mt-5 mb-5 d-grid" style="text-align: center">
-        <button type="submit" class="btn btn-success">Guardar</button>
-    </div>
-</div>
+
 
 <jsp:include page="../../layouts/footer.jsp"/>
 <script>
-    
+
+    var generarId = 0;
 
     function addQuestionClose() {
         var questionContainer = document.getElementById("questions-container");
 
+        generarId++;
+
         var card = document.createElement("div");
         card.className = "card mt-3 card-color";
+        card.id = "card-" + generarId;
 
         var cardHeader = document.createElement("div");
         cardHeader.className = "card-header card-header-color";
@@ -138,7 +156,7 @@
         formGroupQuestion.className = "form-group";
 
         var scoreGroup = document.createElement("div");
-        scoreGroup.className ="form-group col-md-1 col-lg-1"
+        scoreGroup.className = "form-group col-md-1 col-lg-2";
 
         var scoreLabel = document.createElement("label");
         scoreLabel.setAttribute("for", "question-score");
@@ -149,21 +167,21 @@
         scoreInput.setAttribute("type", "number");
         scoreInput.setAttribute("value", 0);
         scoreInput.setAttribute("max", 10);
-        scoreInput.setAttribute("min", 0)
+        scoreInput.setAttribute("min", 0);
         scoreInput.setAttribute("id", "question-score");
         scoreInput.setAttribute("name", "question-score");
-        scoreInput.addEventListener('input',function(){
+        scoreInput.addEventListener("input", function () {
             if (this.value.length > 2)
-                this.value = this.value.slice(0,2);
-        })
-        scoreInput.addEventListener('input', function (){
+                this.value = this.value.slice(0, 2);
+        });
+        scoreInput.addEventListener("input", function () {
             if (this.value > 10)
                 this.value = 10;
-        })
-        scoreInput.addEventListener('input', function (){
+        });
+        scoreInput.addEventListener("input", function () {
             if (this.value < 0)
                 this.value = 0;
-        })
+        });
 
         scoreGroup.appendChild(scoreLabel);
         scoreGroup.appendChild(scoreInput);
@@ -184,7 +202,7 @@
         questionTextarea.style.overflow = "hidden";
         questionTextarea.addEventListener("input", resizeInput);
         questionTextarea.addEventListener("keyup", resizeInput);
-        function resizeInput(){
+        function resizeInput() {
             this.style.height = "auto";
             this.style.height = this.scrollHeight + "px";
         }
@@ -195,9 +213,6 @@
         var answerContainer = document.createElement("div");
         answerContainer.setAttribute("id", "answer-container");
 
-        cardBody.appendChild(formGroupQuestion);
-        cardBody.appendChild(answerContainer);
-
         var divButtons = document.createElement("div");
         divButtons.className = "form-group";
 
@@ -205,40 +220,47 @@
         addButton.className = "btn btn-primary mt-2";
         addButton.setAttribute("type", "button");
         addButton.innerHTML = "Agregar Respuesta";
-        addButton.addEventListener("click", addAnswerClose);
-
-        var divRemoveQuestion = document.createElement("div");
-        divRemoveQuestion.className="form-group";
-        divRemoveQuestion.style="text-align: right";
-
-        var removeQuestion= document.createElement("button");
-        removeQuestion.className= "btn btn-danger mt-2";
-        removeQuestion.setAttribute("type", "button");
-        removeQuestion.innerHTML = "Eliminar pregunta";
-        removeQuestion.addEventListener("click", function() {
-            questionContainer.removeChild(card);
+        addButton.addEventListener("click", function () {
+            addAnswerClose(card.id);
         });
 
-        divButtons.appendChild(addButton);
-        cardBody.appendChild(divButtons);
+        var divRemoveQuestion = document.createElement("div");
+        divRemoveQuestion.className = "form-group";
+        divRemoveQuestion.style = "text-align: right";
+
+        var removeQuestion = document.createElement("button");
+        removeQuestion.className = "btn btn-danger mt-2";
+        removeQuestion.setAttribute("type", "button");
+        removeQuestion.innerHTML = "Eliminar pregunta";
+        removeQuestion.addEventListener("click", function () {
+            deleteQuestionClose(card.id);
+        });
+
         divRemoveQuestion.appendChild(removeQuestion);
 
+        divButtons.appendChild(addButton);
+        divRemoveQuestion.appendChild(removeQuestion);
         divButtons.appendChild(divRemoveQuestion);
+
+        cardBody.appendChild(formGroupQuestion);
+        cardBody.appendChild(answerContainer);
+        cardBody.appendChild(divButtons);
 
         card.appendChild(cardHeader);
         card.appendChild(cardBody);
-
 
         questionContainer.appendChild(card);
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
 
-    function addAnswerClose() {
+    function addAnswerClose(cardId) {
         var answerContainer = document.getElementById("answer-container");
+        var card = document.getElementById(cardId);
 
         var answerGroup = document.createElement("div");
         answerGroup.className = "form-group align-items-center";
+        answerGroup.setAttribute("data-card-id", cardId);
 
         var divInputGroup = document.createElement("div");
         divInputGroup.className="input-group-text  mb-2 input-group-sm mt-2 col-6";
@@ -285,7 +307,7 @@
         removeButton.setAttribute("type", "button");
         removeButton.innerHTML = "Eliminar";
         removeButton.addEventListener("click", function() {
-            answerContainer.removeChild(answerGroup);
+            answerGroup.parentNode.removeChild(answerGroup)
         });
 
         divRemoveButton.appendChild(removeButton);
@@ -294,9 +316,33 @@
 
         answerGroup.appendChild(divRemoveButton)
 
-        answerContainer.appendChild(answerGroup);
+        card.querySelector("#answer-container").appendChild(answerGroup);
 
     }
+
+    function deleteQuestionClose(cardId) {
+        var card = document.getElementById(cardId);
+        var currentCardId = parseInt(cardId.split("-")[1]);
+
+        // Elimina la card del DOM
+        card.parentNode.removeChild(card);
+
+        // Actualiza los IDs de las cards siguientes
+        var cards = document.getElementsByClassName("card");
+        for (var i = currentCardId + 1; i <= cards.length; i++) {
+            var currentCard = cards[i - 1];
+            currentCard.id = "card-" + (i - 1);
+            currentCard.querySelector("button").removeEventListener("click", deleteQuestionClose);
+            currentCard.querySelector("button").addEventListener("click", function() {
+                deleteQuestionClose(currentCard.id);
+            });
+        }
+
+        // Disminuye el contador de IDs
+        cardId--;
+    }
+
+
     function addQuestionOpen() {
         var questionContainer = document.getElementById("questions-container");
 
