@@ -33,7 +33,7 @@ import java.util.Objects;
 
             "/user/login",
             "/user/view-login",
-            "/user/users"
+            "/user/users",
               //Nuevas Bojita
             "/user/index-teacher",//menú principal maestros
             "/user/mark-exam",
@@ -45,7 +45,7 @@ public class ServletUser extends HttpServlet {
     private String action;
     private String redirect = "/user/users";
     HttpSession session;
-    private  String id, name, surname, curp,status, type_user, mail, enrollment, password;
+    private  String id, name, surname, curp,status, type_user, mail, enrollment, password, loginCredential;
     private User user;
 
     @Override
@@ -110,11 +110,11 @@ public class ServletUser extends HttpServlet {
         action = req.getServletPath();
         switch (action){
             case "/user/login":
-                mail = req.getParameter("loginCredential");
+                loginCredential = req.getParameter("loginCredential");
                 password = req.getParameter("password");
                 try {
                     user = new DaoUser()
-                            .loadUserByUsernameAndPassword(mail, password);
+                            .loadUserByUsernameAndPassword(loginCredential, password);
                     if (user != null) {
                         session = req.getSession();
                         session.setAttribute("user", user);
@@ -123,6 +123,9 @@ public class ServletUser extends HttpServlet {
                                 redirect = "/user/admin";
                                 break;
                             case 2:
+                                redirect = "/user/index-teacher";
+                                break;
+                            case 3:
                                 redirect = "/user/student";
                                 break;
                             default:

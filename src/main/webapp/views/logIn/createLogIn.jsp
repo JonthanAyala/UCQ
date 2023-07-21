@@ -68,8 +68,8 @@
                     <tr style="background-color: white;">
                         <th style="border: 2px solid #374b43;">
                             <div class="form-outline ">
-                                <input  id="user" name="user" type="text" class="form-control" style="background-color: #D9D9D9;" required>
-                                <label class="form-label" for="user"> Usuario </label>
+                                <input  id="loginCredential" name="loginCredential" type="text" class="form-control" style="background-color: #D9D9D9;" required>
+                                <label class="form-label" for="loginCredential"> Usuario </label>
                                 <div class="invalid-feedback text-start">
                                     Campo obligatorio
                                 </div>
