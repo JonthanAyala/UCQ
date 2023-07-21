@@ -92,12 +92,12 @@ public class ServletUser extends HttpServlet {
         resp.setContentType("text/html");
         action = req.getServletPath();
         switch (action){
-            /*case "/user/login":
-                enrollment = req.getParameter("enrollment");
+            case "/user/login":
+                mail = req.getParameter("loginCredential");
                 password = req.getParameter("password");
                 try {
                     user = new DaoUser()
-                            .loadUserByUsernameAndPassword(enrollment, password);
+                            .loadUserByUsernameAndPassword(mail, password);
                     if (user != null) {
                         session = req.getSession();
                         session.setAttribute("user", user);
@@ -108,17 +108,22 @@ public class ServletUser extends HttpServlet {
                             case 2:
                                 redirect = "/user/student";
                                 break;
+                            default:
+                                redirect = "/user/view-login?result=false&message=" + URLEncoder
+                                        .encode("Usuario Afectado acude al administrador",
+                                                StandardCharsets.UTF_8);
+                                break;
                         }
                     } else {
                         throw new Exception("Credentials mismatch");
 
                     }
                 } catch (Exception e) {
-                    redirect = "/api/auth?result=false&message=" + URLEncoder
+                    redirect = "/user/view-login?result=false&message=" + URLEncoder
                             .encode("Usuario y/o contraseña incorrecta",
                                     StandardCharsets.UTF_8);
                 }
-                break;*/
+                break;
             case "/user/update":
                 id = req.getParameter("id");
                 name = req.getParameter("name");

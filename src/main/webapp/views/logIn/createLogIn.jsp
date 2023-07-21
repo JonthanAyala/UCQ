@@ -49,19 +49,19 @@
 
                         <tbody>
                         <tr>
-                            <form action="/user/login-start" class="needs-validation" novalidate method="post">
+                            <form id="loginForm" action="/user/login" class="needs-validation" novalidate method="post">
 
                                 <tr style="background-color: white;">
                                     <th style="border: 2px solid #374b43;">
                                         <div class="form-outline ">
-                                            <input id="user" name="user" type="text" class="form-control" style="background-color: #D9D9D9;" required/>
-                                            <label for="user" class="form-label"> Correo </label>
+                                            <input id="loginCredential" name="loginCredential" type="text" class="form-control" style="background-color: #D9D9D9;" required/>
+                                            <label for="loginCredential" class="form-label"> Correo </label>
                                         </div>
 
 
                                         <div class="form-outline">
-                                            <input id="passwordUser" name="passwordUser" type="password" class="form-control" style="background-color: #D9D9D9;" required/>
-                                            <label for="passwordUser" class="form-label"> Contraseña </label>
+                                            <input id="password" name="password" type="password" class="form-control" style="background-color: #D9D9D9;" required/>
+                                            <label for="password" class="form-label"> Contraseña </label>
                                         </div>
 
                                     </th>
@@ -75,7 +75,7 @@
 
                                         <div class="d-grid mt-3">
 
-                                            <button type="submit" class="btn btn-primary btn-block mb-3 " value="login"> log in </button>
+                                            <button type="submit" class="btn btn-primary btn-block mb-3 " id="login"> <i data-feather="log-in"></i>log in </button>
 
                                         </div>
 
