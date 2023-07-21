@@ -18,7 +18,32 @@ public class DaoUser implements DaoRepository<User>{
     private PreparedStatement pstm;
     private ResultSet rs;
 
-
+    public User loadUserByUsernameAndPassword(String loginCredential, String password) {
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "SELECT id_user, mail, type_user FROM users " +
+                    "WHERE mail = ? OR enrollment = ? AND password = ? AND status = 'Activo';";
+            pstm = conn.prepareStatement(query);
+            pstm.setString(1, loginCredential);
+            pstm.setString(2, loginCredential);
+            pstm.setString(3, password);
+            rs = pstm.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getLong("id_user"));
+                user.setEnrollment(rs.getString("mail"));
+                user.setType_user(rs.getLong("type_user"));
+                return user;
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(DaoUser.class.getName())
+                    .log(Level.SEVERE,
+                            "Credentials mismatch: " + e.getMessage());
+        } finally {
+            close();
+        }
+        return null;
+    }
 
     @Override
     public List<User> findAll() {

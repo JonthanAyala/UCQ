@@ -1,5 +1,6 @@
-<%@ taglib prefix="s" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <html>
 <head>
@@ -60,7 +61,6 @@
             <div class="card-header" style=" background-color:  #002F5D; text-align: center">
                 <h5 style="color: white"> Inicio de sesión </h5>
             </div>
-
             <div class="card-body">
 
                 <form  class="needs-validation" id="loginForm" action="/user/login" novalidate method="post">
@@ -94,9 +94,9 @@
                                 <i data-feather="log-in"></i> Iniciar sesion
                             </button>
 
+
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>

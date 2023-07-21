@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MySQLConnection {
-    final String DBNAME = "ucq_2",
+    final String DBNAME = "ucq_chido",
             USER = "root",
             PASSWORD = "root",
             TIMEZONE = "America/Mexico_City",
