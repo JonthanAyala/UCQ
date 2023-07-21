@@ -32,6 +32,7 @@ import java.util.Objects;
         "/user/student",//index student
 
         "/user/login",
+            "/user/view-exam", //Examen alumnos
         "/user/users",
             // fin de pruebas de url
         "/user/teacher",
@@ -88,6 +89,9 @@ public class ServletUser extends HttpServlet {
                 List<User> users2 = new DaoUser().findAll();
                 req.setAttribute("users", users2);
                 redirect = "/views/user/index.jsp";
+                break;
+            case "user/view-exam":
+                redirect = "/views/student/view-exam";
                 break;
                 //prueba de inicio de sesion
             /*case "user/login-view":

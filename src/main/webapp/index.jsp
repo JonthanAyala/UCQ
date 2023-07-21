@@ -24,6 +24,7 @@
         <li class="list-group-item"><a href="user/teacher">Examen</a></li>
         <li class="list-group-item"><a href="user/student">Alumnos</a></li>
         <li class="list-group-item"><a href="user/admin">Admin</a></li>
+        <li class="list-group-item"><a href="user/view-exam">Examen-Estudiantes</a></li>
       </ul>
     </div>
   </div>
