@@ -20,7 +20,7 @@
         Inicio de sesíon
       </button>
       <ul class="dropdown-menu text-center" >
-        <li class="list-group-item"><a href="user/login">Login</a></li>
+        <li class="list-group-item"><a href="user/login-view">Login</a></li>
         <li class="list-group-item"><a href="user/teacher">Examen</a></li>
         <li class="list-group-item"><a href="user/student">Alumnos</a></li>
         <li class="list-group-item"><a href="user/admin">Admin</a></li>
@@ -35,11 +35,11 @@
     <div class="col-6">UCQ<br>El objetivo de nuestro proyecto es el poder crear una aplicación web para la gestión y resolución de exámenes
       evitando el plagio mediante la selección aleatoria de preguntas de un banco preexistente
       <ul class="text-center" >
-        <li class="list-group-item"><a href="user/login">Login</a></li>
-        <li class="list-group-item"><a href="user/teacher">Examen</a></li>
+        <li class="list-group-item"><a href="user/view-login">Login</a></li>
+        <li class="list-group-item"><a href="teacher/view">Examen</a></li>
         <li class="list-group-item"><a href="user/student">Alumnos</a></li>
         <li class="list-group-item"><a href="user/admin">Admin</a></li>
-        <li class="list-group-item"><a href="user/apoco">Admin</a></li>
+        <li class="list-group-item"><a href="user/login-start">Pruebas</a></li>
       </ul>
     </div>
     <div class="col-4"><img src="/assets/img/examen.jpg" width="700" height="320" ></div>
@@ -55,8 +55,7 @@
 
       La pagina es muy exitosa. Es de las mejores que hay en la Universidad Tecnologica
       del Emiliano Zapata echo por el equipo: Terreneitor de la carrera de Desarrollo de
-      software Multiplataforma del grupo 3°C pasen CP por favor        </section>
-
+      software Multiplataforma del grupo 3°C         </section>
   </div>
   <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
     © 2023  Ultimate Custom Quiz :

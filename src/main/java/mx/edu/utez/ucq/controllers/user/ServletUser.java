@@ -19,25 +19,22 @@ import java.util.Objects;
 
 
     @WebServlet(name = "users",urlPatterns = {
-        "/user/admin",//admin index
-        "/user/user",//
-        "/user/user-view",//crear alumnos
-        "/user/save",//guardar alumnos
-        "/user/user-view-update", //actualizar alumnos
-        "/user/update",// guardar actualizar alumnos
-        "/user/delete",//borrar
-            //Profesores
-        "/user/view-view-teacher", //crear profesores
-            //Students
-        "/user/student",//index student
+            "/user/admin",			//admin index
+            "/user/user",			//
+            "/user/user-view",		//crear alumnos
+            "/user/save",			//guardar alumnos
+            "/user/user-view-update", 	//actualizar alumnos
+            "/user/update",			// guardar actualizar alumnos
+            "/user/delete",			//borrar
 
-        "/user/login",
-        "/user/users",
-            // fin de pruebas de url
-        "/user/teacher",
-        "/user/pruebas",
-            "/user/apoco"
-}) // Endpoints --> Acceso para el CRUD usuarios
+            "/user/view-view-teacher", 	//crear profesores
+
+            "/user/student",//index student
+
+            "/user/login",
+            "/user/view-login",
+            "/user/users"
+})
 
 
 public class ServletUser extends HttpServlet {
@@ -57,12 +54,15 @@ public class ServletUser extends HttpServlet {
                 req.setAttribute("users", users);
                 redirect = "/views/admin/index.jsp";
                 break;
+
             case "/user/user-view":
                 redirect = "/views/admin/create-students.jsp";
                 break;
+
             case "/user/view-view-teacher":
                 redirect="/views/admin/create-teacher.jsp";
                 break;
+
             case "/user/user-view-update":
                 id= req.getParameter("id");
                 User user3 = new DaoUser().findOne(id != null ? Long.parseLong(id):0);
@@ -74,39 +74,14 @@ public class ServletUser extends HttpServlet {
                             "&messages" + URLEncoder.encode("", StandardCharsets.UTF_8);
                 }
                 break;
+
             case "/user/student":
                 redirect = "/views/student/index.jsp";
                 break;
-            /*case "/user/login":
-                redirect="/views/logIn/createLogIn.jsp";
-                break;*/
-        ///FIn de PRuebas de vistas
-            case "/user/teacher":
-                redirect = "/views/teacher/exam.jsp";
-                break;
-            case "/user/apoco":
-                List<User> users2 = new DaoUser().findAll();
-                req.setAttribute("users", users2);
-                redirect = "/views/user/index.jsp";
-                break;
-                //prueba de inicio de sesion
-            /*case "user/login-view":
-                mail = req.getParameter("mail");
-                password = req.getParameter("passwordUser");
-                User user4 = new DaoUser().findOne(mail != null ? Long.parseLong(mail) :0);
-                if(user4 != null){
-                    req.setAttribute("type_user",type_user);
-                    if (type_user = 2){
 
-                    }
-                    redirect = "/views/login";
-                }else {
-                    redirect = "/user/users?result" + false +
-                            "&messages" + URLEncoder.encode("", StandardCharsets.UTF_8);
-                }
-                break;*/
-            default:
-                System.out.println(action);
+            case "/user/view-login":
+                redirect="/views/logIn/createLogIn.jsp";
+                break;
         }
         req.getRequestDispatcher(redirect).forward(req, resp);
     }
@@ -116,14 +91,8 @@ public class ServletUser extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html");
         action = req.getServletPath();
-/*      if(action=){
-
-            else{
-
-            }
-      }*/
         switch (action){
-            case "/user/login":
+            /*case "/user/login":
                 enrollment = req.getParameter("enrollment");
                 password = req.getParameter("password");
                 try {
@@ -142,13 +111,14 @@ public class ServletUser extends HttpServlet {
                         }
                     } else {
                         throw new Exception("Credentials mismatch");
+
                     }
                 } catch (Exception e) {
                     redirect = "/api/auth?result=false&message=" + URLEncoder
                             .encode("Usuario y/o contraseña incorrecta",
                                     StandardCharsets.UTF_8);
                 }
-                break;
+                break;*/
             case "/user/update":
                 id = req.getParameter("id");
                 name = req.getParameter("name");
@@ -196,8 +166,6 @@ public class ServletUser extends HttpServlet {
                     redirect = "/user/users?result="+false+"&message="+ URLEncoder.encode("¡ERROR! Usuario no eliminado.", StandardCharsets.UTF_8);
 
                 break;
-            default:
-                System.out.println(action);
         }
         resp.sendRedirect(req.getContextPath()+ redirect);
     }
