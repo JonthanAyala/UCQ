@@ -37,7 +37,8 @@ import java.util.Objects;
               //Nuevas Bojita
             "/user/index-teacher",//menú principal maestros
             "/user/mark-exam",
-            "/user/profile"
+            "/user/profile",
+            "/user/view-exam"
 })
 
 
@@ -96,8 +97,8 @@ public class ServletUser extends HttpServlet {
             case  "/user/profile":
                 redirect = "/views/teacher/profileTeacher.jsp";
                 break;
-            case "user/view-exam":
-                redirect = "/views/student/view-exam";
+            case "/user/view-exam":
+                redirect = "/views/student/view-exam.jsp";
                 break;
             default:
                 System.out.println(action);
