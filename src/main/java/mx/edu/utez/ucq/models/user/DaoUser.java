@@ -1,5 +1,6 @@
 package mx.edu.utez.ucq.models.user;
 
+import com.mysql.cj.MysqlConnection;
 import mx.edu.utez.ucq.models.crud.DaoRepository;
 import mx.edu.utez.ucq.utils.MySQLConnection;
 
@@ -17,19 +18,20 @@ public class DaoUser implements DaoRepository<User>{
     private PreparedStatement pstm;
     private ResultSet rs;
 
-    public User loadUserByUsernameAndPassword(String enrollment, String password) {
+    public User loadUserByUsernameAndPassword(String loginCredential, String password) {
         try {
             conn = new MySQLConnection().connect();
-            String query = "SELECT enrollment, password, type_user FROM users u " +
-                    "WHERE u.username = ? AND u.password = ? AND u.status = 'Activo';";
+            String query = "SELECT id_user, mail, type_user FROM users " +
+                    "WHERE mail = ? OR enrollment = ? AND password = ? AND status = 'Activo';";
             pstm = conn.prepareStatement(query);
-            pstm.setString(1, enrollment);
-            pstm.setString(2, password);
+            pstm.setString(1, loginCredential);
+            pstm.setString(2, loginCredential);
+            pstm.setString(3, password);
             rs = pstm.executeQuery();
             if (rs.next()) {
                 User user = new User();
-                user.setId(rs.getLong("id"));
-                user.setEnrollment(rs.getString("enrollment"));
+                user.setId(rs.getLong("id_user"));
+                user.setEnrollment(rs.getString("mail"));
                 user.setType_user(rs.getLong("type_user"));
                 return user;
             }
@@ -76,7 +78,7 @@ public class DaoUser implements DaoRepository<User>{
     public User findOne(long id) {
         try {
             conn = new MySQLConnection().connect();
-            String query = "SELECT * from users where id = ?;";
+            String query = "SELECT * from users where id_user = ?;";
             pstm = conn.prepareStatement(query);
             pstm.setLong(1,id);
             rs = pstm.executeQuery();
@@ -152,7 +154,7 @@ public class DaoUser implements DaoRepository<User>{
     public boolean delete(Long id) {
         try {
             conn = new MySQLConnection().connect();
-            String query = "DELETE FROM users where id = ?";
+            String query = "DELETE FROM users where id_user = ?";
             pstm = conn.prepareStatement(query);
             pstm.setLong(1,id);
             return  pstm.executeUpdate() == 1;

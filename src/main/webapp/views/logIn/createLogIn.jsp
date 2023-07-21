@@ -1,4 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <html>
 <head>
@@ -13,94 +15,139 @@
         place-items: center;
     }
 
+    .circulo {
+
+        position:relative;
+        width: 500px;
+        height: 500px;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+        background:  #002F5D;
+    }
+
 </style>
 
-<body style="background-color: #99b0a7;">
+<body style="background-color: #D8EAE3;overflow: hidden">
+
 
 <div class="centrado mt-5">
 
     <div class="row align-items-stretch">
 
         <h2>
-            <span style="color: #00AAB3;">ULTIMATE CUSTOME</span> <span style="color: #006cb0;"> QUIZ</span>
+            <span style="color: #00AA83;">ULTIMATE CUSTOME</span> <span style="color: #002F5D;"> QUIZ</span>
         </h2>
 
     </div>
 </div>
 
+<div class="position-relative">
+    <div class="position-absolute top-0 start-0 translate-middle">
 
-<div class="container mt-5 centrado">
-
-    <div class="row align-items-stretch">
-
-        <div class="col-md-5">
-
-            <div>
-
-                <div style="width: 516px; height: 328px;" class="centrado">
-
-                    <table class="table">
-                        <thead>
-                        <tr style="background-color: #D9D9D9;">
-                            <th style="border: 2px solid #374b43; text-align: center;"> INICIO DE SESIÓN</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        <tr>
-                            <form action="/user/login" class="needs-validation" novalidate method="post">
-
-                                <tr style="background-color: white;">
-                                    <th style="border: 2px solid #374b43;">
-                                        <div class="form-outline ">
-                                            <input id="user" name="user" type="text" class="form-control" style="background-color: #D9D9D9;" required/>
-                                            <label for="user" class="form-label"> Correo </label>
-                                        </div>
-
-
-                                        <div class="form-outline">
-                                            <input id="passwordUser" name="passwordUser" type="password" class="form-control" style="background-color: #D9D9D9;" required/>
-                                            <label for="passwordUser" class="form-label"> Contraseña </label>
-                                        </div>
-
-                                    </th>
-
-                                </tr>
-                                <tr style="background-color: white;">
-                                    <th style="border: 2px solid #374b43;">
-                                        <div class="row ">
-                                            <div class="col d-flex justify-content-center "> </div>
-                                        </div>
-
-                                        <div class="d-grid mt-3">
-
-                                            <button type="submit" class="btn btn-primary btn-block mb-3 " value="login"> log in </button>
-
-                                        </div>
-
-                </th>
-                </tr>
-                </form>
-
-                </tr>
-                </tbody>
-
-                </table>
-
+        <div class="container">
+            <div class="circulo">
 
             </div>
-
-
         </div>
 
     </div>
+</div>
 
+
+<div class="container  mt-5 centrado align-items-stretch">
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header" style=" background-color:  #002F5D; text-align: center">
+                <h5 style="color: white"> Inicio de sesión </h5>
+            </div>
+            <div class="card-body">
+
+                <form  class="needs-validation" id="loginForm" action="/user/login" novalidate method="post">
+
+                    <tr style="background-color: white;">
+                        <th style="border: 2px solid #374b43;">
+                            <div class="form-outline ">
+                                <input  id="loginCredential" name="loginCredential" type="text" class="form-control" style="background-color: #D9D9D9;" required>
+                                <label class="form-label" for="loginCredential"> Usuario </label>
+                                <div class="invalid-feedback text-start">
+                                    Campo obligatorio
+                                </div>
+                            </div>
+
+                            <div class="form-outline">
+                                <input id="password" name="password"  maxlength="8" type="password" class="form-control" style="background-color: #D9D9D9;" required>
+                                <label class="form-label" for="password"> Contraseña </label>
+                                <div class="invalid-feedback text-start">
+                                    Campo obligatorio
+                                </div>
+                            </div>
+
+                        </th>
+
+                    </tr>
+
+                    <h6 style="color: #002F5D" href=""> ¿olvidaste tu contraseña? </h6>
+                    <div class="card-footer">
+                        <div class="d-grid ">
+                            <button id="login" type="submit" class="btn btn-primary btn-block " value="login" style="background-color: #00AA83 !important;">
+                                <i data-feather="log-in"></i> Iniciar sesion
+                            </button>
+
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div class="position-relative">
+    <div class="container">
+        <div class="position-absolute top-100 start-100 translate-middle"
+        style="bottom: 90%">
+            <div class="circulo"></div>
+        </div>
+    </div>
 </div>
 
 
 
-</div>
 <jsp:include page="../../layouts/footer.jsp"/>
+
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        feather.replace();
+        const form = document.getElementById("loginForm");
+        const btn = document.getElementById("login");
+        form.addEventListener('submit', event => {
+            btn.innerHTML = `<div class="d-flex justify-content-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>`;
+            btn.classList.add("disabled");
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                btn.classList.remove("disabled");
+                btn.innerHTML = `<i data-feather="log-in"></i> Iniciar sesion`;
+            }
+            form.classList.add('was-validated');
+        }, false);
+        if (!${param['result'] != null ? param['result']: true}) {
+            Swal.fire({
+                title: 'Acceso denegado',
+                text: '${param['message']}',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+        }
+    }, false);
+</script>
 
 </body>
 </html>
