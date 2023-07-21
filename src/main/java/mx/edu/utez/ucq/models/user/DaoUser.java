@@ -154,7 +154,7 @@ public class DaoUser implements DaoRepository<User>{
     public boolean delete(Long id) {
         try {
             conn = new MySQLConnection().connect();
-            String query = "DELETE FROM users where id = ?";
+            String query = "DELETE FROM users where id_user = ?";
             pstm = conn.prepareStatement(query);
             pstm.setLong(1,id);
             return  pstm.executeUpdate() == 1;
