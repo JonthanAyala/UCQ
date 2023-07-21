@@ -78,7 +78,7 @@ public class DaoUser implements DaoRepository<User>{
     public User findOne(long id) {
         try {
             conn = new MySQLConnection().connect();
-            String query = "SELECT * from users where id = ?;";
+            String query = "SELECT * from users where id_user = ?;";
             pstm = conn.prepareStatement(query);
             pstm.setLong(1,id);
             rs = pstm.executeQuery();

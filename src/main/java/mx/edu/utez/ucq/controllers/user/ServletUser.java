@@ -72,7 +72,7 @@ public class ServletUser extends HttpServlet {
                 User user3 = new DaoUser().findOne(id != null ? Long.parseLong(id):0);
                 if(user3 !=null){
                     req.setAttribute("user",user3);
-                    redirect = "/views/admin/";
+                    redirect = "/views/user/update.jsp";
                 }else {
                     redirect = "/user/users?result" + false +
                             "&messages" + URLEncoder.encode("", StandardCharsets.UTF_8);

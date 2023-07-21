@@ -1,3 +1,9 @@
+/*
+INSERT INTO `ucq_chido`.`users` (`id_user`, `name`, `lastname`, `surname`, `curp`, `status`, `type_user`, `mail`, `enrollment`, `password`) VALUES ('1', 'admin', 'utez', 'NA', 'NA', 'Activo', '1', 'admin@utez.edu.mx', 'N/A', 'adminucq');
+INSERT INTO `ucq_chido`.`users` (`id_user`, `name`, `lastname`, `surname`, `curp`, `status`, `type_user`, `mail`, `enrollment`, `password`) VALUES ('2', 'Hugo', 'NA', 'NA', 'NA', 'Activo', '2', 'hugo@utez.edu.mx', 'NA', 'hugoucq');
+INSERT INTO `ucq_chido`.`users` (`id_user`, `name`, `lastname`, `surname`, `curp`, `status`, `type_user`, `mail`, `enrollment`, `password`) VALUES ('3', 'Isai', 'acosta', 'guerra', 'iii', 'Activo', '3', 'isai@utez.edu.mx', '20213tn094', 'isaiucq');
+  */
+
 create database ucq_chido;
 use ucq_chido;
 create table Users(
