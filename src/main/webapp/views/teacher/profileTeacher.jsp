@@ -98,8 +98,17 @@
                       </div>
 
                       <div class="col">
+
                         <label for="password" class="fw-bold">Contraseña:</label>
                         <input type="text" name="password" id="password" class="form-control" style="background-color:  #D9D9D9" required readonly>
+
+                        <input type="text" name="confimPassword" class="mt-2 fw-bold" id="confirmPassword" style="display: none">
+
+                        <button type="button" class="btn mt-2" id="savePasswordBtn"
+                                style="background-color: green; display: none">
+                          <a style="color: white"> GUARDAR CONTRASEÑA </a>
+                        </button>
+
                       </div>
 
                       <div class="col">
@@ -146,37 +155,58 @@
   </div>
 
 <jsp:include page="../../layouts/footer.jsp"/>
-<script>
+  <script>
+    function changePassword() {
+      // Habilitar el input de contraseña para escritura
+      document.getElementById('password').readOnly = false;
+      document.getElementById('password').style.backgroundColor = 'white';
 
-  function changePassword() {
-    var changePassContainer = document.getElementById("changePassword-container");
+      // Mostrar el botón de "Guardar Contraseña"
+      document.getElementById('savePasswordBtn').style.display = 'block';
+      document.getElementById('confirmPassword').style.display = 'block';
 
-    // Crea un div para contener el campo de cambio de contraseña
-    var passwordDiv = document.createElement("div");
-    passwordDiv.className = "form-group mb-3";
+      // Ocultar el botón "CAMBIAR CONTRASEÑA"
+      document.querySelector('.btn.mt-5').style.display = 'none';
+    }
 
-    // Crea el input para la nueva contraseña
-    var newPasswordInput = document.createElement("input");
-    newPasswordInput.className = "form-control";
-    newPasswordInput.type = "password"; // Cambia a type="password" para ocultar la contraseña
-    newPasswordInput.name = "newPassword";
-    newPasswordInput.placeholder = "Nueva contraseña"; // Agrega un placeholder para indicar qué se debe ingresar
+    function confirmPassword() {
+      // Obtener el valor de las contraseñas
+      const newPassword = document.getElementById('password').value;
+      const confirmNewPassword = document.getElementById('confirmPassword').value;
 
-    // Agrega el input al div
-    passwordDiv.appendChild(newPasswordInput);
+      // Comparar las contraseñas
+      if (newPassword !== confirmNewPassword) {
+        alert('Las contraseñas no coinciden. Por favor, verifica.');
+        return false;
+      }
 
-    // Agrega el div con el input al contenedor de cambio de contraseña
-    changePassContainer.appendChild(passwordDiv);
+      return true;
+    }
 
-    // Hace que el div con el input sea visible
-    passwordDiv.style.display = "block";
+    function savePassword() {
+      // Llamar a confirmPassword() para verificar las contraseñas antes de guardar
+      if (!confirmPassword()) {
+        return;
+      }
 
-    // Hace que el input recién creado esté enfocado para que el usuario pueda escribir directamente
-    newPasswordInput.focus();
-  }
+      // Aquí puedes realizar alguna acción con la nueva contraseña, como enviarla al servidor.
+      // Por ejemplo: enviarNewPasswordAlServidor(newPassword);
 
+      // Bloquear el input de contraseña nuevamente
+      document.getElementById('password').readOnly = true;
+      document.getElementById('password').style.backgroundColor = ' #D9D9D9';
 
-</script>
+      // Ocultar el botón "Guardar Contraseña"
+      document.getElementById('savePasswordBtn').style.display = 'none';
+      document.getElementById('confirmPassword').style.display = 'none';
+
+      // Mostrar el botón "CAMBIAR CONTRASEÑA"
+      document.querySelector('.btn.mt-5').style.display = 'block';
+    }
+
+    // Agregar el evento de clic al botón "Guardar Contraseña"
+    document.getElementById('savePasswordBtn').addEventListener('click', savePassword);
+  </script>
 
 </body>
 </html>
