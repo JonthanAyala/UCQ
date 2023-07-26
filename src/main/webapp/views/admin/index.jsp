@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <html>
 <head>
     <title>Inicio Admin</title>
@@ -11,9 +12,6 @@
     <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
         <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
             <h3 class="text-center">Ultimate Custom Quiz</h3>
-        </a>
-        <a  class="navbar-brand position-absolute top-0 end-0">
-            <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
         </a>
         <br><br>
     </div>
@@ -33,33 +31,26 @@
     </div>
 
     <div class="row justify-content-center mt-5">
+
+        <button  type="button" class="btn btn-outline-success btn-sm"  style="width: 200px; height: 100px" onclick="">
+            <img style="height: 100px; width: 100px" src="../../assets/img/icons8-teacher-100.png" class="card-img-top" alt="...">
+            <h5>Agregar profesores</h5>
+        </button>
+
         <div class="col-3 col-md-2">
-            <div class="card">
-                <img src="../../assets/img/teacher.png" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title"><a href="/user/view-view-teacher">Crear profesores</a></h5>
-                    <p class="card-text"> </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-3 col-md-2">
-            <div class="card">
-                <img src="../../assets/img/student.png" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title"><a href="/user/user-view">Crear alumno</a></h5>
-                    <p class="card-text"></p>
-                </div>
-            </div>
-        </div>
+            <button  type="button" class="btn btn-outline-success btn-sm"  style="width: 200px; height: 100px" onclick="">
+                <img style="height: 100px; width: 100px" src="../../assets/img/icons8-student-100.png" class="card-img-top" alt="...">
+                <h5>Agregar estudiantes</h5>
+            </button>
     </div>
 
 
     <div class="row justify-content-center mt-5">
         <div class="col-10">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header" style="background-color: #002F5D; text-align: center">
                     <div class="row">
-                        <div class="col">Listado de usuarios</div>
+                        <div class="col" style="color: white">Listado de usuarios</div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -123,14 +114,7 @@
             </div>
         </div>
     </div>
-    <div class="row justify-content-center mt-5">
-        <div class="col-6">
-            <form class="d-flex justify-content-center" role="search">
-                <button class="btn btn-outline-success" type="submit">Regresar</button>
-            </form>
-        </div>
-    </div>
-</div>
+
 
 <jsp:include page="../../layouts/footer.jsp"/>
 </body>

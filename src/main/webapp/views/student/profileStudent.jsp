@@ -12,16 +12,22 @@
 
   <jsp:include page="../../layouts/head.jsp"/>
 </head>
-
 <body style="background-color: #D8EAE3; ">
 
 <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
-  <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
-    <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
-      <h3 class="text-center">Ultimate Custom Quiz</h3>
-    </a>
-    <a class="navbar-brand position-absolute top-0 end-0">
-    </a>
+  <div class="container d-flex align-content-between">
+
+    <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
+      <a class="navbar-brand position-absolute top-50 start-50 translate-middle"
+         style="color: white;"> <h3> Ultimate Custom Quiz </h3></a>
+    </div>
+
+    <div>
+      <button type="button" class="btn" style="background-color: transparent; border: transparent">
+        <img src="../../assets/img/icons8-volver-48.png">
+      </button>
+    </div>
+
     <br><br>
   </div>
 </nav>
@@ -58,7 +64,7 @@
 
     <div class="container">
 
-      <div class="card">
+      <div class="card mt-3">
         <div class="card-body">
 
           <div class="container">
@@ -67,7 +73,7 @@
 
             <form id="user-form" class="needs-validation" novalidate action="/user/save" method="post">
 
-              <div class="form-group mb-3">
+              <div class="form-group">
 
                 <div class="row">
                   <div class="col">
@@ -80,10 +86,6 @@
                     <input type="text" name="surnames" id="surnames" class="form-control" style="background-color:  #D9D9D9" required readonly>
                   </div>
 
-                  <div class="col">
-                    <label for="tuition" class="fw-bold">Matricula:</label>
-                    <input type="text" name="tuition" id="matricula" class="form-control"  style="background-color:  #D9D9D9"  required readonly>
-                  </div>
 
                 </div>
               </div>
@@ -93,13 +95,23 @@
                 <div class="row">
 
                   <div class="col">
-                    <label for="tuition" class="fw-bold">Correo:</label>
-                    <input type="text" name="tuition" id="tuition" class="form-control" style="background-color: #D9D9D9" required readonly>
+                    <label for="enrollment" class="fw-bold">Matricula:</label>
+                    <input type="text" name="enrollments" id="enrollment" class="form-control"  style="background-color:  #D9D9D9"  required readonly>
                   </div>
 
                   <div class="col">
+
                     <label for="password" class="fw-bold">Contraseña:</label>
-                    <input type="text" name="password" id="password" class="form-control" style="background-color:  #D9D9D9" required readonly>
+                    <input type="password" name="password" id="password" class="form-control" style="background-color:  #D9D9D9" required readonly>
+
+                    <label id="confPassTxt" for="confirmPassword" class="fw-bold" style="display: none">Confirmar contraseña:</label>
+                    <input type="password" name="confimPassword" class="mt-2 fw-bold" id="confirmPassword" style="display: none">
+
+                    <button type="button" class="btn mt-2" id="savePasswordBtn"
+                            style="background-color: green; display: none">
+                      <a style="color: white"> GUARDAR CONTRASEÑA </a>
+                    </button>
+
                   </div>
 
                   <div class="col">
@@ -111,21 +123,9 @@
                 </div>
               </div>
 
-              <div class="container mb-3">
+              <div class="container">
                 <div id="changePassword-container">
 
-                </div>
-              </div>
-
-              <div class="form-group mb-3">
-                <div class="row">
-                  <div class="col-2">
-
-                    <label for="password" class="fw-bold">status:</label>
-                    <input type="text" name="password" id="status" class="form-control"  style="background-color:  #D9D9D9" required readonly>
-                    <div class="invalid-feedback">Campo obligatorio</div>
-
-                  </div>
                 </div>
               </div>
 
@@ -136,8 +136,11 @@
         </div>
 
       </div>
-    </div>
 
+      <br>
+      <br>
+
+    </div>
 
   </div>
 
@@ -147,35 +150,62 @@
 
 <jsp:include page="../../layouts/footer.jsp"/>
 <script>
-
   function changePassword() {
-    var changePassContainer = document.getElementById("changePassword-container");
+    // Habilitar el input de contraseña para escritura
+    document.getElementById('password').readOnly = false;
+    document.getElementById('password').style.backgroundColor = 'white';
 
-    // Crea un div para contener el campo de cambio de contraseña
-    var passwordDiv = document.createElement("div");
-    passwordDiv.className = "form-group mb-3";
+    // Mostrar el botón de "Guardar Contraseña"
+    document.getElementById('savePasswordBtn').style.display = 'block';
+    document.getElementById('confPassTxt').style.display = 'block';
+    document.getElementById('confirmPassword').style.display = 'block';
 
-    // Crea el input para la nueva contraseña
-    var newPasswordInput = document.createElement("input");
-    newPasswordInput.className = "form-control";
-    newPasswordInput.type = "password"; // Cambia a type="password" para ocultar la contraseña
-    newPasswordInput.name = "newPassword";
-    newPasswordInput.placeholder = "Nueva contraseña"; // Agrega un placeholder para indicar qué se debe ingresar
-
-    // Agrega el input al div
-    passwordDiv.appendChild(newPasswordInput);
-
-    // Agrega el div con el input al contenedor de cambio de contraseña
-    changePassContainer.appendChild(passwordDiv);
-
-    // Hace que el div con el input sea visible
-    passwordDiv.style.display = "block";
-
-    // Hace que el input recién creado esté enfocado para que el usuario pueda escribir directamente
-    newPasswordInput.focus();
+    // Ocultar el botón "CAMBIAR CONTRASEÑA"
+    document.querySelector('.btn.mt-5').style.display = 'none';
   }
 
+  function confirmPassword() {
+    // Obtener el valor de las contraseñas
+    const newPassword = document.getElementById('password').value;
+    const confirmNewPassword = document.getElementById('confirmPassword').value;
 
+    // Comparar las contraseñas
+    if (newPassword !== confirmNewPassword) {
+      Swal.fire(
+              'LAS CONTRASEÑAS NO COINCIDEN',
+              'verifica',
+              'warning'
+      )
+      return false;
+    }
+
+    return true;
+  }
+
+  function savePassword() {
+    // Llamar a confirmPassword() para verificar las contraseñas antes de guardar
+    if (!confirmPassword()) {
+      return;
+    }
+
+    // Aquí puedes realizar alguna acción con la nueva contraseña, como enviarla al servidor.
+    // Por ejemplo: enviarNewPasswordAlServidor(newPassword);
+
+    // Bloquear el input de contraseña nuevamente
+    document.getElementById('password').readOnly = true;
+    document.getElementById('password').style.backgroundColor = ' #D9D9D9';
+
+    // Ocultar el botón "Guardar Contraseña"
+    document.getElementById('savePasswordBtn').style.display = 'none';
+    document.getElementById('confPassTxt').style.display = 'none';
+    document.getElementById('confirmPassword').style.display = 'none';
+
+    // Mostrar el botón "CAMBIAR CONTRASEÑA"
+    document.querySelector('.btn.mt-5').style.display = 'block';
+  }
+
+  // Agregar el evento de clic al botón "Guardar Contraseña"
+  document.getElementById('savePasswordBtn').addEventListener('click', savePassword);
 </script>
 
 </body>

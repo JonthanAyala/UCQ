@@ -47,6 +47,12 @@
         margin-top: 3cm !important;
     }
 
+    .textareaTittle {
+        /* Establecer una altura mínima inicial */
+        height: 1em;
+
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
 
 
 </style>
@@ -54,17 +60,17 @@
 <body style="background-color: #D8EAE3">
 
 <div class="overflow-hidden fixed-top">
+    <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
+        <div class="container d-flex align-content-between">
 
-    <nav class="navbar navbar-color">
-
-        <div class="container">
-            <div class="justify-content-xl-center col-xl-5">
-                <form>
-                    <input class="form-control navbar-input placeholder-name-exam" style="background-color:  #002F5D" type="text" placeholder="Nombre Examen" required>
-                </form>
+            <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
+                <a class="navbar-brand position-absolute top-50 start-50 translate-middle"
+                   style="color: white;"> <h3> Ultimate Custom Quiz </h3></a>
             </div>
-            <button type="button" class="btn" onclick="
- Swal.fire({
+
+            <div>
+                <button type="button" class="btn" style="background-color: transparent; border: transparent"
+                        onclick=" Swal.fire({
             title: '¿Deseas guardar los cambios?',
             showDenyButton: true,
             showCancelButton: true,
@@ -79,9 +85,12 @@
             } else if (result.isDenied) {
                //REDIRIGIR SOLAMENTE A LA PAGINA PRINCIPAL
             }
-        })" style="background-color: transparent; border: transparent">
-                <img src="../../assets/img/icons8-volver-48.png">
-            </button>
+        })">
+                    <img src="../../assets/img/icons8-volver-48.png">
+                </button>
+            </div>
+
+            <br><br>
         </div>
     </nav>
 </div>
@@ -116,6 +125,16 @@
 
 
     <div class="container mt-5 w-50 p-3 containerExam mb-5" style="background-color: white;">
+
+        <div class="container-fluid mt-5">
+
+          <textarea class="form-control textareaTittle" name="nameExam"
+                    style="font-size: 30px; overflow: hidden; resize: none"
+                    maxlength="50" oninput="autoResize(this)"
+                    placeholder="Titulo Examen" required></textarea>
+
+
+        </div>
 
         <div id="questions-container" class="overflow-y-auto">
 
@@ -441,6 +460,15 @@
         questionContainer.appendChild(card);
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
+    function autoResize(textarea) {
+        // Ajustar temporalmente el height al mínimo antes de medir el scrollHeight
+        textarea.style.height = "1px";
+        textarea.style.height = textarea.scrollHeight + "px";
+    }
+
+
+
 
 </script>
 

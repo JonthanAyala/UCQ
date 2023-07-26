@@ -12,16 +12,22 @@
 
     <jsp:include page="../../layouts/head.jsp"/>
 </head>
-
 <body style="background-color: #D8EAE3; ">
 
   <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
-    <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
-      <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
-        <h3 class="text-center">Ultimate Custom Quiz</h3>
-      </a>
-      <a class="navbar-brand position-absolute top-0 end-0">
-      </a>
+    <div class="container d-flex align-content-between">
+
+      <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
+        <a class="navbar-brand position-absolute top-50 start-50 translate-middle"
+           style="color: white;"> <h3> Ultimate Custom Quiz </h3></a>
+      </div>
+
+      <div>
+        <button type="button" class="btn" style="background-color: transparent; border: transparent">
+          <img src="../../assets/img/icons8-volver-48.png">
+        </button>
+      </div>
+
       <br><br>
     </div>
 </nav>
@@ -58,7 +64,7 @@
 
         <div class="container">
 
-          <div class="card">
+          <div class="card mt-3">
             <div class="card-body">
 
               <div class="container">
@@ -67,7 +73,7 @@
 
                 <form id="user-form" class="needs-validation" novalidate action="/user/save" method="post">
 
-                  <div class="form-group mb-3">
+                  <div class="form-group">
 
                     <div class="row">
                       <div class="col">
@@ -100,9 +106,10 @@
                       <div class="col">
 
                         <label for="password" class="fw-bold">Contraseña:</label>
-                        <input type="text" name="password" id="password" class="form-control" style="background-color:  #D9D9D9" required readonly>
+                        <input type="password" name="password" id="password" class="form-control" style="background-color:  #D9D9D9" required readonly>
 
-                        <input type="text" name="confimPassword" class="mt-2 fw-bold" id="confirmPassword" style="display: none">
+                        <label id="confPassTxt" for="confirmPassword" class="fw-bold" style="display: none">Confirmar contraseña:</label>
+                        <input type="password" name="confimPassword" class="mt-2 fw-bold" id="confirmPassword" style="display: none">
 
                         <button type="button" class="btn mt-2" id="savePasswordBtn"
                                 style="background-color: green; display: none">
@@ -120,21 +127,9 @@
                     </div>
                   </div>
 
-                  <div class="container mb-3">
+                  <div class="container">
                     <div id="changePassword-container">
 
-                    </div>
-                  </div>
-
-                  <div class="form-group mb-3">
-                    <div class="row">
-                      <div class="col-2">
-
-                        <label for="password" class="fw-bold">status:</label>
-                        <input type="text" name="password" id="status" class="form-control"  style="background-color:  #D9D9D9" required readonly>
-                        <div class="invalid-feedback">Campo obligatorio</div>
-
-                      </div>
                     </div>
                   </div>
 
@@ -145,8 +140,11 @@
             </div>
 
           </div>
-        </div>
 
+          <br>
+          <br>
+
+        </div>
 
       </div>
 
@@ -163,6 +161,7 @@
 
       // Mostrar el botón de "Guardar Contraseña"
       document.getElementById('savePasswordBtn').style.display = 'block';
+      document.getElementById('confPassTxt').style.display = 'block';
       document.getElementById('confirmPassword').style.display = 'block';
 
       // Ocultar el botón "CAMBIAR CONTRASEÑA"
@@ -176,7 +175,11 @@
 
       // Comparar las contraseñas
       if (newPassword !== confirmNewPassword) {
-        alert('Las contraseñas no coinciden. Por favor, verifica.');
+        Swal.fire(
+                'LAS CONTRASEÑAS NO COINCIDEN',
+                'verifica',
+                'warning'
+        )
         return false;
       }
 
@@ -198,6 +201,7 @@
 
       // Ocultar el botón "Guardar Contraseña"
       document.getElementById('savePasswordBtn').style.display = 'none';
+      document.getElementById('confPassTxt').style.display = 'none';
       document.getElementById('confirmPassword').style.display = 'none';
 
       // Mostrar el botón "CAMBIAR CONTRASEÑA"
