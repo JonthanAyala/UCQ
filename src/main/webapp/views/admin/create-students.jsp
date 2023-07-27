@@ -35,17 +35,17 @@
                         <div class="form-group mb-3">
                             <div class="row">
                                 <div class="col">
-                                    <label for="name" class="fw-bold">Nombre:</label>
+                                    <label for="name" class="fw-bold col-form-label">Nombre:</label>
                                     <input type="text" name="name" id="name" class="form-control" required/>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
-                                    <label for="surname" class="fw-bold">Apellidos:</label>
+                                    <label for="surname" class="fw-bold col-form-label">Apellidos:</label>
                                     <input type="text" name="surname" id="surname" class="form-control" required/>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
-                                    <label for="enrollment" class="fw-bold">Matricula:</label>
+                                    <label for="enrollment" class="fw-bold col-form-label">Matricula:</label>
                                     <input type="text" name="enrollment" id="enrollment" class="form-control" required/>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
