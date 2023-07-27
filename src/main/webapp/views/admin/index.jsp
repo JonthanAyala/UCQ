@@ -1,7 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 <html>
 <head>
     <title>Inicio Admin</title>
@@ -77,7 +76,7 @@
                                         <c:out value="${user.enrollment}"/>
                                     </td>
                                     <td>
-                                        <c:out value="${user.name}"/> <br> <c:out value="${user.surname}"/>
+                                        <c:out value="${user.name}"/> <br> <c:out value="${user.lastname}"/> <br> <c:out value="${user.surname}"/>
                                     </td>
                                     <td>
                                         <c:out value="${user.curp}"/>

@@ -3,6 +3,7 @@ package mx.edu.utez.ucq.models.user;
 public class User {
     private Long id;
     private String name;
+    private String lastname;
     private String surname;
     private String curp;
     private String status;
@@ -14,10 +15,11 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String name, String surname, String curp, String status, Long type_user, String mail, String enrollment, String password) {
+    public User(Long id, String name,String lastname, String surname, String curp, String status, Long type_user, String mail, String enrollment, String password) {
         this.id = id;
         this.name = name;
         this.surname = surname;
+        this.lastname = lastname;
         this.curp = curp;
         this.status = status;
         this.type_user = type_user;
@@ -41,6 +43,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getSurname() {

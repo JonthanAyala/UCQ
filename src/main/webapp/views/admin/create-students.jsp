@@ -56,61 +56,32 @@
 
                             <div class="row">
                                 <div class="col">
+                                    <label for="enrollment" class="fw-bold">Matricula:</label>
+                                    <input type="text" name="enrollment" id="enrollment" class="form-control" required/>
+                                    <div class="invalid-feedback">Campo obligatorio</div>
+                                </div>
+
+                                <div class="col">
                                     <label for="curp" class="fw-bold">Curp:</label>
-                                    <input type="text" name="surname" id="curp" class="form-control" required/>
+                                    <input type="text" name="curp" id="curp" class="form-control" required/>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
-                                <div class="col">
-                                    <label for="grade" class="fw-bold">Grado:</label>
-                                    <div class="dropdown">
-                                        <button class="btn btn-success btn-white dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Seleccionar
-                                        </button>
-                                        <ul class="dropdown-menu" >
-                                            <li><a class="dropdown-item" href="#">1</a></li>
-                                            <li><a class="dropdown-item" href="#">4</a></li>
-                                            <li><a class="dropdown-item" href="#">8</a></li>
-                                        </ul>
+                                    <div class="col">
+                                        <label for="status" class="fw-bold">Status:</label>
+                                        <div class="dropdown">
+                                            <button class="btn btn-success btn-white dropdown-toggle w-100 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Seleccionar
+                                            </button>
+                                            <ul class="dropdown-menu" >
+                                                <li><a class="dropdown-item" href="#">Activo</a></li>
+                                                <li><a class="dropdown-item" href="#">Inactivo</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
-                                    <div class="invalid-feedback">Campo obligatorio</div>
-                                </div>
 
-                                <div class="col">
-                                    <label for="group" class="fw-bold">Grupo:</label>
-                                    <div class="dropdown">
-                                        <button class="btn btn-success btn-white dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Seleccionar
-                                        </button>
-                                        <ul class="dropdown-menu" >
-                                            <li><a class="dropdown-item" href="#">A</a></li>
-                                            <li><a class="dropdown-item" href="#">B</a></li>
-                                            <li><a class="dropdown-item" href="#">C</a></li>
-                                            <li><a class="dropdown-item" href="#">D</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="invalid-feedback">Campo obligatorio</div>
-                                </div>
-
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <div class="row">
-                            <div class="col">
-                                <label for="status" class="fw-bold">Status:</label>
-                                <div class="dropdown">
-                                    <button class="btn btn-success btn-white dropdown-toggle w-25" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Seleccionar
-                                    </button>
-                                    <ul class="dropdown-menu" >
-                                        <li><a class="dropdown-item" href="#">Activo</a></li>
-                                        <li><a class="dropdown-item" href="#">Inactivo</a></li>
-                                    </ul>
-                                </div>
-                                <div class="invalid-feedback">Campo obligatorio</div>
-                            </div>
-                            </div>
-                            </div>
                         </div>
+
                         <div class="form-group mb-3">
                             <div class="row justify-content-end">
                                 <div class="col-auto">
