@@ -126,7 +126,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form id="teacherForm" class="needs-validation" novalidate action="/user/save-teacher" method="post">
                             <div class="row">
                                 <div class="col">
                                     <label for="name" class="fw-bold col-form-label">Nombre:</label>
@@ -134,13 +134,13 @@
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
-                                    <label for="surnameP" class="fw-bold col-form-label">Apellido Paterno:</label>
-                                    <input type="text" name="surnameP" id="surnameP" class="form-control" required>
+                                    <label for="lastname" class="fw-bold col-form-label">Apellido Paterno:</label>
+                                    <input type="text" name="lastname" id="lastname" class="form-control" required>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
-                                    <label for="surnameM" class="fw-bold col-form-label">Apellido Materno:</label>
-                                    <input type="text" name="surnameM" id="surnameM" class="form-control" required>
+                                    <label for="surname" class="fw-bold col-form-label">Apellido Materno:</label>
+                                    <input type="text" name="surname" id="surname" class="form-control" required>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                             </div>
@@ -154,12 +154,12 @@
                                     </div>
                                     <div class="col">
                                         <label for="curp" class="fw-bold">Curp:</label>
-                                        <input type="text" name="surname" id="curp" class="form-control col-form-label" required>
+                                        <input type="text" name="curp" id="curp" class="form-control col-form-label" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                     <div class="col">
-                                        <label for="email" class="fw-bold">Correo:</label>
-                                        <input type="email" name="email" id="email" class="form-control" required>
+                                        <label for="mail" class="fw-bold">Correo:</label>
+                                        <input type="email" name="email" id="mail" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                 </div>
@@ -180,13 +180,13 @@
                                     </div>
                                 </div>
                             </div>
-
-                        </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
-                        <button type="button" id="SaveTeacher" class="btn btn-primary" onclick="savePasswordTeacher()">Guardar</button>
+                        <button type="button" id="SaveTeacher" class="btn btn-primary" onclick="validateForm()">Guardar</button>
                     </div>
+                        </form>
+
                 </div>
             </div>
         </div>
@@ -201,7 +201,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form class="needs-validation" novalidate action="/user/save-student" method="post">
                             <div class="row">
 
                                 <div class="col">
@@ -210,13 +210,13 @@
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
-                                    <label for="surnameP2" class="fw-bold col-form-label">Apellido Paterno:</label>
-                                    <input type="text" name="surnameP2" id="surnameP2" class="form-control" required>
+                                    <label for="lastname2" class="fw-bold col-form-label">Apellido Paterno:</label>
+                                    <input type="text" name="lastname2" id="lastname2" class="form-control" required>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
-                                    <label for="surnameM2" class="fw-bold col-form-label">Apellido Materno:</label>
-                                    <input type="text" name="surnameM2" id="surnameM2" class="form-control" required>
+                                    <label for="surname2" class="fw-bold col-form-label">Apellido Materno:</label>
+                                    <input type="text" name="surname2" id="surname2" class="form-control" required>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
 
@@ -225,19 +225,19 @@
                             <div class="form-group mb-3">
                                 <div class="row">
                                     <div class="col">
-                                        <label for="enrollment" class="fw-bold col-form-label">Matricula:</label>
-                                        <input type="text" name="enrollment" id="enrollment2" class="form-control" required>
+                                        <label for="enrollment2" class="fw-bold col-form-label">Matricula:</label>
+                                        <input type="text" name="enrollment2" id="enrollment2" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                     <div class="col">
-                                        <label for="curp" class="fw-bold">Curp:</label>
-                                        <input type="text" name="surname" id="curp2" class="form-control" required>
+                                        <label for="curp2" class="fw-bold">Curp:</label>
+                                        <input type="text" name="curp2" id="curp2" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
 
                                 <div class="col">
-                                    <label for="email2" class="fw-bold">Correo :</label>
-                                    <input type="email" name="email2" id="email2" class="form-control" required>
+                                    <label for="mail2" class="fw-bold">Correo :</label>
+                                    <input type="email" name="mail2" id="mail2" class="form-control" required>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 </div>
@@ -246,8 +246,8 @@
                             <div class="form-group mb-3">
                                 <div class="row" >
                                     <div class="col">
-                                        <label for="password" class="fw-bold">Contraseña:</label>
-                                        <input type="text" name="password" id="password2" class="form-control" required>
+                                        <label for="password2" class="fw-bold">Contraseña:</label>
+                                        <input type="text" name="password2" id="password2" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                     <div class="col">
@@ -257,13 +257,13 @@
                                     </div>
                                 </div>
                              </div>
-
-                        </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
-                        <button type="button" id="SaveStudent" class="btn btn-primary" onclick="savePasswordStudent()">Guardar</button>
+                        <button type="submit" id="SaveStudent" class="btn btn-primary" onclick="savePasswordStudent()">Guardar</button>
                     </div>
+                        </form>
+
                 </div>
             </div>
         </div>
@@ -271,80 +271,19 @@
 
 <jsp:include page="../../layouts/footer.jsp"/>
 <script>
+    function validateForm() {
+        // Obtener el formulario mediante su ID
+        var form = document.getElementById("teacherForm");
 
-    const exampleModal = document.getElementById('ModalTeacher')
-    if (exampleModal) {
-        exampleModal.addEventListener('show.bs.modal', event => {
-            // Button that triggered the modal
-            const button = event.relatedTarget
-            // Extract info from data-bs-* attributes
-            const recipient = button.getAttribute('data-bs-whatever')
-            // If necessary, you could initiate an Ajax request here
-            // and then do the updating in a callback.
-
-            // Update the modal's content.
-            const modalTitle = exampleModal.querySelector('.modal-title')
-            const modalBodyInput = exampleModal.querySelector('.modal-body input')
-
-            modalTitle.textContent = `New message to ${recipient}`
-            modalBodyInput.value = recipient
-        })
-    }
-
-    function confirmPasswordTeacher() {
-        // Obtener el valor de las contraseñas
-        const newPassword = document.getElementById('password').value;
-        const confirmNewPassword = document.getElementById('ConfirmPassword').value;
-
-        // Comparar las contraseñas
-        if (newPassword !== confirmNewPassword) {
-            Swal.fire(
-                'LAS CONTRASEÑAS NO COINCIDEN',
-                'verifica',
-                'warning'
-            )
-            return false;
-        }
-
-        return true;
-    }
-
-    function confirmPasswordStudent() {
-        // Obtener el valor de las contraseñas
-        const newPassword = document.getElementById('password2').value;
-        const confirmNewPassword = document.getElementById('ConfirmPassword2').value;
-
-        // Comparar las contraseñas
-        if (newPassword !== confirmNewPassword) {
-            Swal.fire(
-                'LAS CONTRASEÑAS NO COINCIDEN',
-                'verifica',
-                'warning'
-            )
-            return false;
-        }
-
-        return true;
-    }
-
-    function savePasswordTeacher() {
-        // Llamar a confirmPassword() para verificar las contraseñas antes de guardar
-        if (!confirmPasswordTeacher()) {
-            return;
+        // Validar el formulario antes de enviarlo
+        if (form.checkValidity()) {
+            // Si el formulario es válido, enviarlo al servidor
+            form.submit();
+        } else {
+            // Si el formulario no es válido, mostrar un mensaje de error y evitar el envío
+            alert("Por favor, completa todos los campos requeridos correctamente.");
         }
     }
-    // Agregar el evento de clic al botón "Guardar Contraseña"
-    document.getElementById('SaveTeacher').addEventListener('click', savePasswordTeacher);
-
-    function savePasswordStudent() {
-        // Llamar a confirmPassword() para verificar las contraseñas antes de guardar
-        if (!confirmPasswordStudent()) {
-            return;
-        }
-    }
-    // Agregar el evento de clic al botón "Guardar Contraseña"
-    document.getElementById('SaveStudent').addEventListener('click', savePasswordStudent);
-
 </script>
 </body>
 </html>

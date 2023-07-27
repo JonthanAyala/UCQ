@@ -22,7 +22,8 @@ import java.util.Objects;
             "/user/admin",			//admin index
             "/user/user",			//
             "/user/user-view",		//crear alumnos
-            "/user/save",			//guardar alumnos
+            "/user/save-teacher",
+            "/user/save-student",   //guardar alumnos
             "/user/user-view-update", 	//actualizar alumnos
             "/user/update",			// guardar actualizar alumnos
             "/user/delete",			//borrar
@@ -158,10 +159,10 @@ public class ServletUser extends HttpServlet {
                 password = req.getParameter("password");
                 user = new User(Long.parseLong(id), name, lastname, surname, curp, status, Long.parseLong(type_user), mail, enrollment, password);
                 if (new DaoUser().update(user)){
-                    redirect = "/user/users?result="+true+"&message="+ URLEncoder.encode("¡Exito! Usuario actualizado correctamente.", StandardCharsets.UTF_8);
+                    redirect = "/user/admin?result="+true+"&message="+ URLEncoder.encode("¡Exito! Usuario actualizado correctamente.", StandardCharsets.UTF_8);
 
                 }else {
-                    redirect = "/user/users?result="+false+"&message="+ URLEncoder.encode("Error accion no actualizado correctamente.", StandardCharsets.UTF_8);
+                    redirect = "/user/admin?result="+false+"&message="+ URLEncoder.encode("Error accion no actualizado correctamente.", StandardCharsets.UTF_8);
 
                 }
                 break;
@@ -177,28 +178,28 @@ public class ServletUser extends HttpServlet {
 
                 boolean result = new DaoUser().save(user1);
                 if (result){
-                    redirect = "/user/users?result="+result+"&message="+ URLEncoder.encode("¡Exito! Usuario registrado correctamente.", StandardCharsets.UTF_8);
+                    redirect = "/user/admin?result="+result+"&message="+ URLEncoder.encode("¡Exito! Usuario registrado correctamente.", StandardCharsets.UTF_8);
 
                 }else {
-                    redirect = "/user/users?result="+result+"&message="+ URLEncoder.encode("Error accion no realizada correctamente.", StandardCharsets.UTF_8);
+                    redirect = "/user/admin?result="+result+"&message="+ URLEncoder.encode("Error accion no realizada correctamente.", StandardCharsets.UTF_8);
                 }
                 break;
             case "/user/save-student":
-                name = req.getParameter("name");
-                lastname = req.getParameter("lastname");
-                surname = req.getParameter("surname");
-                curp = req.getParameter("curp");
-                mail = req.getParameter("mail");
-                enrollment = req.getParameter("enrollment");
-                password = req.getParameter("password");
+                name = req.getParameter("name2");
+                lastname = req.getParameter("lastname2");
+                surname = req.getParameter("surname2");
+                curp = req.getParameter("curp2");
+                mail = req.getParameter("mail2");
+                enrollment = req.getParameter("enrollment2");
+                password = req.getParameter("password2");
                 User user = new User(0L, name, lastname, surname, curp, "Activo", 3L, mail, enrollment, password);
 
                 boolean result2 = new DaoUser().save(user);
                 if (result2){
-                    redirect = "/user/users?result="+result2+"&message="+ URLEncoder.encode("¡Exito! Usuario registrado correctamente.", StandardCharsets.UTF_8);
+                    redirect = "/user/admin?result="+result2+"&message="+ URLEncoder.encode("¡Exito! Usuario registrado correctamente.", StandardCharsets.UTF_8);
 
                 }else {
-                    redirect = "/user/users?result="+result2+"&message="+ URLEncoder.encode("Error accion no realizada correctamente.", StandardCharsets.UTF_8);
+                    redirect = "/user/admin?result="+result2+"&message="+ URLEncoder.encode("Error accion no realizada correctamente.", StandardCharsets.UTF_8);
 
                 }
                 break;

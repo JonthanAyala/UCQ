@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class MySQLConnection {
     final String DBNAME = "ucq_chido",
             USER = "root",
-            PASSWORD = "root",
+            PASSWORD = "",
             TIMEZONE = "America/Mexico_City",
             USESSL = "false",
             PUBLICKEY = "true",
