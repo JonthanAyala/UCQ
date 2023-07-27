@@ -26,11 +26,8 @@ import java.util.Objects;
             "/user/user-view-update", 	//actualizar alumnos
             "/user/update",			// guardar actualizar alumnos
             "/user/delete",			//borrar
-
             "/user/view-view-teacher", 	//crear profesores
-
             "/user/student",//index student
-
             "/user/login",
             "/user/view-login",
             "/user/users",
@@ -46,7 +43,7 @@ public class ServletUser extends HttpServlet {
     private String action;
     private String redirect = "/user/users";
     HttpSession session;
-    private  String id, name, surname, curp,status, type_user, mail, enrollment, password, loginCredential;
+    private  String id, name, lastname, surname, curp,status, type_user, mail, enrollment, password, loginCredential;
     private User user;
 
     @Override
@@ -151,6 +148,7 @@ public class ServletUser extends HttpServlet {
             case "/user/update":
                 id = req.getParameter("id");
                 name = req.getParameter("name");
+                lastname = req.getParameter("lastname");
                 surname = req.getParameter("surname");
                 curp = req.getParameter("curp");
                 status = req.getParameter("status");
@@ -158,7 +156,7 @@ public class ServletUser extends HttpServlet {
                 mail = req.getParameter("mail");
                 enrollment = req.getParameter("enrollment");
                 password = req.getParameter("password");
-                user = new User(Long.parseLong(id), name, surname, curp, status, Long.parseLong(type_user), mail, enrollment, password);
+                user = new User(Long.parseLong(id), name, lastname, surname, curp, status, Long.parseLong(type_user), mail, enrollment, password);
                 if (new DaoUser().update(user)){
                     redirect = "/user/users?result="+true+"&message="+ URLEncoder.encode("¡Exito! Usuario actualizado correctamente.", StandardCharsets.UTF_8);
 
@@ -167,16 +165,15 @@ public class ServletUser extends HttpServlet {
 
                 }
                 break;
-            case "/user/save":
+            case "/user/save-teacher":
                 name = req.getParameter("name");
+                lastname = req.getParameter("lastname");
                 surname = req.getParameter("surname");
                 curp = req.getParameter("curp");
-                status = req.getParameter("status");
-                type_user = req.getParameter("type_user");
                 mail = req.getParameter("mail");
                 enrollment = req.getParameter("enrollment");
                 password = req.getParameter("password");
-                User user1 = new User(0L, name, surname, curp, status, Long.parseLong(type_user), mail, enrollment, password);
+                User user1 = new User(0L, name, lastname, surname, curp, "Activo", 2L, mail, enrollment, password);
 
                 boolean result = new DaoUser().save(user1);
                 if (result){
@@ -184,6 +181,24 @@ public class ServletUser extends HttpServlet {
 
                 }else {
                     redirect = "/user/users?result="+result+"&message="+ URLEncoder.encode("Error accion no realizada correctamente.", StandardCharsets.UTF_8);
+                }
+                break;
+            case "/user/save-student":
+                name = req.getParameter("name");
+                lastname = req.getParameter("lastname");
+                surname = req.getParameter("surname");
+                curp = req.getParameter("curp");
+                mail = req.getParameter("mail");
+                enrollment = req.getParameter("enrollment");
+                password = req.getParameter("password");
+                User user = new User(0L, name, lastname, surname, curp, "Activo", 3L, mail, enrollment, password);
+
+                boolean result2 = new DaoUser().save(user);
+                if (result2){
+                    redirect = "/user/users?result="+result2+"&message="+ URLEncoder.encode("¡Exito! Usuario registrado correctamente.", StandardCharsets.UTF_8);
+
+                }else {
+                    redirect = "/user/users?result="+result2+"&message="+ URLEncoder.encode("Error accion no realizada correctamente.", StandardCharsets.UTF_8);
 
                 }
                 break;
@@ -195,6 +210,7 @@ public class ServletUser extends HttpServlet {
                     redirect = "/user/admin?result="+false+"&message="+ URLEncoder.encode("¡ERROR! Usuario no eliminado.", StandardCharsets.UTF_8);
 
                 break;
+
         }
         resp.sendRedirect(req.getContextPath()+ redirect);
     }

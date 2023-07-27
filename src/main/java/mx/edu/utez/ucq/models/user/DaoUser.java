@@ -57,6 +57,7 @@ public class DaoUser implements DaoRepository<User>{
                 User user = new User();
                 user.setId(rs.getLong("id_user"));
                 user.setName(rs.getString("name"));
+                user.setLastname(rs.getString("lastname"));
                 user.setSurname(rs.getString("surname"));
                 user.setCurp(rs.getString("curp"));
                 user.setStatus(rs.getString("status"));
@@ -86,6 +87,7 @@ public class DaoUser implements DaoRepository<User>{
             if (rs.next()){
                 user.setId(rs.getLong("id_user"));
                 user.setName(rs.getString("name"));
+                user.setLastname(rs.getString("lastname"));
                 user.setSurname(rs.getString("surname"));
                 user.setCurp(rs.getString("curp"));
                 user.setStatus(rs.getString("status"));
@@ -106,16 +108,17 @@ public class DaoUser implements DaoRepository<User>{
         public boolean save(User object) {
             try {
                 conn = new MySQLConnection().connect();
-                String query = "INSERT INTO users (name, surname, curp, status, type_user, mail, enrollment, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+                String query = "INSERT INTO users (name, lastname, surname, curp, status, type_user, mail, enrollment, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
                 pstm = conn.prepareStatement(query);
                 pstm.setString(1,object.getName());
-                pstm.setString(2,object.getSurname());
-                pstm.setString(3, object.getCurp());
-                pstm.setString(4,object.getStatus());
-                pstm.setLong(5, object.getType_user());
-                pstm.setString(6,object.getMail());
-                pstm.setString(7,object.getEnrollment());
-                pstm.setString(8,object.getPassword());
+                pstm.setString(2,object.getLastname());
+                pstm.setString(3,object.getSurname());
+                pstm.setString(4, object.getCurp());
+                pstm.setString(5,"Activo");
+                pstm.setLong(6, object.getType_user());
+                pstm.setString(7,object.getMail());
+                pstm.setString(8,object.getEnrollment());
+                pstm.setString(9,object.getPassword());
                 return pstm.executeUpdate() > 0; // == 1
 
             }catch (SQLException e){

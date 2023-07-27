@@ -82,7 +82,7 @@
                                         <c:out value="${user.enrollment}"/>
                                     </td>
                                     <td>
-                                        <c:out value="${user.name}"/> <br> <c:out value="${user.surname}"/>
+                                        <c:out value="${user.name}"/> <br> <c:out value="${user.lastname}"/> <br> <c:out value="${user.surname}"/>
                                     </td>
                                     <td>
                                         <c:out value="${user.curp}"/>
