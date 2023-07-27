@@ -70,10 +70,8 @@
           <form>
             <div class="form-group mb-3 ">
               <div class="d-grid">
-                <button type="submit" class="btn btn-outline-success btn-sm" >
-                  <a href="/teacher/view" >
-                  CREAR NUEVO EXAMEN
-                  </a>
+                <button type="button" class="btn btn-outline-success btn-sm"  onclick="location.href='/teacher/view'">
+                    CREAR NUEVO EXAMEN
                 </button>
               </div>
             </div>
