@@ -105,7 +105,7 @@
                   <input  type="text" name="codigo" id="codigo" class="form-control
                    mt-4" required style="background-color: #D9D9D9;">
                   <button type="submit" class="btn btn-outline-success btn-sm mt-3">
-                    ACEPTAR
+                    aceptar
                   </button>
                 </div>
               </div>
