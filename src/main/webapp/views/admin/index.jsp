@@ -6,7 +6,33 @@
     <title>Inicio Admin</title>
     <jsp:include page="../../layouts/head.jsp"/>
 </head>
+
+<style>
+
+    .buttonColor {
+        background-color: transparent;
+    }
+
+    .buttonColor:hover {
+        background-color: #002F5D;
+    }
+
+    .buttonColor:active {
+        background-color: #002F5D;
+    }
+
+    .buttonColor:hover img {
+        filter: invert(100%);
+    }
+
+    .buttonColor:hover h5 {
+        color: #ffffff;
+    }
+
+</style>
+
 <body style="background-color: #D8EAE3;">
+
 <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
     <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
         <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
@@ -31,20 +57,23 @@
 
     <div class="row justify-content-center mt-5">
 
-        <button  type="button" class="btn btn-outline-success btn-sm"
+        <button  type="button" class="btn btn-outline-success btn-sm buttonColor"
                  data-bs-toggle="modal" data-bs-target="#ModalTeacher"
-                 style="width: 200px; height: 100px" onclick="">
+                 style="width: 200px; height: 100px; color: #002F5D" onclick="">
             <img style="height: 100px; width: 100px" src="../../assets/img/icons8-teacher-100.png" class="card-img-top" alt="...">
             <h5>Agregar profesores</h5>
         </button>
 
         <div class="col-3 col-md-2">
-            <button  type="button" class="btn btn-outline-success btn-sm"
+            <button  type="button" class="btn btn-outline-success btn-sm buttonColor"
                      data-bs-toggle="modal" data-bs-target="#ModalStudent"
-                     style="width: 200px; height: 100px" onclick="">
+                     style="width: 200px; height: 100px; color: #002F5D" onclick="">
                 <img style="height: 100px; width: 100px" src="../../assets/img/icons8-student-100.png" class="card-img-top" alt="...">
                 <h5>Agregar estudiantes</h5>
             </button>
+            <br>
+            <br>
+
     </div>
 
 
@@ -284,6 +313,42 @@
             alert("Por favor, completa todos los campos requeridos correctamente.");
         }
     }
+
+    function changeButtonColorOnClick() {
+        this.style.backgroundColor = '#002F5D';
+    }
+
+    // Función para cambiar la imagen a blanco cuando el puntero pasa sobre el botón
+    function changeImageColor() {
+        const image = this.querySelector('img');
+        image.style.filter = 'invert(100%)';
+    }
+
+    // Función para restaurar el color original de la imagen cuando el puntero deja el botón
+    function restoreImageColor() {
+        const image = this.querySelector('img');
+        image.style.filter = 'none';
+    }
+
+    // Agregar eventos para manejar los cambios de color a todos los botones con clase "buttonColor"
+    const btns = document.querySelectorAll('.buttonColor');
+    btns.forEach(btn => {
+        btn.addEventListener('mouseover', changeImageColor);
+        btn.addEventListener('mouseout', restoreImageColor);
+    });
+
+    // Función para restaurar el color de fondo original del botón cuando finaliza el clic
+    function restoreButtonColor() {
+        this.style.backgroundColor = 'transparent';
+    }
+
+    // Agregar eventos para manejar los cambios de color al hacer clic
+    btns.forEach(btn => {
+        btn.addEventListener('mousedown', changeButtonColorOnClick);
+        btn.addEventListener('mouseup', restoreButtonColor);
+        btn.addEventListener('mouseout', restoreImageColor); // Para restaurar el color de la imagen si el puntero sale del botón sin hacer clic
+    });
+
 </script>
 </body>
 </html>
