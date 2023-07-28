@@ -156,13 +156,15 @@
                                         <c:out value="${user.type_user}"/>
                                     </td>
                                     <td>
+                                        <button type="button" class="btn btn-outline-warning btn-sm" onclick="editarUsuario(${user.id})">Editar</button>
                                         <form method="get" action="/user/user-view-update">
                                             <input hidden value="${user.id}" name="id">
-                                            <button type="button" class="btn btn-outline-warning btn-sm"
+                                            <button type="button" class=""
                                                     data-bs-toggle="modal" data-bs-target="#EditUser">
                                                 Editar
                                             </button>
                                         </form>
+
                                         <form method="post" action="/user/delete">
                                             <input hidden value="${user.id}" name="id">
                                             <button type="submit" class="btn btn-outline-danger btn-sm">
@@ -225,7 +227,7 @@
                                     </div>
                                     <div class="col">
                                         <label for="mail" class="fw-bold">Correo:</label>
-                                        <input type="email" name="  mail" id="mail" class="form-control" required>
+                                        <input type="email" name="mail" id="mail" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                 </div>
@@ -240,13 +242,13 @@
                                     </div>
                                 </div>
                             </div>
-                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
                         <button type="button" id="SaveTeacher" class="btn btn-primary" onclick="validateForm()">Guardar</button>
                     </div>
                         </form>
-
+                    </div>
                 </div>
             </div>
         </div>
@@ -335,7 +337,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="needs-validation" novalidate action="/user/save-student" method="post">
+                        <form class="needs-validation" novalidate action="/user/update" method="post">
                             <div class="row">
 
                                 <div class="col">
@@ -391,13 +393,13 @@
                                     </div>
                                 </div>
                             </div>
-                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
                         <button type="submit" id="SaveEdit" class="btn btn-primary" onclick="validateFormEdit()">Guardar</button>
                     </div>
                     </form>
-
+                    </div>
                 </div>
             </div>
         </div>
@@ -406,26 +408,60 @@
 
     <jsp:include page="../../layouts/footer.jsp"/>
 <script>
+    // Función para abrir el modal de edición con los datos del usuario seleccionado
+    function editarUsuario(${user.id}) {
+
+        const filaUsuario = $(`tr[data-id="idUsuario"]`);
+        const nombre = filaUsuario.find('td:eq(0)').text();
+        const apellidoPaterno = filaUsuario.find('td:eq(1)').text();
+        const apellidoMaterno = filaUsuario.find('td:eq(2)').text();
+        const matricula = filaUsuario.find('td:eq(3)').text();
+        const curp = filaUsuario.find('td:eq(4)').text();
+        const correo = filaUsuario.find('td:eq(5)').text();
+
+        // Rellena el formulario de edición con los datos del usuario
+        document.getElementById('Editname').value = nombre;
+        document.getElementById('Editlastname').value = apellidoPaterno;
+        document.getElementById('Editsurname').value = apellidoMaterno;
+        document.getElementById('Editenrollment').value = matricula;
+        document.getElementById('Editcurp').value = curp;
+        document.getElementById('EditMail').value = correo;
+        // ... Rellena más campos del formulario según los datos del usuario ...
+        document.getElementById('userId').value = idUsuario;
+        // Abre el modal de edición
+        const modal = new bootstrap.Modal(document.getElementById('EditUser'));
+        modal.show();
+    }
 
     function validateForm() {
         // Obtener los elementos del formulario mediante su ID
         var form = document.getElementById("teacherForm");
-        var passwordInput = document.getElementById("password");
-        var confirmPasswordInput = document.getElementById("ConfirmPassword");
 
         // Validar el formulario antes de enviarlo
-        if (form.checkValidity() && passwordInput.value === confirmPasswordInput.value) {
+        if (form.checkValidity()) {
             // Si el formulario es válido y las contraseñas coinciden, enviarlo al servidor
             form.submit();
-        } else if (passwordInput.value !== confirmPasswordInput.value) {
-            // Si las contraseñas no coinciden, mostrar un mensaje de error con SweetAlert2
+        } else {
+            // Si el formulario no es válido, mostrar un mensaje de error con SweetAlert2
             Swal.fire({
                 icon: 'error',
-                title: 'LAS CONTRASEÑAS NO COINCIDEN',
-                text: 'Verifica que las contraseñas sean iguales.',
+                title: 'COMPLETA TODOS LOS CAMPOS',
+                text: 'Por favor, completa todos los campos requeridos.',
                 timer: 2000
             });
             return false;
+        }
+
+        return true;
+    }
+    function validateFormEdit() {
+        // Obtener los elementos del formulario mediante su ID
+        var form = document.getElementById("EditUser");
+
+        // Validar el formulario antes de enviarlo
+        if (form.checkValidity()) {
+            // Si el formulario es válido y las contraseñas coinciden, enviarlo al servidor
+            form.submit();
         } else {
             // Si el formulario no es válido, mostrar un mensaje de error con SweetAlert2
             Swal.fire({
@@ -443,22 +479,11 @@
     function validateFormStudent() {
         // Obtener los elementos del formulario mediante su ID
         var form = document.getElementById("ModalStudent");
-        var passwordInput = document.getElementById("password2");
-        var confirmPasswordInput = document.getElementById("ConfirmPassword2");
 
         // Validar el formulario antes de enviarlo
-        if (form.checkValidity() && passwordInput.value === confirmPasswordInput.value) {
+        if (form.checkValidity()) {
             // Si el formulario es válido y las contraseñas coinciden, enviarlo al servidor
             form.submit();
-        } else if (passwordInput.value !== confirmPasswordInput.value) {
-            // Si las contraseñas no coinciden, mostrar un mensaje de error con SweetAlert2
-            Swal.fire({
-                icon: 'error',
-                title: 'LAS CONTRASEÑAS NO COINCIDEN',
-                text: 'Verifica que las contraseñas sean iguales.',
-                timer: 2000
-            });
-            return false;
         } else {
             // Si el formulario no es válido, mostrar un mensaje de error con SweetAlert2
             Swal.fire({
@@ -481,7 +506,12 @@
             form.submit();
         } else {
             // Si el formulario no es válido, mostrar un mensaje de error y evitar el envío
-            alert("Por favor, completa todos los campos requeridos correctamente.");
+            Swal.fire({
+                icon: 'error',
+                title: 'COMPLETA TODOS LOS CAMPOS',
+                text: 'Por favor, completa todos los campos requeridos.',
+                timer: 2000
+            });
         }
     }
     function changeButtonColorOnClick() {
