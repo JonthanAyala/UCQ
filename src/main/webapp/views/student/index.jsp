@@ -29,7 +29,7 @@
     background-image:
             linear-gradient(to right, rgba(216, 234, 227, 0.5) 1px, transparent 1px),
             linear-gradient(to bottom, rgba(216, 234, 227, 0.5) 1px, transparent 1px);
-    background-size: 10px 10px; /* Tamaño de las celdas del cuadriculado */
+    background-size: 5px 5px; /* Tamaño de las celdas del cuadriculado */
   }
 
   .grid-container {
@@ -69,7 +69,7 @@
     </div>
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel"
          style="background-color: #00AA83">
-      <div class="offcanvas-header">
+      <div class="offcanvas-header" style="background-color: #002F5D">
         <h5 class="offcanvas-title" id="offcanvasNavbarLabel" style="color: white;">ULTIMATE CUSTOME QUIZ</h5>
         <button type="button" class="btn btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
@@ -93,10 +93,10 @@
 
 <div class="container-fluid w-25 p-3 mt-5" style="border-color: #3ECEAC!important;">
   <div class="row">
-    <div class="col">
-      <div class="card mt-5" style="border-color: #002F5D" >
+    <div class="col" >
+      <div class="card mt-5">
         <div class="car-header" style="background-color: #00AA83; color: white"
-        ><h4 class="text-center">Ingresa el codigo de acceso</h4></div>
+        ><h4 class="text-center">Codigo de acceso</h4></div>
         <div class="card-body" ><br> <br> <br>
           <form>
             <div class="form-group mt-2 position-absolute top-50 start-50 translate-middle">
@@ -120,22 +120,19 @@
 
 <div class="container-fluid w-100 p-3 ">
   <div class="row">
-    <div class="col">
+    <div class="col" style="background-color: transparent;">
       <div class="card" style="border-color: #002F5D">
         <div class="car-header" style="background-color: #00AA83; color: white;">
           <h3 class="text-center mt-3">Examenes pendientes</h3>
         </div>
 
-        <div class="card-body ">
-          <div class="card-body">
             <table class="table table-striped">
-              <thead>
-              <th style="color: #002F5D">#</th>
-              <th style="color: #002F5D">Nombre examen</th>
-              <th style="color: #002F5D">Fecha inicio</th>
-              <th style="color: #002F5D">Fecha finalizacion</th>
-              <th style="color: #002F5D">Profesor</th>
-
+              <thead style="background-color: #002F5D">
+              <th style="color: white">#</th>
+              <th style="color: white">Nombre examen</th>
+              <th style="color: white">Fecha inicio</th>
+              <th style="color: white">Fecha finalizacion</th>
+              <th style="color: white">Profesor</th>
               </thead>
               <tbody>
                 <tr>
@@ -152,9 +149,7 @@
               </tr>
               </tbody>
             </table>
-          </div>
 
-        </div>
       </div>
     </div>
   </div>
