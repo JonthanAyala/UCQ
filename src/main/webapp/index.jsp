@@ -7,16 +7,47 @@
   <title>Usuarios</title>
   <jsp:include page="./layouts/head.jsp"/>
 </head>
-<body style="background-color: #D8EAE3">
+
+<style>
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: white; /* Color de fondo */
+    background-image:
+            linear-gradient(to right, rgba(216, 234, 227, 0.5) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(216, 234, 227, 0.5) 1px, transparent 1px);
+    background-size: 5px 5px; /* Tamaño de las celdas del cuadriculado */
+  }
+
+  .grid-container {
+    /* Centra el contenido en la página */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+</style>
+
+
+
+<body style="background-color: white;">
+
+<div class="grid-container position-absolute">
+
+</div>
+
 <nav class="navbar" style="background-color:#002F5D!important;">
-  <div class="container-fluid">
+  <div class="container-fluid " style="color: white !important;">
     <a class="navbar-brand">
-      <img src="/assets/img/Logo_UCQ.png" alt="Logo" width="100" height="40" class="d-inline-block align-text-top">
-      Ultimate Custom Quiz
+      <img src="/assets/img/Logo_UCQ.png" alt="Logo" width="100" height="40" class="d-inline-block align-text-top me-2">
+      <span class="text-white">Ultimate Custom Quiz</span>
     </a>
     <hr class="hr-ver" style="width: 2px;height: 30px; background-color: #000000; margin-left: 520px; margin-right: 10px;">
     <div class="dropdown">
-      <button class="btn btn-light dropdown-toggle" style="margin-right: 50px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-light dropdown-toggle" style="margin-right: 50px;
+background-color: #002F5D; color: white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         Inicio de sesíon
       </button>
       <ul class="dropdown-menu text-center" >
@@ -28,6 +59,8 @@
 </nav>
 
 <div class="container p-5">
+  <br>
+  <br>
   <div class="row">
     <div class="col-9"><h2>Objetivo General</h2></div>
     <div class="col-6">UCQ<br>El objetivo de nuestro proyecto es el poder crear una aplicación web para la gestión y resolución de exámenes
