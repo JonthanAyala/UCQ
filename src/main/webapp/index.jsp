@@ -8,7 +8,7 @@
   <jsp:include page="./layouts/head.jsp"/>
 </head>
 <body style="background-color: #D8EAE3">
-<nav class="navbar" style="background-color: #ffffff;">
+<nav class="navbar" style="background-color:#002F5D!important;">
   <div class="container-fluid">
     <a class="navbar-brand">
       <img src="/assets/img/Logo_UCQ.png" alt="Logo" width="100" height="40" class="d-inline-block align-text-top">

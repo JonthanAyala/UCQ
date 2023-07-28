@@ -29,25 +29,61 @@
         color: #ffffff;
     }
 
+    .navbar.bg-body-tertiary {
+        background-color: #002F5D !important; /* Reemplaza "your-color" con el color deseado */
+    }
+
 </style>
 
 <body style="background-color: #D8EAE3;">
 
-<nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
-    <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
-        <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
-            <h3 class="text-center">Ultimate Custom Quiz</h3>
-        </a>
-        <br><br>
+<nav class="navbar bg-body-tertiary fixed-top mb-5">
+    <div class="container d-flex align-content-between">
+
+        <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
+            <a class="navbar-brand position-absolute top-50 start-50 translate-middle"
+               style="color: white;"> <h3> Ultimate Custom Quiz </h3></a>
+        </div>
+
+        <div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
+                    aria-label="Toggle navigation" style="border-color: white">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-color: #002F5D">
+
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel" style="color: white;">ULTIMATE CUSTOME QUIZ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#" style="color: white;"> Perfil </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" style="color: white">Cerrar sesion </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
     </div>
+    <br>
+    <br>
 </nav>
+
 
 <br><br>
 <div class="container-fluid">
     <div class="row">
         <div class="col">
             <div class="col">
-                <form class="d-flex justify-content-center" role="search">
+                <form class="d-flex justify-content-center mt-5" role="search">
                     <input class="form-control me-2 w-25 p-3  align-content-center " style="background-color: #D9D9D9;" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
@@ -122,7 +158,8 @@
                                     <td>
                                         <form method="get" action="/user/user-view-update">
                                             <input hidden value="${user.id}" name="id">
-                                            <button type="submit" class="btn btn-outline-warning btn-sm">
+                                            <button type="button" class="btn btn-outline-warning btn-sm"
+                                                    data-bs-toggle="modal" data-bs-target="#EditUser">
                                                 Editar
                                             </button>
                                         </form>
@@ -178,7 +215,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <label for="enrollment" class="fw-bold col-form-label">Matricula:</label>
-                                        <input type="text" name="enrollment" id="enrollment" class="form-control" required>
+                                        <input type="text"  name="enrollment" id="enrollment" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                     <div class="col">
@@ -215,6 +252,7 @@
         </div>
 
 
+        <!-- ---------------------------------------- SECCIÓN DE EDITAR EL USUARIO -------------------------------------------------------- -->
 
         <div class="modal fade" id="ModalStudent" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -288,25 +326,155 @@
         </div>
 
 
-<jsp:include page="../../layouts/footer.jsp"/>
+
+        <div class="modal fade" id="EditUser" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel3"> Editar usuario </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="needs-validation" novalidate action="/user/save-student" method="post">
+                            <div class="row">
+
+                                <div class="col">
+                                    <label for="Editname" class="fw-bold col-form-label">Nombre:</label>
+                                    <input type="text" name="Editname" id="Editname" class="form-control" required/>
+                                    <div class="invalid-feedback">Campo obligatorio</div>
+                                </div>
+                                <div class="col">
+                                    <label for="Editlastname" class="fw-bold col-form-label">Apellido Paterno:</label>
+                                    <input type="text" name="Editlastname" id="Editlastname" class="form-control" required>
+                                    <div class="invalid-feedback">Campo obligatorio</div>
+                                </div>
+                                <div class="col">
+                                    <label for="Editsurname" class="fw-bold col-form-label">Apellido Materno:</label>
+                                    <input type="text" name="Editsurname" id="Editsurname" class="form-control" required>
+                                    <div class="invalid-feedback">Campo obligatorio</div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="Editenrollment" class="fw-bold col-form-label">Matricula:</label>
+                                        <input type="text" name="Editenrollment" id="Editenrollment" class="form-control" required>
+                                        <div class="invalid-feedback">Campo obligatorio</div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="Editcurp" class="fw-bold">Curp:</label>
+                                        <input type="text" name="Editcurp" id="Editcurp" class="form-control" required>
+                                        <div class="invalid-feedback">Campo obligatorio</div>
+                                    </div>
+
+                                    <div class="col">
+                                        <label for="EditMail" class="fw-bold">Correo :</label>
+                                        <input type="email" name="EditMail" id="EditMail" class="form-control" required>
+                                        <div class="invalid-feedback">Campo obligatorio</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <div class="row" >
+                                    <div class="col">
+                                        <label for="Editpassword" class="fw-bold">Contraseña:</label>
+                                        <input type="text" name="Editpassword" id="Editpassword" class="form-control" required>
+                                        <div class="invalid-feedback">Campo obligatorio</div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="EditConfirmPassword" class="fw-bold">Confirmar contraseña:</label>
+                                        <input type="text" name="EditConfirmPassword" id="EditConfirmPassword" class="form-control col-form-label" required>
+                                        <div class="invalid-feedback">Campo obligatorio</div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
+                        <button type="submit" id="SaveEdit" class="btn btn-primary" onclick="validateFormEdit()">Guardar</button>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
+
+    <jsp:include page="../../layouts/footer.jsp"/>
 <script>
+
     function validateForm() {
-        // Obtener el formulario mediante su ID
+        // Obtener los elementos del formulario mediante su ID
         var form = document.getElementById("teacherForm");
+        var passwordInput = document.getElementById("password");
+        var confirmPasswordInput = document.getElementById("ConfirmPassword");
 
         // Validar el formulario antes de enviarlo
-        if (form.checkValidity()) {
-            // Si el formulario es válido, enviarlo al servidor
+        if (form.checkValidity() && passwordInput.value === confirmPasswordInput.value) {
+            // Si el formulario es válido y las contraseñas coinciden, enviarlo al servidor
             form.submit();
+        } else if (passwordInput.value !== confirmPasswordInput.value) {
+            // Si las contraseñas no coinciden, mostrar un mensaje de error con SweetAlert2
+            Swal.fire({
+                icon: 'error',
+                title: 'LAS CONTRASEÑAS NO COINCIDEN',
+                text: 'Verifica que las contraseñas sean iguales.',
+                timer: 2000
+            });
+            return false;
         } else {
-            // Si el formulario no es válido, mostrar un mensaje de error y evitar el envío
-            alert("Por favor, completa todos los campos requeridos correctamente.");
+            // Si el formulario no es válido, mostrar un mensaje de error con SweetAlert2
+            Swal.fire({
+                icon: 'error',
+                title: 'COMPLETA TODOS LOS CAMPOS',
+                text: 'Por favor, completa todos los campos requeridos.',
+                timer: 2000
+            });
+            return false;
         }
+
+        return true;
+    }
+
+    function validateFormStudent() {
+        // Obtener los elementos del formulario mediante su ID
+        var form = document.getElementById("ModalStudent");
+        var passwordInput = document.getElementById("password2");
+        var confirmPasswordInput = document.getElementById("ConfirmPassword2");
+
+        // Validar el formulario antes de enviarlo
+        if (form.checkValidity() && passwordInput.value === confirmPasswordInput.value) {
+            // Si el formulario es válido y las contraseñas coinciden, enviarlo al servidor
+            form.submit();
+        } else if (passwordInput.value !== confirmPasswordInput.value) {
+            // Si las contraseñas no coinciden, mostrar un mensaje de error con SweetAlert2
+            Swal.fire({
+                icon: 'error',
+                title: 'LAS CONTRASEÑAS NO COINCIDEN',
+                text: 'Verifica que las contraseñas sean iguales.',
+                timer: 2000
+            });
+            return false;
+        } else {
+            // Si el formulario no es válido, mostrar un mensaje de error con SweetAlert2
+            Swal.fire({
+                icon: 'error',
+                title: 'COMPLETA TODOS LOS CAMPOS',
+                text: 'Por favor, completa todos los campos requeridos.',
+                timer: 2000
+            });
+            return false;
+        }
+
+        return true;
     }
     function validateForm2() {
         // Obtener el formulario mediante su ID
         var form = document.getElementById("studentForm");
-
         // Validar el formulario antes de enviarlo
         if (form.checkValidity()) {
             // Si el formulario es válido, enviarlo al servidor
