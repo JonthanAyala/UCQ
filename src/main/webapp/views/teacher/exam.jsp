@@ -70,22 +70,7 @@
 
             <div>
                 <button type="button" class="btn" style="background-color: transparent; border: transparent"
-                        onclick=" Swal.fire({
-            title: '¿Deseas guardar los cambios?',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'guardar',
-            denyButtonText: `no guardar`,
-        }).then((result) => {
-
-            if (result.isConfirmed) {
-                Swal.fire('EXAMEN GUARDADO', '', 'success')
-                //LA ALERTA APARECERÁ EN CASO DE QUE APRETEN EL BOTON DE REGRESAR Y NO SE HAYAN GUARDADOS LOS CAMBIOS
-                //REDIRIGIR A LA PAGINA PRINCIPAL CON LOS CAMBIOS GUARDADOS
-            } else if (result.isDenied) {
-               //REDIRIGIR SOLAMENTE A LA PAGINA PRINCIPAL
-            }
-        })">
+                        onclick="verificarYNavegar() ">
                     <img src="../../assets/img/icons8-volver-48.png">
                 </button>
             </div>
@@ -118,7 +103,8 @@
 
         <div class="container mb-5">
             <div class=" container mt-5 mb-5 d-grid" style="text-align: center">
-                <button type="submit" class="btn btn-success" disabled>Guardar</button>
+                <button type="submit" class="btn btn-success" style="background-color: #002F5D!important;
+                color: white !important;" onclick="marcarCambiosComoGuardados()">Guardar</button>
             </div>
         </div>
     </div>
@@ -270,6 +256,7 @@
 
         questionContainer.appendChild(card);
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
     }
 
 
@@ -359,6 +346,7 @@
 
         // Disminuye el contador de IDs
         cardId--;
+
     }
 
 
@@ -459,7 +447,10 @@
 
         questionContainer.appendChild(card);
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+
     }
+
 
     function autoResize(textarea) {
         // Ajustar temporalmente el height al mínimo antes de medir el scrollHeight
@@ -467,6 +458,42 @@
         textarea.style.height = textarea.scrollHeight + "px";
     }
 
+
+
+    // Variable global para rastrear si se han guardado los cambios
+    let cambiosGuardados = false;
+
+    function marcarCambiosComoGuardados() {
+        cambiosGuardados = true;
+    }
+
+    function verificarYNavegar() {
+        if (!cambiosGuardados) {
+            Swal.fire({
+                title: '¿Deseas guardar los cambios?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Guardar',
+                denyButtonText: 'No guardar',
+                cancelButtonText: 'Volver al examen'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('EXAMEN GUARDADO', '', 'success');
+                    // Redirige a la página principal con los cambios guardados
+                    // Puedes actualizar el valor de href con la URL deseada
+                    window.location.href = '/ruta/a/pagina-principal';
+                } else if (result.isDenied) {
+                    // Redirige a la página principal sin guardar cambios
+                    // Puedes actualizar el valor de href con la URL deseada
+                    window.location.href = '/ruta/a/pagina-principal';
+                }
+            });
+        } else {
+            // Redirige a la página principal directamente, ya que los cambios ya están guardados
+            // Puedes actualizar el valor de href con la URL deseada
+            window.location.href = '/ruta/a/pagina-principal';
+        }
+    }
 
 
 
