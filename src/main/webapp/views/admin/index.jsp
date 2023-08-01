@@ -75,24 +75,23 @@
             </button>
             <ul class="dropdown-menu" style="background-color: #00AA83; border-bottom-color: #002F5D; margin: 0; padding: 0;">
                 <li class="list-group-item" style="background-color: #00AA83; border-bottom: 1px solid #002F5D; margin: 0; padding: 0;"
-                    onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='none';
-                    this.style.color='#002F5D';"
-                    onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='1px solid #002F5D';
-                    this.style.color='white';"
-                    onclick="window.location.href='user/view-exam';">
+                    onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='none'; this.style.color='#002F5D';"
+                    onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='1px solid #002F5D'; this.style.color='white';"
+                    onclick="window.location.href='/user/profile';">
                     <div style="cursor: pointer; padding: 8px;">
-                        <h6 style="color: white; margin: 0;">perfil</h6>
+                        <h6 style="color: white; margin: 0;">Perfil</h6>
                     </div>
                 </li>
                 <li class="list-group-item" style="background-color: #00AA83; color: white; margin: 0; padding: 0;"
                     onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='1px solid #002F5D';"
                     onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='transparent';"
-                    onclick="window.location.href='user/view-login';">
+                    onclick="window.location.href='/user/view-login';">
                     <div style="cursor: pointer; padding: 8px;">
-                        <h6 style="margin: 0;">cerrar sesión</h6>
+                        <h6 style="margin: 0;">Cerrar sesión</h6>
                     </div>
                 </li>
             </ul>
+
         </div>
         <br><br>
     </div>
@@ -108,7 +107,7 @@
                     <input class="form-control me-2 w-25 p-3  align-content-center "
                            style="background-color: #D9D9D9;" type="search"
                            placeholder="Buscar usuarios" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit"> buscar </button>
+                    <button class="btn btn-outline-success" type="submit"> Buscar </button>
                 </form>
             </div>
         </div>
@@ -151,7 +150,7 @@
                             <th>Matricula</th>
                             <th>Nombre</th>
                             <th>CURP</th>
-                            <th>status</th>
+                            <th>Status</th>
                             <th>Correo</th>
                             <th>Tipo de usuario</th>
                             <th>Acciones</th>
@@ -219,17 +218,17 @@
                             <div class="row">
                                 <div class="col">
                                     <label for="name" class="fw-bold col-form-label">Nombre:</label>
-                                    <input type="text" name="name" id="name" class="form-control" required>
+                                    <input type="text" name="name" id="name" class="form-control" required maxlength="25">
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
                                     <label for="lastname" class="fw-bold col-form-label">Apellido Paterno:</label>
-                                    <input type="text" name="lastname" id="lastname" class="form-control" required>
+                                    <input type="text" name="lastname" id="lastname" class="form-control" required maxlength="25">
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
                                     <label for="surname" class="fw-bold col-form-label">Apellido Materno:</label>
-                                    <input type="text" name="surname" id="surname" class="form-control" required>
+                                    <input type="text" name="surname" id="surname" class="form-control" required maxlength="25">
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                             </div>
@@ -238,17 +237,17 @@
                                 <div class="row">
                                     <div class="col">
                                         <label for="enrollment" class="fw-bold col-form-label">Matricula:</label>
-                                        <input type="text"  name="enrollment" id="enrollment" class="form-control" required>
+                                        <input type="text"  name="enrollment" id="enrollment" class="form-control" required maxlength="10">
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                     <div class="col">
                                         <label for="curp" class="fw-bold">Curp:</label>
-                                        <input type="text" name="curp" id="curp" class="form-control col-form-label" required>
+                                        <input type="text" name="curp" id="curp" class="form-control col-form-label" required maxlength="18">
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                     <div class="col">
                                         <label for="mail" class="fw-bold">Correo:</label>
-                                        <input type="email" name="email" id="mail" class="form-control" required>
+                                        <input type="email" name="email" id="mail" class="form-control" required maxlength="22">
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                 </div>
@@ -258,13 +257,13 @@
                                 <div class="row">
                                     <div class="col">
                                         <label for="password" class="fw-bold">Contraseña:</label>
-                                        <input type="text" name="password" id="password" class="form-control col-form-label" required>
+                                        <input type="text" name="password" id="password" class="form-control col-form-label" required maxlength="16">
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
 
                                     <div class="col">
                                         <label for="ConfirmPassword" class="fw-bold">Confirmar contraseña:</label>
-                                        <input type="text" name="ConfirmPassword" id="ConfirmPassword" class="form-control col-form-label" required>
+                                        <input type="text" name="ConfirmPassword" id="ConfirmPassword" class="form-control col-form-label" required maxlength="16">
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                 </div>
@@ -272,7 +271,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
-                        <button type="button" id="SaveTeacher" class="btn btn-primary" onclick="validateForm()">Guardar</button>
+                        <button type="button" id="SaveTeacher" class="btn btn-primary" onclick="validateForm()" >Guardar</button>
                     </div>
                         </form>
 
@@ -296,17 +295,17 @@
 
                                 <div class="col">
                                     <label for="name2" class="fw-bold col-form-label">Nombre:</label>
-                                    <input type="text" name="name2" id="name2" class="form-control" required/>
+                                    <input type="text" name="name2" id="name2" class="form-control" required maxlength="25"/>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
                                     <label for="lastname2" class="fw-bold col-form-label">Apellido Paterno:</label>
-                                    <input type="text" name="lastname2" id="lastname2" class="form-control" required>
+                                    <input type="text" name="lastname2" id="lastname2" class="form-control" required maxlength="25">
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
                                     <label for="surname2" class="fw-bold col-form-label">Apellido Materno:</label>
-                                    <input type="text" name="surname2" id="surname2" class="form-control" required>
+                                    <input type="text" name="surname2" id="surname2" class="form-control" required maxlength="25">
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
 
@@ -316,18 +315,18 @@
                                 <div class="row">
                                     <div class="col">
                                         <label for="enrollment2" class="fw-bold col-form-label">Matricula:</label>
-                                        <input type="text"  name="enrollment2" id="enrollment2" class="form-control" required>
+                                        <input type="text"  name="enrollment2" id="enrollment2" class="form-control" required maxlength="10">
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                     <div class="col">
                                         <label for="curp2" class="fw-bold">Curp:</label>
-                                        <input type="text" name="curp2" id="curp2" class="form-control" required>
+                                        <input type="text" name="curp2" id="curp2" class="form-control" required maxlength="18">
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
 
                                 <div class="col">
                                     <label for="mail2" class="fw-bold">Correo :</label>
-                                    <input type="email" name="mail2" id="mail2" class="form-control" required>
+                                    <input type="email" name="mail2" id="mail2" class="form-control" required maxlength="22">
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 </div>
@@ -337,20 +336,19 @@
                                 <div class="row" >
                                     <div class="col">
                                         <label for="password2" class="fw-bold">Contraseña:</label>
-                                        <input type="text" name="password2" id="password2" class="form-control" required>
+                                        <input type="text" name="password2" id="password2" class="form-control" required maxlength="16">
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                     <div class="col">
                                         <label for="ConfirmPassword2" class="fw-bold">Confirmar contraseña:</label>
-                                        <input type="text" name="ConfirmPassword2" id="ConfirmPassword2" class="form-control col-form-label" required>
+                                        <input type="text" name="ConfirmPassword2" id="ConfirmPassword2" class="form-control col-form-label" required maxlength="16">
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                 </div>
                              </div>
-                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
-                        <button type="submit" id="SaveStudent" class="btn btn-primary" onclick="validateFormStudent()">Guardar</button>
+                        <button type="button" id="SaveStudent" class="btn btn-primary" onclick="validateFormStudent()">Guardar</button>
                     </div>
                         </form>
 
@@ -373,17 +371,17 @@
 
                                 <div class="col">
                                     <label for="Editname" class="fw-bold col-form-label">Nombre:</label>
-                                    <input type="text" name="Editname" id="Editname" class="form-control" required/>
+                                    <input type="text" name="Editname" id="Editname" class="form-control" required maxlength="25"/>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
-                                    <label for="Editlastname" class="fw-bold col-form-label">Apellido Paterno:</label>
-                                    <input type="text" name="Editlastname" id="Editlastname" class="form-control" required>
+                                    <label for="Editlastname" class="fw-bold col-form-label">Apellido paterno:</label>
+                                    <input type="text" name="Editlastname" id="Editlastname" class="form-control" required maxlength="25">
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
-                                    <label for="Editsurname" class="fw-bold col-form-label">Apellido Materno:</label>
-                                    <input type="text" name="Editsurname" id="Editsurname" class="form-control" required>
+                                    <label for="Editsurname" class="fw-bold col-form-label">Apellido materno:</label>
+                                    <input type="text" name="Editsurname" id="Editsurname" class="form-control" required maxlength="25">
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
 
@@ -393,18 +391,18 @@
                                 <div class="row">
                                     <div class="col">
                                         <label for="Editenrollment" class="fw-bold col-form-label">Matricula:</label>
-                                        <input type="text" name="Editenrollment" id="Editenrollment" class="form-control" required>
+                                        <input type="text" name="Editenrollment" id="Editenrollment" class="form-control" required maxlength="10">
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                     <div class="col">
                                         <label for="Editcurp" class="fw-bold">Curp:</label>
-                                        <input type="text" name="Editcurp" id="Editcurp" class="form-control" required>
+                                        <input type="text" name="Editcurp" id="Editcurp" class="form-control" required maxlength="18">
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
 
                                     <div class="col">
                                         <label for="EditMail" class="fw-bold">Correo :</label>
-                                        <input type="email" name="EditMail" id="EditMail" class="form-control" required>
+                                        <input type="email" name="EditMail" id="EditMail" class="form-control" required maxlength="22">
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                 </div>
@@ -414,17 +412,17 @@
                                 <div class="row" >
                                     <div class="col">
                                         <label for="Editpassword" class="fw-bold">Contraseña:</label>
-                                        <input type="text" name="Editpassword" id="Editpassword" class="form-control" required>
+                                        <input type="text" name="Editpassword" id="Editpassword" class="form-control" required maxlength="16">
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                     <div class="col">
                                         <label for="EditConfirmPassword" class="fw-bold">Confirmar contraseña:</label>
-                                        <input type="text" name="EditConfirmPassword" id="EditConfirmPassword" class="form-control col-form-label" required>
+                                        <input type="text" name="EditConfirmPassword" id="EditConfirmPassword" class="form-control col-form-label" required maxlength="16">
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                 </div>
                             </div>
-                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
                         <button type="submit" id="SaveEdit" class="btn btn-primary" onclick="validateFormEdit()">Guardar</button>
@@ -439,7 +437,38 @@
 
     <jsp:include page="../../layouts/footer.jsp"/>
 <script>
+    function validateForm(formId) {
+        var form = document.getElementById(formId);
+        var inputFields = form.querySelectorAll('input[required]');
+        var labels = form.querySelectorAll('label');
 
+        inputFields.forEach(function (input) {
+            if (!input.value.trim()) {
+                input.classList.add('is-invalid');
+                input.classList.remove('is-valid');
+            } else {
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
+            }
+        });
+
+        labels.forEach(function (label) {
+            var inputId = label.getAttribute('for');
+            var input = document.getElementById(inputId);
+
+            if (!input.value.trim()) {
+                label.classList.add('text-danger');
+                label.innerText = 'Campo obligatorio';
+            } else {
+                label.classList.remove('text-danger');
+                label.innerText = label.getAttribute('data-original-label'); // Restaura el texto original del label
+            }
+        });
+
+        if (form.checkValidity()) {
+            form.submit();
+        }
+    }
     function validateForm() {
         // Obtener los elementos del formulario mediante su ID
         var form = document.getElementById("teacherForm");

@@ -1,4 +1,4 @@
-@ -9,14 +9,159 @@
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -60,21 +60,19 @@
       </button>
       <ul class="dropdown-menu" style="background-color: #00AA83; border-bottom-color: #002F5D; margin: 0; padding: 0;">
         <li class="list-group-item" style="background-color: #00AA83; border-bottom: 1px solid #002F5D; margin: 0; padding: 0;"
-            onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='none';
-                    this.style.color='#002F5D';"
-            onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='1px solid #002F5D';
-                    this.style.color='white';"
-            onclick="window.location.href='user/view-exam';">
+            onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='none'; this.style.color='#002F5D';"
+            onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='1px solid #002F5D'; this.style.color='white';"
+            onclick="window.location.href='/user/profile';">
           <div style="cursor: pointer; padding: 8px;">
-            <h6 style="color: white; margin: 0;">perfil</h6>
+            <h6 style="color: white; margin: 0;">Perfil</h6>
           </div>
         </li>
         <li class="list-group-item" style="background-color: #00AA83; color: white; margin: 0; padding: 0;"
             onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='1px solid #002F5D';"
             onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='transparent';"
-            onclick="window.location.href='user/view-login';">
+            onclick="window.location.href='/user/view-login';">
           <div style="cursor: pointer; padding: 8px;">
-            <h6 style="margin: 0;">cerrar sesión</h6>
+            <h6 style="margin: 0;">Cerrar sesión</h6>
           </div>
         </li>
       </ul>
@@ -88,13 +86,13 @@
     <div class="col">
       <div class="card mt-5 ">
         <div class="car-header" style="background-color: #00AA83; color: white"
-        ><h4 class="text-center">crear examen</h4></div>
+        ><h4 class="text-center">Crear examen</h4></div>
         <div class="card-body" >
           <form>
             <div class="form-group mb-3 ">
               <div class="d-grid">
                 <button type="button" class="btn btn-outline-success btn-sm"  onclick="location.href='/teacher/view'">
-                    crear nuevo examen
+                  Crear nuevo examen
                 </button>
               </div>
             </div>
@@ -105,14 +103,12 @@
   </div>
 </div>
 
-
-
 <div class="container-fluid p-3 ">
   <div class="row">
     <div class="col">
       <div class="card mt-5 ">
         <div class="car-header ">
-          <h3 class="text-center">Examenes creados </h3>
+          <h3 class="text-center">Exámenes creados</h3> <!-- Corregido con tilde en "Exámenes" -->
         </div>
         <div class="card-body ">
           <div class="card-body">
@@ -121,7 +117,7 @@
               <th>#</th>
               <th>Nombre examen</th>
               <th>Fecha inicio</th>
-              <th>Fecha finalizacion</th>
+              <th>Fecha finalización</th> <!-- Corregido con tilde en "finalización" -->
               <th>Calificar</th>
 
               </thead>
@@ -146,6 +142,9 @@
     </div>
   </div>
 </div>
+</body>
+</html>
+
 
 <jsp:include page="../../layouts/footer.jsp"/>
 

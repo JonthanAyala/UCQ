@@ -8,34 +8,60 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>perfil maestro</title>
+  <title>Perfil maestro</title>
 
-    <jsp:include page="../../layouts/head.jsp"/>
+  <jsp:include page="../../layouts/head.jsp"/>
 </head>
-<body style="background-color: #D8EAE3; ">
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: white; /* Color de fondo */
+    background-image:
+            linear-gradient(to right, rgba(216, 234, 227, 0.5) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(216, 234, 227, 0.5) 1px, transparent 1px);
+    background-size: 5px 5px; /* Tamaño de las celdas del cuadriculado */
+  }
 
-  <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
-    <div class="container d-flex align-content-between">
+  .grid-container {
+    /* Centra el contenido en la página */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+</style>
+<body style="background-color: white;">
 
-      <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
-        <a class="navbar-brand position-absolute top-50 start-50 translate-middle"
-           style="color: white;"> <h3> Ultimate Custom Quiz </h3></a>
-      </div>
+<div class="grid-container position-absolute">
 
-      <div>
-        <button type="button" class="btn" style="background-color: transparent; border: transparent">
-          <img src="../../assets/img/icons8-volver-48.png">
-        </button>
-      </div>
+</div>
 
-      <br><br>
+<nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
+  <div class="container d-flex align-content-between">
+
+    <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
+      <a class="navbar-brand position-absolute top-50 start-50 translate-middle"
+         style="color: white;"> <h3> Ultimate Custom Quiz </h3></a>
     </div>
+
+    <div>
+      <button type="button" class="btn" style="background-color: transparent; border: transparent">
+        <img src="../../assets/img/icons8-volver-48.png">
+      </button>
+    </div>
+
+    <br><br>
+  </div>
 </nav>
 
-  <nav class="navbar navbar-expand-lg  " style= "background-color:  #00AA83;">
+
+<div class="container mt-5" style="background-color: white">
+
+  <nav class="navbar navbar-expand-lg  " style= "background-color:  #002F5D;">
     <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
       <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
-        <h4 class="text-center"> Perfil </h4>
+        <h6 style="color: white"> Información personal </h6>
       </a>
       <a class="navbar-brand position-absolute top-0 end-0">
       </a>
@@ -43,129 +69,119 @@
     </div>
   </nav>
 
-  <div class="container mt-5" style="background-color: white">
+  <div class="d-flex">
 
-    <nav class="navbar navbar-expand-lg  " style= "background-color:  #002F5D;">
-      <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
-        <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
-          <h6 style="color: white"> información personal </h6>
-        </a>
-        <a class="navbar-brand position-absolute top-0 end-0">
-        </a>
-        <br><br>
-      </div>
-    </nav>
+    <div>
+      <img src="../../assets/img/usuario.png">
+    </div>
 
-      <div class="d-flex">
+    <div class="container">
 
-          <div>
-            <img src="../../assets/img/usuario.png">
-          </div>
+      <div class="card mt-3">
+        <div class="card-body">
 
-        <div class="container">
+          <div class="container">
 
-          <div class="card mt-3">
-            <div class="card-body">
+            <%--FALTA TRAER DATOS DE LA BD--%>
 
-              <div class="container">
-
-                <%--FALTA TRAER DATOS DE LA BD--%>
-
-                <form id="user-form" class="needs-validation" novalidate action="/user/save" method="post">
-
-                  <div class="form-group">
-
-                    <div class="row">
-                      <div class="col">
-                        <label for="name" class="fw-bold">Nombre:</label>
-                        <input type="text" name="name" id="name" class="form-control" style="background-color: #D9D9D9" required readonly>
-                      </div>
-
-                      <div class="col">
-                        <label for="surnames" class="fw-bold">Apellidos:</label>
-                        <input type="text" name="surnames" id="surnames" class="form-control" style="background-color:  #D9D9D9" required readonly>
-                      </div>
-
-                      <div class="col">
-                        <label for="tuition" class="fw-bold">Matricula:</label>
-                        <input type="text" name="tuition" id="matricula" class="form-control"  style="background-color:  #D9D9D9"  required readonly>
-                      </div>
-
-                    </div>
+            <form id="user-form" class="needs-validation" novalidate action="/user/save" method="post">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col">
+                    <label for="name" class="fw-bold">Nombre:</label>
+                    <input type="text" name="name" id="name" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
                   </div>
 
-                  <div class="form-group">
-
-                    <div class="row">
-
-                      <div class="col">
-                        <label for="tuition" class="fw-bold">Correo:</label>
-                        <input type="text" name="tuition" id="tuition" class="form-control" style="background-color: #D9D9D9" required readonly>
-                      </div>
-
-                      <div class="col">
-
-                        <label for="password" class="fw-bold">Contraseña:</label>
-                        <input type="password" name="password" id="password" class="form-control" style="background-color:  #D9D9D9" required readonly>
-
-                        <label id="confPassTxt" for="confirmPassword" class="fw-bold" style="display: none">Confirmar contraseña:</label>
-                        <input type="password" name="confimPassword" class="mt-2 fw-bold" id="confirmPassword" style="display: none">
-
-                        <button type="button" class="btn mt-2" id="savePasswordBtn"
-                                style="background-color: green; display: none">
-                          <a style="color: white"> GUARDAR CONTRASEÑA </a>
-                        </button>
-
-                      </div>
-
-                      <div class="col">
-                        <button type="button" class="btn mt-5"  onclick="changePassword()" style="background-color: green">
-                          <a style="color: white">CAMBIAR CONTRASEÑA</a>
-                        </button>
-                      </div>
-
-                    </div>
+                  <div class="col">
+                    <label for="surnames" class="fw-bold">Apellidos:</label>
+                    <input type="text" name="surnames" id="surnames" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
                   </div>
 
-                  <div class="container">
-                    <div id="changePassword-container">
-
-                    </div>
+                  <div class="col">
+                    <label for="curp" class="fw-bold">CURP:</label>
+                    <input type="text" name="curp" id="curp" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="18"> <!-- Modificado el maxlength a 18 -->
                   </div>
-
-                </form>
-
+                </div>
               </div>
 
-            </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col">
+                    <label for="tuition" class="fw-bold">Correo:</label>
+                    <input type="text" name="tuition" id="tuition" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="23">
+                  </div>
+
+                  <div class="col">
+                    <label for="password" class="fw-bold">Contraseña:</label>
+                    <input type="password" name="password" id="password" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="16">
+
+                    <label id="confPassTxt" for="confirmPassword" class="fw-bold" style="display: none">Confirmar contraseña:</label>
+                    <input type="password" name="confimPassword" class="form-control" id="confirmPassword" style="display: none" maxlength="16">
+
+                    <button type="button" class="btn mt-2" id="savePasswordBtn" style="background-color: green; display: none">
+                      <a style="color: white">Confirmar cambios</a>
+                    </button>
+                  </div>
+
+                  <div class="col align-self-end"> <!-- Agregamos la clase "align-self-end" para alinear el botón al final del contenedor de columna -->
+                    <div class="col">
+                      <button type="button" class="btn mt-2" onclick="changePassword()" style="background-color: green" id="changePasswordBtn"> <!-- Modificamos la clase "mt-5" por "mt-2" para alinear con los campos -->
+                        <a style="color: white">Editar perfil</a>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="container">
+                <div id="changePassword-container">
+                </div>
+              </div>
+            </form>
+
 
           </div>
-
-          <br>
-          <br>
 
         </div>
 
       </div>
 
+      <br>
+      <br>
+
     </div>
 
   </div>
 
+</div>
+
+</div>
+</body>
+</html>
+
+
 <jsp:include page="../../layouts/footer.jsp"/>
   <script>
     function changePassword() {
-      // Habilitar el input de contraseña para escritura
+      // Habilitar todos los inputs de contraseña para escritura
+      document.getElementById('name').readOnly = false;
+      document.getElementById('name').style.backgroundColor = 'white';
+      document.getElementById('surnames').readOnly = false;
+      document.getElementById('surnames').style.backgroundColor = 'white';
+      document.getElementById('curp').readOnly = false;
+      document.getElementById('curp').style.backgroundColor = 'white';
+      document.getElementById('tuition').readOnly = false;
+      document.getElementById('tuition').style.backgroundColor = 'white';
       document.getElementById('password').readOnly = false;
       document.getElementById('password').style.backgroundColor = 'white';
 
-      // Mostrar el botón de "Guardar Contraseña"
+      // Mostrar los elementos del cambio de contraseña
       document.getElementById('savePasswordBtn').style.display = 'block';
       document.getElementById('confPassTxt').style.display = 'block';
       document.getElementById('confirmPassword').style.display = 'block';
 
-      // Ocultar el botón "CAMBIAR CONTRASEÑA"
-      document.querySelector('.btn.mt-5').style.display = 'none';
+      // Ocultar el botón "Cambiar contraseña"
+      document.getElementById('changePasswordBtn').style.display = 'none';
     }
 
     function confirmPassword() {
@@ -196,6 +212,14 @@
       // Por ejemplo: enviarNewPasswordAlServidor(newPassword);
 
       // Bloquear el input de contraseña nuevamente
+      document.getElementById('name').readOnly = true;
+      document.getElementById('name').style.backgroundColor = ' #D9D9D9';
+      document.getElementById('surnames').readOnly = true;
+      document.getElementById('surnames').style.backgroundColor = ' #D9D9D9';
+      document.getElementById('curp').readOnly = true;
+      document.getElementById('curp').style.backgroundColor = ' #D9D9D9';
+      document.getElementById('tuition').readOnly = true;
+      document.getElementById('tuition').style.backgroundColor = ' #D9D9D9';
       document.getElementById('password').readOnly = true;
       document.getElementById('password').style.backgroundColor = ' #D9D9D9';
 

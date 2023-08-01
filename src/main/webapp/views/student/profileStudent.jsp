@@ -8,11 +8,34 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <title>perfil estudiante</title>
+  <title>Perfil estudiante</title>
 
   <jsp:include page="../../layouts/head.jsp"/>
 </head>
-<body style="background-color: #D8EAE3; ">
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: white; /* Color de fondo */
+    background-image:
+            linear-gradient(to right, rgba(216, 234, 227, 0.5) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(216, 234, 227, 0.5) 1px, transparent 1px);
+    background-size: 5px 5px; /* Tamaño de las celdas del cuadriculado */
+  }
+
+  .grid-container {
+    /* Centra el contenido en la página */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+</style>
+<body style="background-color: white;">
+
+<div class="grid-container position-absolute">
+
+</div>
 
 <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
   <div class="container d-flex align-content-between">
@@ -32,7 +55,9 @@
   </div>
 </nav>
 
-<nav class="navbar navbar-expand-lg  " style= "background-color:  #00AA83;">
+
+<%--
+<nav class="navbar navbar-expand-lg" style="background-color: #00AA83;">
   <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
     <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
       <h4 class="text-center"> Perfil </h4>
@@ -42,13 +67,14 @@
     <br><br>
   </div>
 </nav>
+--%>
 
 <div class="container mt-5" style="background-color: white">
 
   <nav class="navbar navbar-expand-lg  " style= "background-color:  #002F5D;">
     <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
       <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
-        <h6 style="color: white"> información personal </h6>
+        <h6 style="color: white"> Información personal </h6>
       </a>
       <a class="navbar-brand position-absolute top-0 end-0">
       </a>
@@ -72,9 +98,7 @@
             <%--FALTA TRAER DATOS DE LA BD--%>
 
             <form id="user-form" class="needs-validation" novalidate action="/user/save" method="post">
-
               <div class="form-group">
-
                 <div class="row">
                   <div class="col">
                     <label for="name" class="fw-bold">Nombre:</label>
@@ -83,53 +107,46 @@
 
                   <div class="col">
                     <label for="surnames" class="fw-bold">Apellidos:</label>
-                    <input type="text" name="surnames" id="surnames" class="form-control" style="background-color:  #D9D9D9" required readonly>
+                    <input type="text" name="surnames" id="surnames" class="form-control" style="background-color: #D9D9D9" required readonly>
                   </div>
-
-
                 </div>
               </div>
 
               <div class="form-group">
-
                 <div class="row">
-
                   <div class="col">
-                    <label for="enrollment" class="fw-bold">Matricula:</label>
-                    <input type="text" name="enrollments" id="enrollment" class="form-control"  style="background-color:  #D9D9D9"  required readonly>
+                    <label for="enrollment" class="fw-bold">Matrícula:</label> <!-- Corregido con tilde en "Matrícula" -->
+                    <input type="text" name="enrollments" id="enrollment" class="form-control" style="background-color: #D9D9D9" required readonly>
                   </div>
 
                   <div class="col">
-
                     <label for="password" class="fw-bold">Contraseña:</label>
-                    <input type="password" name="password" id="password" class="form-control" style="background-color:  #D9D9D9" required readonly>
+                    <input type="password" name="password" id="password" class="form-control" style="background-color: #D9D9D9" required readonly>
 
                     <label id="confPassTxt" for="confirmPassword" class="fw-bold" style="display: none">Confirmar contraseña:</label>
-                    <input type="password" name="confimPassword" class="mt-2 fw-bold" id="confirmPassword" style="display: none">
+                    <input type="password" name="confimPassword" class="form-control" id="confirmPassword" style="display: none">
 
-                    <button type="button" class="btn mt-2" id="savePasswordBtn"
-                            style="background-color: green; display: none">
-                      <a style="color: white"> GUARDAR CONTRASEÑA </a>
-                    </button>
-
-                  </div>
-
-                  <div class="col">
-                    <button type="button" class="btn mt-5"  onclick="changePassword()" style="background-color: green">
-                      <a style="color: white">CAMBIAR CONTRASEÑA</a>
+                    <button type="button" class="btn mt-2" id="savePasswordBtn" style="background-color: green; display: none">
+                      <a style="color: white">Guardar cambios</a>
                     </button>
                   </div>
 
+                  <div class="col align-self-end"> <!-- Agregamos la clase "align-self-end" para alinear el botón al final del contenedor de columna -->
+                    <div class="col">
+                      <button type="button" class="btn mt-2" onclick="changePassword()" style="background-color: green" id="changePasswordBtn"> <!-- Modificamos la clase "mt-5" por "mt-2" para alinear con los campos -->
+                        <a style="color: white">Editar perfil</a>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div class="container">
                 <div id="changePassword-container">
-
                 </div>
               </div>
-
             </form>
+
 
           </div>
 
@@ -148,21 +165,29 @@
 
 </div>
 
+
 <jsp:include page="../../layouts/footer.jsp"/>
 <script>
   function changePassword() {
-    // Habilitar el input de contraseña para escritura
+    // Habilitar todos los inputs de contraseña para escritura
+    document.getElementById('name').readOnly = false;
+    document.getElementById('name').style.backgroundColor = 'white';
+    document.getElementById('surnames').readOnly = false;
+    document.getElementById('surnames').style.backgroundColor = 'white';
+    document.getElementById('enrollment').readOnly = false;
+    document.getElementById('enrollment').style.backgroundColor = 'white';
     document.getElementById('password').readOnly = false;
     document.getElementById('password').style.backgroundColor = 'white';
 
-    // Mostrar el botón de "Guardar Contraseña"
+    // Mostrar los elementos del cambio de contraseña
     document.getElementById('savePasswordBtn').style.display = 'block';
     document.getElementById('confPassTxt').style.display = 'block';
     document.getElementById('confirmPassword').style.display = 'block';
 
-    // Ocultar el botón "CAMBIAR CONTRASEÑA"
-    document.querySelector('.btn.mt-5').style.display = 'none';
+    // Ocultar el botón "Cambiar contraseña"
+    document.getElementById('changePasswordBtn').style.display = 'none';
   }
+
 
   function confirmPassword() {
     // Obtener el valor de las contraseñas
@@ -192,8 +217,15 @@
     // Por ejemplo: enviarNewPasswordAlServidor(newPassword);
 
     // Bloquear el input de contraseña nuevamente
+    document.getElementById('name').readOnly = true;
+    document.getElementById('name').style.backgroundColor = ' #D9D9D9';
+    document.getElementById('surnames').readOnly = true;
+    document.getElementById('surnames').style.backgroundColor = ' #D9D9D9';
+    document.getElementById('enrollment').readOnly = true;
+    document.getElementById('enrollment').style.backgroundColor = ' #D9D9D9';
     document.getElementById('password').readOnly = true;
     document.getElementById('password').style.backgroundColor = ' #D9D9D9';
+
 
     // Ocultar el botón "Guardar Contraseña"
     document.getElementById('savePasswordBtn').style.display = 'none';
