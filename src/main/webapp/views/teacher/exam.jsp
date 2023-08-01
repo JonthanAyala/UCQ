@@ -74,8 +74,8 @@
             title: '¿Deseas guardar los cambios?',
             showDenyButton: true,
             showCancelButton: true,
-            confirmButtonText: 'guardar',
-            denyButtonText: `no guardar`,
+            confirmButtonText: 'Guardar',
+            denyButtonText: `No guardar`,
         }).then((result) => {
 
             if (result.isConfirmed) {
@@ -86,7 +86,7 @@
                //REDIRIGIR SOLAMENTE A LA PAGINA PRINCIPAL
             }
         })">
-                    <img src="../../assets/img/icons8-volver-48.png">
+                    <img src="../../assets/img/back-48.png">
                 </button>
             </div>
 

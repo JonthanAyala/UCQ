@@ -77,7 +77,7 @@
                 <li class="list-group-item" style="background-color: #00AA83; border-bottom: 1px solid #002F5D; margin: 0; padding: 0;"
                     onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='none'; this.style.color='#002F5D';"
                     onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='1px solid #002F5D'; this.style.color='white';"
-                    onclick="window.location.href='/user/profile';">
+                    onclick="window.location.href='/user/profile-a';">
                     <div style="cursor: pointer; padding: 8px;">
                         <h6 style="color: white; margin: 0;">Perfil</h6>
                     </div>

@@ -37,7 +37,9 @@ import java.util.Objects;
             "/user/mark-exam",
             "/user/profile",
             "/user/profile-s",
+            "/user/profile-a",
             "/user/view-exam"
+
 })
 
 
@@ -98,6 +100,9 @@ public class ServletUser extends HttpServlet {
                 break;
             case  "/user/profile-s":
                 redirect = "/views/student/profileStudent.jsp";
+                break;
+            case  "/user/profile-a":
+                redirect = "/views/admin/profileAdmin.jsp";
                 break;
             case "/user/view-exam":
                 redirect = "/views/student/exam.jsp";

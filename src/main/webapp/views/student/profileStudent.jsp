@@ -36,7 +36,6 @@
 <div class="grid-container position-absolute">
 
 </div>
-
 <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
   <div class="container d-flex align-content-between">
 
@@ -46,8 +45,8 @@
     </div>
 
     <div>
-      <button type="button" class="btn" style="background-color: transparent; border: transparent">
-        <img src="../../assets/img/icons8-volver-48.png">
+      <button type="button" class="btn" style="background-color: transparent; border: transparent" onclick="redirectToStudentsIndex()">
+        <img src="../../assets/img/back-48.png">
       </button>
     </div>
 
@@ -234,6 +233,9 @@
 
     // Mostrar el botón "CAMBIAR CONTRASEÑA"
     document.querySelector('.btn.mt-5').style.display = 'block';
+  }
+  function redirectToStudentsIndex() {
+    window.location.href = "/user/student";
   }
 
   // Agregar el evento de clic al botón "Guardar Contraseña"
