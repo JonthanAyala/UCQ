@@ -142,6 +142,67 @@
                         </form>
                     </div>
                 </div>
+                <div class="card-body">
+                    <table class="table table-stripped">
+                        <thead>
+                        <tr>
+                            <th>Matricula</th>
+                            <th>Nombre</th>
+                            <th>CURP</th>
+                            <th>status</th>
+                            <th>Correo</th>
+                            <th>Tipo de usuario</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <thbody>
+                            <c:forEach var="user" items="${users}" varStatus="s">
+                                <tr>
+                                    <td>
+                                        <c:out value="${user.enrollment}"/>
+                                    </td>
+                                    <td>
+                                        <c:out value="${user.name}"/> <br> <c:out value="${user.lastname}"/> <br> <c:out value="${user.surname}"/>
+                                    </td>
+                                    <td>
+                                        <c:out value="${user.curp}"/>
+                                    </td>
+                                    <td>
+                                        <c:out value="${user.status}"/>
+                                    </td>
+                                    <td>
+                                        <c:out value="${user.mail}"/>
+                                    </td>
+                                    <td>
+                                        <c:out value="${user.type_user}"/>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-warning btn-sm" onclick="editarUsuario(${user.id})">Editar</button>
+                                        <form method="get" action="/user/user-view-update">
+                                            <input hidden value="${user.id}" name="id">
+                                            <button type="button" class=""
+                                                    data-bs-toggle="modal" data-bs-target="#EditUser">
+                                                Editar
+                                            </button>
+                                        </form>
+
+                                        <form method="post" action="/user/delete">
+                                            <input hidden value="${user.id}" name="id">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            <tr>
+                                <td colspan="6">
+                                    SIn registros
+                                </td>
+                            </tr>
+                        </thbody>
+                    </table>
+                </div>
             </div>
           <div>
 
@@ -259,7 +320,7 @@
                                     </div>
                                     <div class="col">
                                         <label for="mail" class="fw-bold">Correo:</label>
-                                        <input type="email" name="email" id="mail" class="form-control" required>
+                                        <input type="email" name="mail" id="mail" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                 </div>
@@ -272,21 +333,15 @@
                                         <input type="text" name="password" id="password" class="form-control col-form-label" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
-
-                                    <div class="col">
-                                        <label for="ConfirmPassword" class="fw-bold">Confirmar contraseña:</label>
-                                        <input type="text" name="ConfirmPassword" id="ConfirmPassword" class="form-control col-form-label" required>
-                                        <div class="invalid-feedback">Campo obligatorio</div>
-                                    </div>
                                 </div>
                             </div>
-                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
                         <button type="button" id="SaveTeacher" class="btn btn-primary" onclick="validateForm()">Guardar</button>
                     </div>
                         </form>
-
+                    </div>
                 </div>
             </div>
         </div>
@@ -302,23 +357,22 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-
-                        <form class="needs-validation" novalidate action="/user/save-student" method="post" novalidate>
+                        <form id="studentForm" class="needs-validation" novalidate action="/user/save-student" method="post">
                             <div class="row">
 
                                 <div class="col">
-                                    <label for="name2" class="fw-bold col-form-label">Nombre:</label>
-                                    <input type="text" name="name2" id="name2" class="form-control" required>
+                                    <label for="name" class="fw-bold col-form-label">Nombre:</label>
+                                    <input type="text" name="name" id="name" class="form-control" required/>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
-                                    <label for="lastname2" class="fw-bold col-form-label">Apellido Paterno:</label>
-                                    <input type="text" name="lastname2" id="lastname2" class="form-control" required>
+                                    <label for="lastname" class="fw-bold col-form-label">Apellido Paterno:</label>
+                                    <input type="text" name="lastname" id="lastname" class="form-control" required>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
-                                    <label for="surname2" class="fw-bold col-form-label">Apellido Materno:</label>
-                                    <input type="text" name="surname2" id="surname2" class="form-control" required>
+                                    <label for="surname" class="fw-bold col-form-label">Apellido Materno:</label>
+                                    <input type="text" name="surname" id="surname" class="form-control" required>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
 
@@ -327,19 +381,19 @@
                             <div class="form-group mb-3">
                                 <div class="row">
                                     <div class="col">
-                                        <label for="enrollment2" class="fw-bold col-form-label">Matricula:</label>
-                                        <input type="text"  name="enrollment2" id="enrollment2" class="form-control" required>
+                                        <label for="enrollment" class="fw-bold col-form-label">Matricula:</label>
+                                        <input type="text" name="enrollment" id="enrollment" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                     <div class="col">
-                                        <label for="curp2" class="fw-bold">Curp:</label>
-                                        <input type="text" name="curp2" id="curp2" class="form-control" required>
+                                        <label for="curp" class="fw-bold">Curp:</label>
+                                        <input type="text" name="curp" id="curp" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
 
                                 <div class="col">
-                                    <label for="mail2" class="fw-bold">Correo :</label>
-                                    <input type="email" name="mail2" id="mail2" class="form-control" required>
+                                    <label for="mail" class="fw-bold">Correo :</label>
+                                    <input type="email" name="mail" id="mail" class="form-control" required>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 </div>
@@ -348,24 +402,20 @@
                             <div class="form-group mb-3">
                                 <div class="row" >
                                     <div class="col">
-                                        <label for="password2" class="fw-bold">Contraseña:</label>
-                                        <input type="text" name="password2" id="password2" class="form-control" required>
-                                        <div class="invalid-feedback">Campo obligatorio</div>
-                                    </div>
-                                    <div class="col">
-                                        <label for="ConfirmPassword2" class="fw-bold">Confirmar contraseña:</label>
-                                        <input type="text" name="ConfirmPassword2" id="ConfirmPassword2" class="form-control col-form-label" required>
+                                        <label for="password" class="fw-bold">Contraseña:</label>
+                                        <input type="text" name="password" id="password" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                 </div>
                              </div>
-                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
-                        <button type="submit" id="SaveStudent" class="btn btn-primary" onclick="validateFormStudent()">Guardar</button>
+                        <button type="submit" id="SaveStudent" class="btn btn-primary" onclick="validateForm2()">Guardar</button>
                     </div>
-                        </form>
 
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -380,7 +430,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="needs-validation" novalidate action="/user/save-student" method="post">
+                        <form class="needs-validation" novalidate action="/user/update" method="post">
                             <div class="row">
 
                                 <div class="col">
@@ -436,13 +486,13 @@
                                     </div>
                                 </div>
                             </div>
-                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
                         <button type="submit" id="SaveEdit" class="btn btn-primary" onclick="validateFormEdit()">Guardar</button>
                     </div>
                     </form>
-
+                    </div>
                 </div>
             </div>
         </div>
