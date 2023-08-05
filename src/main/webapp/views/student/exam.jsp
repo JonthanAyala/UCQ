@@ -13,6 +13,7 @@
 
 </head>
 <body style="background-color: #D8EAE3;">
+
 <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
     <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
         <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
@@ -24,6 +25,7 @@
         <br><br>
     </div>
 </nav>
+
 <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="container mt-5 bg-light p-4 rounded shadow">

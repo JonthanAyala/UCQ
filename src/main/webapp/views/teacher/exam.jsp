@@ -54,10 +54,33 @@
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: white; /* Color de fondo */
+        background-image:
+                linear-gradient(to right, rgba(216, 234, 227, 0.5) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(216, 234, 227, 0.5) 1px, transparent 1px);
+        background-size: 5px 5px; /* Tamaño de las celdas del cuadriculado */
+    }
+
+    .grid-container {
+        /* Centra el contenido en la página */
+        display: flex;
+        justify-content: center;
+
+        align-items: center;
+        height: 100vh;
+    }
 
 </style>
 
-<body style="background-color: #D8EAE3">
+<body style="background-color: white;">
+
+
+<div class="grid-container position-absolute">
+
+</div>
 
 <div class="overflow-hidden fixed-top">
     <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
@@ -70,22 +93,7 @@
 
             <div>
                 <button type="button" class="btn" style="background-color: transparent; border: transparent"
-                        onclick=" Swal.fire({
-            title: '¿Deseas guardar los cambios?',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'guardar',
-            denyButtonText: `no guardar`,
-        }).then((result) => {
-
-            if (result.isConfirmed) {
-                Swal.fire('EXAMEN GUARDADO', '', 'success')
-                //LA ALERTA APARECERÁ EN CASO DE QUE APRETEN EL BOTON DE REGRESAR Y NO SE HAYAN GUARDADOS LOS CAMBIOS
-                //REDIRIGIR A LA PAGINA PRINCIPAL CON LOS CAMBIOS GUARDADOS
-            } else if (result.isDenied) {
-               //REDIRIGIR SOLAMENTE A LA PAGINA PRINCIPAL
-            }
-        })">
+                        onclick="verificarYNavegar() ">
                     <img src="../../assets/img/icons8-volver-48.png">
                 </button>
             </div>
@@ -106,34 +114,40 @@
         <form action="/path/to/save-exam.jsp" method="post">
             <div class="d-grid">
                 <button type="button" class="btn mt-5" onclick="addQuestionClose()" style="background-color: #d9d9d9" >
-                    Agregar pregunta cerrada
+                    Opción multiple
                     <img src="../../assets/img/icons8-add-48.png">
                 </button>
                 <button type="button" class="btn mt-5" onclick="addQuestionOpen()" style="background-color: #d9d9d9" >
-                    Agregar pregunta abierta
+                    Respuesta abierta
                     <img src="../../assets/img/icons8-add2-48.png">
                 </button>
             </div>
         </form>
 
+        <div class=" container mt-5 col-4" style="text-align: center">
+            <div class="form-group">
+                <label for="exam-code" class="placeholder-name-exam"> <h6> Código del examen:</h6> </label>
+                <input type="text" class="form-control" id="exam-code" style="background-color:#D9D9D9;" readonly>
+            </div>
+        </div>
+
         <div class="container mb-5">
             <div class=" container mt-5 mb-5 d-grid" style="text-align: center">
-                <button type="submit" class="btn btn-success" disabled>Guardar</button>
+                <button id="guardarButton" type="submit" class="btn btn-success" style="background-color: #002F5D!important;
+                color: white !important;" onclick="marcarCambiosYCambiarColor()">Guardar</button>
             </div>
         </div>
     </div>
 
 
-    <div class="container mt-5 w-50 p-3 containerExam mb-5" style="background-color: white;">
+    <div class="container mt-5 w-50 p-3 containerExam mb-5" style="background-color: white;
+    box-shadow: 0 0 8px rgba(0, 170, 131, 0.3);">
 
         <div class="container-fluid mt-5">
-
-          <textarea class="form-control textareaTittle" name="nameExam"
-                    style="font-size: 30px; overflow: hidden; resize: none"
-                    maxlength="50" oninput="autoResize(this)"
-                    placeholder="Titulo Examen" required></textarea>
-
-
+        <textarea class="form-control textareaTittle" name="nameExam"
+                  style="font-size: 30px; overflow: hidden; resize: none"
+                  maxlength="50" oninput="autoResize(this)"
+                  placeholder="Titulo Examen" required></textarea>
         </div>
 
         <div id="questions-container" class="overflow-y-auto">
@@ -164,7 +178,8 @@
 
         var cardTitle = document.createElement("h5");
         cardTitle.className = "card-title";
-        cardTitle.innerHTML = "Pregunta Cerrada";
+        cardTitle.innerHTML = "Opción multiple";
+
 
         cardHeader.appendChild(cardTitle);
 
@@ -252,7 +267,7 @@
         removeQuestion.setAttribute("type", "button");
         removeQuestion.innerHTML = "Eliminar pregunta";
         removeQuestion.addEventListener("click", function () {
-            deleteQuestionClose(card.id);
+            deleteQuestion(card.id);
         });
 
         divRemoveQuestion.appendChild(removeQuestion);
@@ -270,6 +285,7 @@
 
         questionContainer.appendChild(card);
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
     }
 
 
@@ -339,41 +355,22 @@
 
     }
 
-    function deleteQuestionClose(cardId) {
-        var card = document.getElementById(cardId);
-        var currentCardId = parseInt(cardId.split("-")[1]);
-
-        // Elimina la card del DOM
-        card.parentNode.removeChild(card);
-
-        // Actualiza los IDs de las cards siguientes
-        var cards = document.getElementsByClassName("card");
-        for (var i = currentCardId + 1; i <= cards.length; i++) {
-            var currentCard = cards[i - 1];
-            currentCard.id = "card-" + (i - 1);
-            currentCard.querySelector("button").removeEventListener("click", deleteQuestionClose);
-            currentCard.querySelector("button").addEventListener("click", function() {
-                deleteQuestionClose(currentCard.id);
-            });
-        }
-
-        // Disminuye el contador de IDs
-        cardId--;
-    }
-
 
     function addQuestionOpen() {
         var questionContainer = document.getElementById("questions-container");
 
+        generarId++;
+
         var card = document.createElement("div");
         card.className = "card mt-3 card-color";
+        card.id = "card-" + generarId;
 
         var cardHeader = document.createElement("div");
         cardHeader.className = "card-header card-header-color";
 
         var cardTitle = document.createElement("h5");
         cardTitle.className = "card-title";
-        cardTitle.innerHTML = "Pregunta Abierta";
+        cardTitle.innerHTML = "Respuesta abierta";
 
         cardHeader.appendChild(cardTitle);
 
@@ -384,7 +381,7 @@
         formGroupQuestion.className = "form-group";
 
         var scoreGroup = document.createElement("div");
-        scoreGroup.className ="form-group col-md-1 col-lg-1"
+        scoreGroup.className = "form-group col-md-1 col-lg-1";
 
         var scoreLabel = document.createElement("label");
         scoreLabel.setAttribute("for", "question-score");
@@ -395,21 +392,21 @@
         scoreInput.setAttribute("type", "number");
         scoreInput.setAttribute("value", 0);
         scoreInput.setAttribute("max", 10);
-        scoreInput.setAttribute("min", 0)
+        scoreInput.setAttribute("min", 0);
         scoreInput.setAttribute("id", "question-score");
         scoreInput.setAttribute("name", "question-score");
-        scoreInput.addEventListener('input',function(){
+        scoreInput.addEventListener("input", function () {
             if (this.value.length > 2)
-                this.value = this.value.slice(0,2);
-        })
-        scoreInput.addEventListener('input', function (){
+                this.value = this.value.slice(0, 2);
+        });
+        scoreInput.addEventListener("input", function () {
             if (this.value > 10)
                 this.value = 10;
-        })
-        scoreInput.addEventListener('input', function (){
+        });
+        scoreInput.addEventListener("input", function () {
             if (this.value < 0)
                 this.value = 0;
-        })
+        });
 
         scoreGroup.appendChild(scoreLabel);
         scoreGroup.appendChild(scoreInput);
@@ -425,7 +422,7 @@
 
         var questionTextarea = document.createElement("textarea");
         questionTextarea.className = "form-control";
-        questionTextarea.style ="resize: none";
+        questionTextarea.style.resize = "none";
         questionTextarea.contentEditable = "true";
         questionTextarea.maxLength = 255;
         questionTextarea.setAttribute("id", "open-question");
@@ -433,7 +430,7 @@
         questionTextarea.style.overflow = "hidden";
         questionTextarea.addEventListener("input", resizeInput);
         questionTextarea.addEventListener("keyup", resizeInput);
-        function resizeInput(){
+        function resizeInput() {
             this.style.height = "auto";
             this.style.height = this.scrollHeight + "px";
         }
@@ -441,24 +438,46 @@
         formGroupQuestion.appendChild(questionLabel);
         formGroupQuestion.appendChild(questionTextarea);
 
-        var removeQuestion= document.createElement("button");
-        removeQuestion.className= "btn btn-danger mt-2";
+        var removeQuestion = document.createElement("button");
+        removeQuestion.className = "btn btn-danger mt-2";
         removeQuestion.setAttribute("type", "button");
         removeQuestion.innerHTML = "Eliminar pregunta";
-        removeQuestion.addEventListener("click", function() {
-            questionContainer.removeChild(card);
+        removeQuestion.addEventListener("click", function () {
+            deleteQuestion(card.id);
         });
 
-
         cardBody.appendChild(formGroupQuestion);
+        cardBody.appendChild(removeQuestion);
 
         card.appendChild(cardHeader);
         card.appendChild(cardBody);
 
-        cardBody.appendChild(removeQuestion);
-
         questionContainer.appendChild(card);
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function deleteQuestion(cardId) {
+        var card = document.getElementById(cardId);
+        var currentCardId = parseInt(cardId.split("-")[1]);
+
+        // Elimina la card del DOM
+        card.parentNode.removeChild(card);
+
+        // Actualiza los IDs de las cards siguientes
+        var cards = document.getElementsByClassName("card");
+        for (var i = currentCardId + 1; i <= cards.length; i++) {
+            var currentCard = cards[i - 1];
+            currentCard.id = "card-" + (i - 1);
+            currentCard.querySelector("button").removeEventListener("click", deleteQuestion);
+            currentCard.querySelector("button").addEventListener("click", function () {
+                deleteQuestion(currentCard.id);
+            });
+        }
+
+        // Decrementa el contador de IDs
+        generarId--;
+
+        // ...
     }
 
     function autoResize(textarea) {
@@ -466,6 +485,98 @@
         textarea.style.height = "1px";
         textarea.style.height = textarea.scrollHeight + "px";
     }
+
+
+
+    // Variable global para rastrear si se han guardado los cambios
+    let cambiosGuardados = false;
+
+    function marcarCambiosComoGuardados() {
+        cambiosGuardados = true;
+    }
+
+    function verificarYNavegar() {
+        if (!cambiosGuardados) {
+            Swal.fire({
+                title: '¿Deseas guardar los cambios?',
+                showCancelButton: true,
+                confirmButtonText: 'Guardar',
+                confirmButtonColor: '#00AA83', // Establecer el color de fondo para el botón "Guardar"
+                confirmButtonBorder: '2px solid #002F5D', // Establecer el borde para el botón "Guardar"
+                cancelButtonText: 'Volver al examen', // Cambiar "Cancelar examen" a "No guardar"
+                cancelButtonColor: '#FAD324', // Establecer el color de fondo para el botón "No guardar"
+                cancelButtonBorder: '2px solid #737373', // Establecer el borde para el botón "No guardar"
+                denyButtonText: 'No guardar', // Cambiar "No guardar" a "Cancelar examen"
+                denyButtonColor: '#d33', // Establecer el color de fondo para el botón "Cancelar examen"
+                denyButtonBorder: '2px solid #802f2f',// Establecer el borde para el botón "Cancelar examen"
+                showDenyButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'EXAMEN GUARDADO',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        // Redirigir a la página principal con los cambios guardados
+                        // Puedes actualizar el valor de href con la URL deseada
+                        window.location.href = '/ruta/a/pagina-principal';
+                    });
+                } else if (result.isDenied) {
+                    // Redirigir a la página principal sin guardar cambios
+                    // Puedes actualizar el valor de href con la URL deseada
+                    window.location.href = '/ruta/a/pagina-principal';
+                }
+            });
+        } else {
+            // Redirigir a la página principal directamente, ya que los cambios ya están guardados
+            // Puedes actualizar el valor de href con la URL deseada
+            window.location.href = '/ruta/a/pagina-principal';
+        }
+    }
+
+    // Variable global para el temporizador
+    let guardarButtonTimer;
+
+    // Función para cambiar temporalmente el color del botón "Guardar"
+    function cambiarColorTemporarily() {
+        var guardarButton = document.getElementById('guardarButton');
+        guardarButton.style.backgroundColor = '#00aa83'; // Cambiar el color temporalmente
+
+        // Restaurar el color original después de 1 segundo (1000 milisegundos)
+        guardarButtonTimer = setTimeout(function () {
+            guardarButton.style.backgroundColor = '#002F5D'; // Restaurar el color original
+        }, 100);
+    }
+
+    // Función para marcar los cambios como guardados y cambiar el color del botón
+    function marcarCambiosYCambiarColor() {
+        marcarCambiosComoGuardados(); // Marcar cambios como guardados
+        cambiarColorTemporarily(); // Cambiar el color del botón temporalmente
+    }
+
+
+
+    //--------------------------------------------------------------------------------//
+
+    // Función para generar el código aleatorio
+    function generateRandomCode(length) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let code = '';
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            code += characters.charAt(randomIndex);
+        }
+        return code;
+    }
+
+    // Generar el código aleatorio al cargar la página y mostrarlo en el input
+    window.addEventListener('load', function() {
+        const codeInput = document.getElementById('exam-code');
+        const generatedCode = generateRandomCode(6);
+        codeInput.value = generatedCode;
+    });
+
 
 
 

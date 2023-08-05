@@ -1,3 +1,4 @@
+
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -33,92 +34,112 @@
         background-color: #002F5D !important; /* Reemplaza "your-color" con el color deseado */
     }
 
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: white; /* Color de fondo */
+        background-image:
+                linear-gradient(to right, rgba(216, 234, 227, 0.5) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(216, 234, 227, 0.5) 1px, transparent 1px);
+        background-size: 5px 5px; /* Tamaño de las celdas del cuadriculado */
+    }
+
+    .grid-container {
+        /* Centra el contenido en la página */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
 </style>
 
-<body style="background-color: #D8EAE3;">
+<body style="background-color: white;">
 
-<nav class="navbar bg-body-tertiary fixed-top mb-5">
-    <div class="container d-flex align-content-between">
+<div class="grid-container position-absolute">
 
-        <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
-            <a class="navbar-brand position-absolute top-50 start-50 translate-middle"
-               style="color: white;"> <h3> Ultimate Custom Quiz </h3></a>
-        </div>
+</div>
 
-        <div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
-                    aria-label="Toggle navigation" style="border-color: white">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-color: #002F5D">
-
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel" style="color: white;">ULTIMATE CUSTOME QUIZ</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+<div class="fixed-top">
+    <nav class="navbar navbar-expand-lg" style="background-color: #002F5D;">
+        <div class="container d-flex align-content-between">
+            <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
+                <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
+                    <h3>Ultimate Custom Quiz</h3>
+                </a>
             </div>
-
-            <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#" style="color: white;"> Perfil </a>
+            <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle" style="margin-right: 50px; background-color: #002F5D; color: white" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Más opciones
+                </button>
+                <ul class="dropdown-menu" style="background-color: #00AA83; border-bottom-color: #002F5D; margin: 0; padding: 0;">
+                    <li class="list-group-item" style="background-color: #00AA83; border-bottom: 1px solid #002F5D; margin: 0; padding: 0;"
+                        onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='none';
+                    this.style.color='#002F5D';"
+                        onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='1px solid #002F5D';
+                    this.style.color='white';"
+                        onclick="window.location.href='user/view-exam';">
+                        <div style="cursor: pointer; padding: 8px;">
+                            <h6 style="color: white; margin: 0;">perfil</h6>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: white">Cerrar sesion </a>
+                    <li class="list-group-item" style="background-color: #00AA83; color: white; margin: 0; padding: 0;"
+                        onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='1px solid #002F5D';"
+                        onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='transparent';"
+                        onclick="window.location.href='user/view-login';">
+                        <div style="cursor: pointer; padding: 8px;">
+                            <h6 style="margin: 0;">cerrar sesión</h6>
+                        </div>
                     </li>
                 </ul>
             </div>
-
+            <br><br>
         </div>
-    </div>
-    <br>
-    <br>
-</nav>
+    </nav>
+</div>
 
 
-<br><br>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col">
-            <div class="col">
-                <form class="d-flex justify-content-center mt-5" role="search">
-                    <input class="form-control me-2 w-25 p-3  align-content-center " style="background-color: #D9D9D9;" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+
+<div class="d-flex">
+    <div class="container col-xl-2 vh-100 m-0 sticky-top"
+         style="text-align: left; background-color: #00AA83;">
+
+        <br>
+        <br>
+
+        <div class="d-grid mt-5">
+            <button  type="button" class="btn btn-outline-success btn-sm buttonColor"
+                     data-bs-toggle="modal" data-bs-target="#ModalTeacher"
+                     style="width: 180px; height: 100px; color: #002F5D" onclick="">
+                <img style="height: 100px; width: 100px" src="../../assets/img/icons8-teacher-100.png" class="card-img-top" alt="...">
+                <h5>Agregar profesores</h5>
+            </button>
+
+            <div class="col-3 col-md-2 mt-5">
+                <br>
+                <button  type="button" class="btn btn-outline-success btn-sm buttonColor"
+                         data-bs-toggle="modal" data-bs-target="#ModalStudent"
+                         style="width: 180px; height: 100px; color: #002F5D" onclick="">
+                    <img style="height: 100px; width: 100px" src="../../assets/img/icons8-student-100.png" class="card-img-top" alt="...">
+                    <h5>Agregar estudiantes</h5>
+                </button>
             </div>
         </div>
     </div>
 
-    <div class="row justify-content-center mt-5">
+    <div class="container mt-5 p-3 mb-5" style="background-color: transparent;">
 
-        <button  type="button" class="btn btn-outline-success btn-sm buttonColor"
-                 data-bs-toggle="modal" data-bs-target="#ModalTeacher"
-                 style="width: 200px; height: 100px; color: #002F5D" onclick="">
-            <img style="height: 100px; width: 100px" src="../../assets/img/icons8-teacher-100.png" class="card-img-top" alt="...">
-            <h5>Agregar profesores</h5>
-        </button>
-
-        <div class="col-3 col-md-2">
-            <button  type="button" class="btn btn-outline-success btn-sm buttonColor"
-                     data-bs-toggle="modal" data-bs-target="#ModalStudent"
-                     style="width: 200px; height: 100px; color: #002F5D" onclick="">
-                <img style="height: 100px; width: 100px" src="../../assets/img/icons8-student-100.png" class="card-img-top" alt="...">
-                <h5>Agregar estudiantes</h5>
-            </button>
-            <br>
-            <br>
-
-    </div>
-
-
-    <div class="row justify-content-center mt-5">
-        <div class="col-10">
-            <div class="card">
-                <div class="card-header" style="background-color: #002F5D; text-align: center">
-                    <div class="row">
-                        <div class="col" style="color: white">Listado de usuarios</div>
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col">
+                    <div class="col">
+                        <form class="d-flex justify-content-center mt-5" role="search">
+                            <input class="form-control me-2 w-25 p-3 align-content-center" style="background-color: #D9D9D9;" type="search"
+                                   placeholder="Buscar usuarios" aria-label="Search" id="searchInput">
+                            <button class="btn btn-outline-success" style="background-color: #00AA83;
+                             color: white" type="button" id="searchButton">Buscar</button>
+                        </form>
                     </div>
                 </div>
                 <div class="card-body">
@@ -183,8 +204,80 @@
                     </table>
                 </div>
             </div>
-        </div>
+          <div>
+
+              <div class="row justify-content-center mt-5">
+                  <div class="col-12">
+                      <div class="card">
+                          <div class="card-header" style="background-color: #002F5D; text-align: center">
+                              <div class="row">
+                                  <div class="col" style="color: white">Listado de usuarios</div>
+                              </div>
+                          </div>
+                          <table class="table table-stripped" id="userTable">
+                              <thead style="background-color: #00AA83; color: white">
+                              <tr>
+                                  <th>matricula </th>
+                                  <th>nombre </th>
+                                  <th>CURP </th>
+                                  <th>status </th>
+                                  <th>correo </th>
+                                  <th>tipo </th>
+                                  <th>acciones </th>
+                              </tr>
+                              </thead>
+                              <thbody>
+                                  <c:forEach var="user" items="${users}" varStatus="s">
+                                      <tr>
+                                          <td>
+                                              <c:out value="${user.enrollment}"/>
+                                          </td>
+                                          <td>
+                                              <c:out value="${user.name}"/> <br> <c:out value="${user.lastname}"/> <br> <c:out value="${user.surname}"/>
+                                          </td>
+                                          <td>
+                                              <c:out value="${user.curp}"/>
+                                          </td>
+                                          <td>
+                                              <c:out value="${user.status}"/>
+                                          </td>
+                                          <td>
+                                              <c:out value="${user.mail}"/>
+                                          </td>
+                                          <td>
+                                              <c:out value="${user.type_user}"/>
+                                          </td>
+                                          <td>
+                                              <form method="get" action="/user/user-view-update">
+                                                  <input hidden value="${user.id}" name="id">
+                                                  <button type="button" class="btn btn-outline-warning btn-sm"
+                                                          data-bs-toggle="modal" data-bs-target="#EditUser">
+                                                      Editar
+                                                  </button>
+                                              </form>
+                                              <form method="post" action="/user/delete">
+                                                  <input hidden value="${user.id}" name="id">
+                                                  <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                      Eliminar
+                                                  </button>
+                                              </form>
+                                          </td>
+                                      </tr>
+                                  </c:forEach>
+                                  <tr>
+                                      <td colspan="6">
+                                          SIn registros
+                                      </td>
+                                  </tr>
+                              </thbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
     </div>
+
+
+            <!-- CARDS DE ALUMNO Y DE MAESTRO --->
 
         <div class="modal fade" id="ModalTeacher" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -408,39 +501,29 @@
 
     <jsp:include page="../../layouts/footer.jsp"/>
 <script>
-    // Función para abrir el modal de edición con los datos del usuario seleccionado
-    function editarUsuario(${user.id}) {
 
-        const filaUsuario = $(`tr[data-id="idUsuario"]`);
-        const nombre = filaUsuario.find('td:eq(0)').text();
-        const apellidoPaterno = filaUsuario.find('td:eq(1)').text();
-        const apellidoMaterno = filaUsuario.find('td:eq(2)').text();
-        const matricula = filaUsuario.find('td:eq(3)').text();
-        const curp = filaUsuario.find('td:eq(4)').text();
-        const correo = filaUsuario.find('td:eq(5)').text();
 
-        // Rellena el formulario de edición con los datos del usuario
-        document.getElementById('Editname').value = nombre;
-        document.getElementById('Editlastname').value = apellidoPaterno;
-        document.getElementById('Editsurname').value = apellidoMaterno;
-        document.getElementById('Editenrollment').value = matricula;
-        document.getElementById('Editcurp').value = curp;
-        document.getElementById('EditMail').value = correo;
-        // ... Rellena más campos del formulario según los datos del usuario ...
-        document.getElementById('userId').value = idUsuario;
-        // Abre el modal de edición
-        const modal = new bootstrap.Modal(document.getElementById('EditUser'));
-        modal.show();
-    }
+    // FUNCIONES PARA LA VALIDACIÓN DE LOS FORMULARIOS DE MAESTRO/ESTUDIANTE Y EDITAR
 
     function validateForm() {
         // Obtener los elementos del formulario mediante su ID
         var form = document.getElementById("teacherForm");
+        var passwordInput = document.getElementById("password");
+        var confirmPasswordInput = document.getElementById("ConfirmPassword");
 
         // Validar el formulario antes de enviarlo
-        if (form.checkValidity()) {
+        if (form.checkValidity() && passwordInput.value === confirmPasswordInput.value) {
             // Si el formulario es válido y las contraseñas coinciden, enviarlo al servidor
             form.submit();
+        } else if (passwordInput.value !== confirmPasswordInput.value) {
+            // Si las contraseñas no coinciden, mostrar un mensaje de error con SweetAlert2
+            Swal.fire({
+                icon: 'error',
+                title: 'LAS CONTRASEÑAS NO COINCIDEN',
+                text: 'Verifica que las contraseñas sean iguales.',
+                timer: 2000
+            });
+            return false;
         } else {
             // Si el formulario no es válido, mostrar un mensaje de error con SweetAlert2
             Swal.fire({
@@ -449,41 +532,59 @@
                 text: 'Por favor, completa todos los campos requeridos.',
                 timer: 2000
             });
+            // Agregar la clase 'was-validated' al formulario para mantener los estilos de validación de Bootstrap
+            form.classList.add('was-validated');
             return false;
         }
 
         return true;
     }
-    function validateFormEdit() {
-        // Obtener los elementos del formulario mediante su ID
-        var form = document.getElementById("EditUser");
 
-        // Validar el formulario antes de enviarlo
-        if (form.checkValidity()) {
-            // Si el formulario es válido y las contraseñas coinciden, enviarlo al servidor
-            form.submit();
-        } else {
-            // Si el formulario no es válido, mostrar un mensaje de error con SweetAlert2
-            Swal.fire({
-                icon: 'error',
-                title: 'COMPLETA TODOS LOS CAMPOS',
-                text: 'Por favor, completa todos los campos requeridos.',
-                timer: 2000
-            });
-            return false;
-        }
+    (() => {
+        'use strict';
 
-        return true;
-    }
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation');
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                // Validar el formulario adicionalmente con la función personalizada
+                if (!validateForm()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                // Agregar la clase 'was-validated' al formulario para mantener los estilos de validación de Bootstrap
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+
 
     function validateFormStudent() {
         // Obtener los elementos del formulario mediante su ID
         var form = document.getElementById("ModalStudent");
+        var passwordInput = document.getElementById("password2");
+        var confirmPasswordInput = document.getElementById("ConfirmPassword2");
 
         // Validar el formulario antes de enviarlo
-        if (form.checkValidity()) {
+        if (form.checkValidity() && passwordInput.value === confirmPasswordInput.value) {
             // Si el formulario es válido y las contraseñas coinciden, enviarlo al servidor
             form.submit();
+        } else if (passwordInput.value !== confirmPasswordInput.value) {
+            // Si las contraseñas no coinciden, mostrar un mensaje de error con SweetAlert2
+            Swal.fire({
+                icon: 'error',
+                title: 'LAS CONTRASEÑAS NO COINCIDEN',
+                text: 'Verifica que las contraseñas sean iguales.',
+                timer: 2000
+            });
+            return false;
         } else {
             // Si el formulario no es válido, mostrar un mensaje de error con SweetAlert2
             Swal.fire({
@@ -497,23 +598,161 @@
 
         return true;
     }
-    function validateForm2() {
-        // Obtener el formulario mediante su ID
-        var form = document.getElementById("studentForm");
+    (() => {
+        'use strict';
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation');
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                // Validar el formulario adicionalmente con la función personalizada
+                if (!validateFormStudent()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                // Agregar la clase 'was-validated' al formulario para mantener los estilos de validación de Bootstrap
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+
+
+    function validateFormEdit() {
+        // Obtener los elementos del formulario mediante su ID
+        var form = document.getElementById("EditUser");
+        var passwordInput = document.getElementById("Editpassword");
+        var confirmPasswordInput = document.getElementById("EditConfirmPassword");
+
         // Validar el formulario antes de enviarlo
-        if (form.checkValidity()) {
-            // Si el formulario es válido, enviarlo al servidor
+        if (form.checkValidity() && passwordInput.value === confirmPasswordInput.value) {
+            // Si el formulario es válido y las contraseñas coinciden, enviarlo al servidor
             form.submit();
+        } else if (passwordInput.value !== confirmPasswordInput.value) {
+            // Si las contraseñas no coinciden, mostrar un mensaje de error con SweetAlert2
+            Swal.fire({
+                icon: 'error',
+                title: 'LAS CONTRASEÑAS NO COINCIDEN',
+                text: 'Verifica que las contraseñas sean iguales.',
+                timer: 2000
+            });
+            return false;
         } else {
-            // Si el formulario no es válido, mostrar un mensaje de error y evitar el envío
+            // Si el formulario no es válido, mostrar un mensaje de error con SweetAlert2
             Swal.fire({
                 icon: 'error',
                 title: 'COMPLETA TODOS LOS CAMPOS',
                 text: 'Por favor, completa todos los campos requeridos.',
                 timer: 2000
             });
+            return false;
+        }
+
+        return true;
+    }
+    (() => {
+        'use strict';
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation');
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                // Validar el formulario adicionalmente con la función personalizada
+                if (!validateFormEdit()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                // Agregar la clase 'was-validated' al formulario para mantener los estilos de validación de Bootstrap
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+
+
+    <!-- -- FUNCIONES PARA FILTRAR LAS TABLAS POR BUSQUEDA DE NOMBRE - -->
+
+        function filterTable() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("userTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1]; // Columna donde se encuentra el nombre del usuario
+        if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+    } else {
+        tr[i].style.display = "none";
+    }
+    }
+    }
+    }
+
+
+        // Llama a la función filterTable cuando se presiona el botón "buscar"
+    document.getElementById("searchButton").addEventListener("click", function(event) {
+        event.preventDefault();
+        filterTable();
+    });
+
+    // Agrega el evento keypress al input
+    document.getElementById("searchInput").addEventListener("keypress", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault(); // Previene el comportamiento predeterminado (submit form)
+            filterTable();
+        }
+    });
+
+    function resetTable() {
+        var table = document.getElementById("userTable");
+        var tr = table.getElementsByTagName("tr");
+
+        for (var i = 0; i < tr.length; i++) {
+            tr[i].style.display = "";
         }
     }
+
+    document.getElementById("searchButton").addEventListener("click", function(event) {
+        event.preventDefault();
+        filterTable();
+    });
+
+    document.getElementById("searchInput").addEventListener("input", function(event) {
+        var input = event.target.value.trim(); // Obtener el valor del input sin espacios en blanco
+
+        if (input === "") {
+            resetTable(); // Si el input está vacío, mostrar todas las filas
+        } else {
+            filterTable(); // Si el input tiene contenido, aplicar el filtrado
+        }
+    });
+
+    // Agregar también el evento keypress para el caso en que se use el teclado en móviles
+    document.getElementById("searchInput").addEventListener("keypress", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            filterTable();
+        }
+    });
+
+    <!-- -- FUNCIONES PARA DECORAR - -->
+
     function changeButtonColorOnClick() {
         this.style.backgroundColor = '#002F5D';
     }
@@ -548,6 +787,7 @@
         btn.addEventListener('mouseup', restoreButtonColor);
         btn.addEventListener('mouseout', restoreImageColor); // Para restaurar el color de la imagen si el puntero sale del botón sin hacer clic
     });
+
 
 </script>
 </body>

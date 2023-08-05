@@ -26,9 +26,34 @@
         background:  #002F5D;
     }
 
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: white; /* Color de fondo */
+        background-image:
+                linear-gradient(to right, rgba(216, 234, 227, 0.5) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(216, 234, 227, 0.5) 1px, transparent 1px);
+        background-size: 5px 5px; /* Tamaño de las celdas del cuadriculado */
+    }
+
+    .grid-container {
+        /* Centra el contenido en la página */
+        display: flex;
+        justify-content: center;
+
+        align-items: center;
+        height: 100vh;
+    }
+
+
 </style>
 
-<body style="background-color: #D8EAE3;overflow: hidden">
+<body style="background-color: white;overflow: hidden">
+
+
+<div class="grid-container position-absolute">
+
+</div>
 
 
 <div class="centrado mt-5">
@@ -36,7 +61,7 @@
     <div class="row align-items-stretch">
 
         <h2>
-            <span style="color: #00AA83;">ULTIMATE CUSTOME</span> <span style="color: #002F5D;"> QUIZ</span>
+            <span style="color: #00AA83;">ULTIMATE CUSTOM</span> <span style="color: #002F5D;"> QUIZ</span>
         </h2>
 
     </div>
@@ -57,7 +82,7 @@
 
 <div class="container  mt-5 centrado align-items-stretch">
     <div class="col-4">
-        <div class="card">
+        <div class="card" style="border-color: #002F5D ">
             <div class="card-header" style=" background-color:  #002F5D; text-align: center">
                 <h5 style="color: white"> Inicio de sesión </h5>
             </div>
