@@ -60,7 +60,6 @@
 
 </div>
 
-
 <nav class="navbar navbar-expand-lg" style="background-color: #002F5D;">
     <div class="container d-flex align-content-between">
         <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
@@ -91,56 +90,53 @@
                     </div>
                 </li>
             </ul>
-
+            </div>
+            <br><br>
         </div>
-        <br><br>
-    </div>
-</nav>
+    </nav>
+</div>
 
 
-<br><br>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col">
-            <div class="col">
-                <form class="d-flex justify-content-center mt-5" role="search">
-                    <input class="form-control me-2 w-25 p-3  align-content-center "
-                           style="background-color: #D9D9D9;" type="search"
-                           placeholder="Buscar usuarios" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit"> Buscar </button>
-                </form>
+
+<div class="d-flex">
+    <div class="container col-xl-2 vh-100 m-0 sticky-top"
+         style="text-align: left; background-color: #00AA83;">
+
+        <br>
+        <br>
+
+        <div class="d-grid mt-5">
+            <button  type="button" class="btn btn-outline-success btn-sm buttonColor"
+                     data-bs-toggle="modal" data-bs-target="#ModalTeacher"
+                     style="width: 180px; height: 100px; color: #002F5D" onclick="">
+                <img style="height: 100px; width: 100px" src="../../assets/img/icons8-teacher-100.png" class="card-img-top" alt="...">
+                <h5>Agregar profesores</h5>
+            </button>
+
+            <div class="col-3 col-md-2 mt-5">
+                <br>
+                <button  type="button" class="btn btn-outline-success btn-sm buttonColor"
+                         data-bs-toggle="modal" data-bs-target="#ModalStudent"
+                         style="width: 180px; height: 100px; color: #002F5D" onclick="">
+                    <img style="height: 100px; width: 100px" src="../../assets/img/icons8-student-100.png" class="card-img-top" alt="...">
+                    <h5>Agregar estudiantes</h5>
+                </button>
             </div>
         </div>
     </div>
 
-    <div class="row justify-content-center mt-5">
+    <div class="container mt-5 p-3 mb-5" style="background-color: transparent;">
 
-        <button  type="button" class="btn btn-outline-success btn-sm buttonColor"
-                 data-bs-toggle="modal" data-bs-target="#ModalTeacher"
-                 style="width: 200px; height: 100px; color: #002F5D" onclick="">
-            <img style="height: 100px; width: 100px" src="../../assets/img/icons8-teacher-100.png" class="card-img-top" alt="...">
-            <h5>Agregar profesores</h5>
-        </button>
-
-        <div class="col-3 col-md-2">
-            <button  type="button" class="btn btn-outline-success btn-sm buttonColor"
-                     data-bs-toggle="modal" data-bs-target="#ModalStudent"
-                     style="width: 200px; height: 100px; color: #002F5D" onclick="">
-                <img style="height: 100px; width: 100px" src="../../assets/img/icons8-student-100.png" class="card-img-top" alt="...">
-                <h5>Agregar estudiantes</h5>
-            </button>
-            <br>
-            <br>
-
-    </div>
-
-
-    <div class="row justify-content-center mt-5">
-        <div class="col-10">
-            <div class="card">
-                <div class="card-header" style="background-color: #002F5D; text-align: center">
-                    <div class="row">
-                        <div class="col" style="color: white">Listado de usuarios</div>
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col">
+                    <div class="col">
+                        <form class="d-flex justify-content-center mt-5" role="search">
+                            <input class="form-control me-2 w-25 p-3 align-content-center" style="background-color: #D9D9D9;" type="search"
+                                   placeholder="Buscar usuarios" aria-label="Search" id="searchInput">
+                            <button class="btn btn-outline-success" style="background-color: #00AA83;
+                             color: white" type="button" id="searchButton">Buscar</button>
+                        </form>
                     </div>
                 </div>
                 <div class="card-body">
@@ -178,13 +174,15 @@
                                         <c:out value="${user.type_user}"/>
                                     </td>
                                     <td>
+                                        <button type="button" class="btn btn-outline-warning btn-sm" onclick="editarUsuario(${user.id})">Editar</button>
                                         <form method="get" action="/user/user-view-update">
                                             <input hidden value="${user.id}" name="id">
-                                            <button type="button" class="btn btn-outline-warning btn-sm"
+                                            <button type="button" class=""
                                                     data-bs-toggle="modal" data-bs-target="#EditUser">
                                                 Editar
                                             </button>
                                         </form>
+
                                         <form method="post" action="/user/delete">
                                             <input hidden value="${user.id}" name="id">
                                             <button type="submit" class="btn btn-outline-danger btn-sm">
@@ -203,8 +201,80 @@
                     </table>
                 </div>
             </div>
-        </div>
+          <div>
+
+              <div class="row justify-content-center mt-5">
+                  <div class="col-12">
+                      <div class="card">
+                          <div class="card-header" style="background-color: #002F5D; text-align: center">
+                              <div class="row">
+                                  <div class="col" style="color: white">Listado de usuarios</div>
+                              </div>
+                          </div>
+                          <table class="table table-stripped" id="userTable">
+                              <thead style="background-color: #00AA83; color: white">
+                              <tr>
+                                  <th>matricula </th>
+                                  <th>nombre </th>
+                                  <th>CURP </th>
+                                  <th>status </th>
+                                  <th>correo </th>
+                                  <th>tipo </th>
+                                  <th>acciones </th>
+                              </tr>
+                              </thead>
+                              <thbody>
+                                  <c:forEach var="user" items="${users}" varStatus="s">
+                                      <tr>
+                                          <td>
+                                              <c:out value="${user.enrollment}"/>
+                                          </td>
+                                          <td>
+                                              <c:out value="${user.name}"/> <br> <c:out value="${user.lastname}"/> <br> <c:out value="${user.surname}"/>
+                                          </td>
+                                          <td>
+                                              <c:out value="${user.curp}"/>
+                                          </td>
+                                          <td>
+                                              <c:out value="${user.status}"/>
+                                          </td>
+                                          <td>
+                                              <c:out value="${user.mail}"/>
+                                          </td>
+                                          <td>
+                                              <c:out value="${user.type_user}"/>
+                                          </td>
+                                          <td>
+                                              <form method="get" action="/user/user-view-update">
+                                                  <input hidden value="${user.id}" name="id">
+                                                  <button type="button" class="btn btn-outline-warning btn-sm"
+                                                          data-bs-toggle="modal" data-bs-target="#EditUser">
+                                                      Editar
+                                                  </button>
+                                              </form>
+                                              <form method="post" action="/user/delete">
+                                                  <input hidden value="${user.id}" name="id">
+                                                  <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                      Eliminar
+                                                  </button>
+                                              </form>
+                                          </td>
+                                      </tr>
+                                  </c:forEach>
+                                  <tr>
+                                      <td colspan="6">
+                                          SIn registros
+                                      </td>
+                                  </tr>
+                              </thbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
     </div>
+
+
+            <!-- CARDS DE ALUMNO Y DE MAESTRO --->
 
         <div class="modal fade" id="ModalTeacher" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -248,6 +318,7 @@
                                     <div class="col">
                                         <label for="mail" class="fw-bold">Correo:</label>
                                         <input type="email" name="email" id="mail" class="form-control" required maxlength="22">
+
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                 </div>
@@ -260,21 +331,15 @@
                                         <input type="text" name="password" id="password" class="form-control col-form-label" required maxlength="16">
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
-
-                                    <div class="col">
-                                        <label for="ConfirmPassword" class="fw-bold">Confirmar contraseña:</label>
-                                        <input type="text" name="ConfirmPassword" id="ConfirmPassword" class="form-control col-form-label" required maxlength="16">
-                                        <div class="invalid-feedback">Campo obligatorio</div>
-                                    </div>
                                 </div>
                             </div>
-                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
                         <button type="button" id="SaveTeacher" class="btn btn-primary" onclick="validateForm()" >Guardar</button>
                     </div>
                         </form>
-
+                    </div>
                 </div>
             </div>
         </div>
@@ -290,22 +355,22 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="needs-validation" novalidate action="/user/save-student" method="post">
+                        <form id="studentForm" class="needs-validation" novalidate action="/user/save-student" method="post">
                             <div class="row">
 
                                 <div class="col">
-                                    <label for="name2" class="fw-bold col-form-label">Nombre:</label>
-                                    <input type="text" name="name2" id="name2" class="form-control" required maxlength="25"/>
+                                    <label for="name" class="fw-bold col-form-label">Nombre:</label>
+                                    <input type="text" name="name" id="name" class="form-control" required/>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
-                                    <label for="lastname2" class="fw-bold col-form-label">Apellido Paterno:</label>
-                                    <input type="text" name="lastname2" id="lastname2" class="form-control" required maxlength="25">
+                                    <label for="lastname" class="fw-bold col-form-label">Apellido Paterno:</label>
+                                    <input type="text" name="lastname" id="lastname" class="form-control" required>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 <div class="col">
-                                    <label for="surname2" class="fw-bold col-form-label">Apellido Materno:</label>
-                                    <input type="text" name="surname2" id="surname2" class="form-control" required maxlength="25">
+                                    <label for="surname" class="fw-bold col-form-label">Apellido Materno:</label>
+                                    <input type="text" name="surname" id="surname" class="form-control" required>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
 
@@ -314,19 +379,19 @@
                             <div class="form-group mb-3">
                                 <div class="row">
                                     <div class="col">
-                                        <label for="enrollment2" class="fw-bold col-form-label">Matricula:</label>
-                                        <input type="text"  name="enrollment2" id="enrollment2" class="form-control" required maxlength="10">
+                                        <label for="enrollment" class="fw-bold col-form-label">Matricula:</label>
+                                        <input type="text" name="enrollment" id="enrollment" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                     <div class="col">
-                                        <label for="curp2" class="fw-bold">Curp:</label>
-                                        <input type="text" name="curp2" id="curp2" class="form-control" required maxlength="18">
+                                        <label for="curp" class="fw-bold">Curp:</label>
+                                        <input type="text" name="curp" id="curp" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
 
                                 <div class="col">
-                                    <label for="mail2" class="fw-bold">Correo :</label>
-                                    <input type="email" name="mail2" id="mail2" class="form-control" required maxlength="22">
+                                    <label for="mail" class="fw-bold">Correo :</label>
+                                    <input type="email" name="mail" id="mail" class="form-control" required>
                                     <div class="invalid-feedback">Campo obligatorio</div>
                                 </div>
                                 </div>
@@ -335,23 +400,20 @@
                             <div class="form-group mb-3">
                                 <div class="row" >
                                     <div class="col">
-                                        <label for="password2" class="fw-bold">Contraseña:</label>
-                                        <input type="text" name="password2" id="password2" class="form-control" required maxlength="16">
-                                        <div class="invalid-feedback">Campo obligatorio</div>
-                                    </div>
-                                    <div class="col">
-                                        <label for="ConfirmPassword2" class="fw-bold">Confirmar contraseña:</label>
-                                        <input type="text" name="ConfirmPassword2" id="ConfirmPassword2" class="form-control col-form-label" required maxlength="16">
+                                        <label for="password" class="fw-bold">Contraseña:</label>
+                                        <input type="text" name="password" id="password" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                 </div>
                              </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
-                        <button type="button" id="SaveStudent" class="btn btn-primary" onclick="validateFormStudent()">Guardar</button>
+                        <button type="submit" id="SaveStudent" class="btn btn-primary" onclick="validateForm2()">Guardar</button>
                     </div>
-                        </form>
 
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -366,7 +428,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="needs-validation" novalidate action="/user/save-student" method="post">
+                        <form class="needs-validation" novalidate action="/user/update" method="post">
                             <div class="row">
 
                                 <div class="col">
@@ -428,7 +490,7 @@
                         <button type="submit" id="SaveEdit" class="btn btn-primary" onclick="validateFormEdit()">Guardar</button>
                     </div>
                     </form>
-
+                    </div>
                 </div>
             </div>
         </div>
@@ -437,38 +499,6 @@
 
     <jsp:include page="../../layouts/footer.jsp"/>
 <script>
-    function validateForm(formId) {
-        var form = document.getElementById(formId);
-        var inputFields = form.querySelectorAll('input[required]');
-        var labels = form.querySelectorAll('label');
-
-        inputFields.forEach(function (input) {
-            if (!input.value.trim()) {
-                input.classList.add('is-invalid');
-                input.classList.remove('is-valid');
-            } else {
-                input.classList.remove('is-invalid');
-                input.classList.add('is-valid');
-            }
-        });
-
-        labels.forEach(function (label) {
-            var inputId = label.getAttribute('for');
-            var input = document.getElementById(inputId);
-
-            if (!input.value.trim()) {
-                label.classList.add('text-danger');
-                label.innerText = 'Campo obligatorio';
-            } else {
-                label.classList.remove('text-danger');
-                label.innerText = label.getAttribute('data-original-label'); // Restaura el texto original del label
-            }
-        });
-
-        if (form.checkValidity()) {
-            form.submit();
-        }
-    }
     function validateForm() {
         // Obtener los elementos del formulario mediante su ID
         var form = document.getElementById("teacherForm");
@@ -496,11 +526,39 @@
                 text: 'Por favor, completa todos los campos requeridos.',
                 timer: 2000
             });
+            // Agregar la clase 'was-validated' al formulario para mantener los estilos de validación de Bootstrap
+            form.classList.add('was-validated');
             return false;
         }
 
         return true;
     }
+
+    (() => {
+        'use strict';
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation');
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                // Validar el formulario adicionalmente con la función personalizada
+                if (!validateForm()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                // Agregar la clase 'was-validated' al formulario para mantener los estilos de validación de Bootstrap
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+
 
     function validateFormStudent() {
         // Obtener los elementos del formulario mediante su ID
@@ -534,6 +592,30 @@
 
         return true;
     }
+    (() => {
+        'use strict';
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation');
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                // Validar el formulario adicionalmente con la función personalizada
+                if (!validateFormStudent()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                // Agregar la clase 'was-validated' al formulario para mantener los estilos de validación de Bootstrap
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
 
 
     function validateFormEdit() {
@@ -568,9 +650,102 @@
 
         return true;
     }
+    (() => {
+        'use strict';
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation');
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                // Validar el formulario adicionalmente con la función personalizada
+                if (!validateFormEdit()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                // Agregar la clase 'was-validated' al formulario para mantener los estilos de validación de Bootstrap
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
 
 
+    <!-- -- FUNCIONES PARA FILTRAR LAS TABLAS POR BUSQUEDA DE NOMBRE - -->
 
+        function filterTable() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("userTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1]; // Columna donde se encuentra el nombre del usuario
+        if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+    } else {
+        tr[i].style.display = "none";
+    }
+    }
+    }
+    }
+
+
+        // Llama a la función filterTable cuando se presiona el botón "buscar"
+    document.getElementById("searchButton").addEventListener("click", function(event) {
+        event.preventDefault();
+        filterTable();
+    });
+
+    // Agrega el evento keypress al input
+    document.getElementById("searchInput").addEventListener("keypress", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault(); // Previene el comportamiento predeterminado (submit form)
+            filterTable();
+        }
+    });
+
+    function resetTable() {
+        var table = document.getElementById("userTable");
+        var tr = table.getElementsByTagName("tr");
+
+        for (var i = 0; i < tr.length; i++) {
+            tr[i].style.display = "";
+        }
+    }
+
+    document.getElementById("searchButton").addEventListener("click", function(event) {
+        event.preventDefault();
+        filterTable();
+    });
+
+    document.getElementById("searchInput").addEventListener("input", function(event) {
+        var input = event.target.value.trim(); // Obtener el valor del input sin espacios en blanco
+
+        if (input === "") {
+            resetTable(); // Si el input está vacío, mostrar todas las filas
+        } else {
+            filterTable(); // Si el input tiene contenido, aplicar el filtrado
+        }
+    });
+
+    // Agregar también el evento keypress para el caso en que se use el teclado en móviles
+    document.getElementById("searchInput").addEventListener("keypress", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            filterTable();
+        }
+    });
+
+    <!-- -- FUNCIONES PARA DECORAR - -->
 
     function changeButtonColorOnClick() {
         this.style.backgroundColor = '#002F5D';
@@ -606,6 +781,7 @@
         btn.addEventListener('mouseup', restoreButtonColor);
         btn.addEventListener('mouseout', restoreImageColor); // Para restaurar el color de la imagen si el puntero sale del botón sin hacer clic
     });
+
 
 </script>
 </body>

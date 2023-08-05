@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -93,6 +92,7 @@
               <div class="d-grid">
                 <button type="button" class="btn btn-outline-success btn-sm"  onclick="location.href='/teacher/view'">
                   Crear nuevo examen
+
                 </button>
               </div>
             </div>
@@ -102,43 +102,38 @@
     </div>
   </div>
 </div>
-
-<div class="container-fluid p-3 ">
+<div class="container-fluid w-100 p-3 ">
   <div class="row">
-    <div class="col">
-      <div class="card mt-5 ">
-        <div class="car-header ">
-          <h3 class="text-center">Exámenes creados</h3> <!-- Corregido con tilde en "Exámenes" -->
+    <div class="col" style="background-color: transparent;">
+      <div class="card" style="border-color: #002F5D">
+        <div class="car-header" style="background-color: #00AA83; color: white;">
+          <h3 class="text-center mt-3">Exámenes creados</h3>
         </div>
-        <div class="card-body ">
-          <div class="card-body">
-            <table class="table table-striped">
-              <thead>
-              <th>#</th>
-              <th>Nombre examen</th>
-              <th>Fecha inicio</th>
-              <th>Fecha finalización</th> <!-- Corregido con tilde en "finalización" -->
-              <th>Calificar</th>
-
-              </thead>
-              <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <td colspan="6" class="text-center">
-                Sin registros
-              </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-
-        </div>
+        <table class="table table-striped">
+          <thead style="background-color: #002F5D">
+          <th style="color: white">#</th>
+          <th style="color: white">Nombre del examen</th>
+          <th style="color: white">Fecha inicio</th>
+          <th style="color: white">Fecha finalización</th>
+          <th style="color: white">Caliificar </th>
+          </thead>
+          <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="6" class="text-center">
+              Sin registros
+            </td>
+          </tr>
+          </tbody>
+        </table>
       </div>
+      ---
     </div>
   </div>
 </div>

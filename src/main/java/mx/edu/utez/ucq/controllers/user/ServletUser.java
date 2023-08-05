@@ -194,13 +194,13 @@ public class ServletUser extends HttpServlet {
                 }
                 break;
             case "/user/save-student":
-                name = req.getParameter("name2");
-                lastname = req.getParameter("lastname2");
-                surname = req.getParameter("surname2");
-                curp = req.getParameter("curp2");
-                mail = req.getParameter("mail2");
-                enrollment = req.getParameter("enrollment2");
-                password = req.getParameter("password2");
+                name = req.getParameter("name");
+                lastname = req.getParameter("lastname");
+                surname = req.getParameter("surname");
+                curp = req.getParameter("curp");
+                mail = req.getParameter("mail");
+                enrollment = req.getParameter("enrollment");
+                password = req.getParameter("password");
                 User user = new User(0L, name, lastname, surname, curp, "Activo", 3L, mail, enrollment, password);
 
                 boolean result2 = new DaoUser().save(user);
