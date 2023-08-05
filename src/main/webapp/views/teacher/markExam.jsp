@@ -13,23 +13,44 @@
 </head>
 
 <style>
-
-    .navbar.bg-body-tertiary {
-        background-color: #002F5D !important; /* Reemplaza "your-color" con el color deseado */
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: white; /* Color de fondo */
+        background-image:
+                linear-gradient(to right, rgba(216, 234, 227, 0.5) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(216, 234, 227, 0.5) 1px, transparent 1px);
+        background-size: 5px 5px; /* Tamaño de las celdas del cuadriculado */
     }
 
+    .grid-container {
+        /* Centra el contenido en la página */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 </style>
+<body style="background-color: white;">
 
-<body style="background-color: #D8EAE3">
+<div class="grid-container position-absolute">
+
+</div>
 
 <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
-    <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
-        <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
-            <h3 class="text-center">Ultimate Custom Quiz</h3>
-        </a>
-        <a class="navbar-brand position-absolute top-0 end-0">
-            <img src="" alt="Bootstrap" width="30" height="24">
-        </a>
+    <div class="container d-flex align-content-between">
+
+        <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
+            <a class="navbar-brand position-absolute top-50 start-50 translate-middle"
+               style="color: white;"> <h3> Ultimate Custom Quiz </h3></a>
+        </div>
+
+        <div>
+            <button type="button" class="btn" style="background-color: transparent; border: transparent" onclick="redirectToTeacherIndex()">
+                <img src="../../assets/img/back-48.png">
+            </button>
+        </div>
+
         <br><br>
     </div>
 </nav>
@@ -66,5 +87,11 @@
     </div>
 
 <jsp:include page="../../layouts/footer.jsp"/>
+
+<script>
+    function redirectToTeacherIndex() {
+        window.location.href = "/user/index-teacher";
+    }
+</script>
 </body>
 </html>
