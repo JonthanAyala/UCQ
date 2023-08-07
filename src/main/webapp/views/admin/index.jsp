@@ -56,10 +56,6 @@
 
 <body style="background-color: white;">
 
-<div class="grid-container position-absolute">
-
-</div>
-
 <nav class="navbar navbar-expand-lg" style="background-color: #002F5D;">
     <div class="container d-flex align-content-between">
         <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
@@ -84,7 +80,7 @@
                 <li class="list-group-item" style="background-color: #00AA83; color: white; margin: 0; padding: 0;"
                     onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='1px solid #002F5D';"
                     onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='transparent';"
-                    onclick="window.location.href='/user/view-login';">
+                    onclick="window.location.href='/user/logout';">
                     <div style="cursor: pointer; padding: 8px;">
                         <h6 style="margin: 0;">Cerrar sesión</h6>
                     </div>
@@ -139,69 +135,8 @@
                         </form>
                     </div>
                 </div>
-                <div class="card-body">
-                    <table class="table table-stripped">
-                        <thead>
-                        <tr>
-                            <th>Matricula</th>
-                            <th>Nombre</th>
-                            <th>CURP</th>
-                            <th>Status</th>
-                            <th>Correo</th>
-                            <th>Tipo de usuario</th>
-                            <th>Acciones</th>
-                        </tr>
-                        </thead>
-                        <thbody>
-                            <c:forEach var="user" items="${users}" varStatus="s">
-                                <tr>
-                                    <td>
-                                        <c:out value="${user.enrollment}"/>
-                                    </td>
-                                    <td>
-                                        <c:out value="${user.name}"/> <br> <c:out value="${user.lastname}"/> <br> <c:out value="${user.surname}"/>
-                                    </td>
-                                    <td>
-                                        <c:out value="${user.curp}"/>
-                                    </td>
-                                    <td>
-                                        <c:out value="${user.status}"/>
-                                    </td>
-                                    <td>
-                                        <c:out value="${user.mail}"/>
-                                    </td>
-                                    <td>
-                                        <c:out value="${user.type_user}"/>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-outline-warning btn-sm" onclick="editarUsuario(${user.id})">Editar</button>
-                                        <form method="get" action="/user/user-view-update">
-                                            <input hidden value="${user.id}" name="id">
-                                            <button type="button" class=""
-                                                    data-bs-toggle="modal" data-bs-target="#EditUser">
-                                                Editar
-                                            </button>
-                                        </form>
-
-                                        <form method="post" action="/user/delete">
-                                            <input hidden value="${user.id}" name="id">
-                                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                                Eliminar
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                            <tr>
-                                <td colspan="6">
-                                    SIn registros
-                                </td>
-                            </tr>
-                        </thbody>
-                    </table>
-                </div>
             </div>
-          <div>
+            <div>
 
               <div class="row justify-content-center mt-5">
                   <div class="col-12">
@@ -271,11 +206,10 @@
                       </div>
                   </div>
               </div>
+            </div>
+        </div>
     </div>
-
-
             <!-- CARDS DE ALUMNO Y DE MAESTRO --->
-
         <div class="modal fade" id="ModalTeacher" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -306,11 +240,6 @@
                             <div class="form-group mb-3">
                                 <div class="row">
                                     <div class="col">
-                                        <label for="enrollment" class="fw-bold col-form-label">Matricula:</label>
-                                        <input type="text"  name="enrollment" id="enrollment" class="form-control" required maxlength="10">
-                                        <div class="invalid-feedback">Campo obligatorio</div>
-                                    </div>
-                                    <div class="col">
                                         <label for="curp" class="fw-bold">Curp:</label>
                                         <input type="text" name="curp" id="curp" class="form-control col-form-label" required maxlength="18">
                                         <div class="invalid-feedback">Campo obligatorio</div>
@@ -336,7 +265,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
-                        <button type="button" id="SaveTeacher" class="btn btn-primary" onclick="validateForm()" >Guardar</button>
+                        <button type="submit" id="SaveTeacher" class="btn btn-primary" onclick="validateForm()" >Guardar</button>
                     </div>
                         </form>
                     </div>

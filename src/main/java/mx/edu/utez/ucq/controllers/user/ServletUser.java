@@ -19,6 +19,7 @@ import java.util.Objects;
 
 
     @WebServlet(name = "users",urlPatterns = {
+            "/ucq",
             "/user/admin",			//admin index
             "/user/user",			//
             "/user/user-view",		//crear alumnos
@@ -30,6 +31,7 @@ import java.util.Objects;
             "/user/view-view-teacher", 	//crear profesores
             "/user/student",//index student
             "/user/login",
+            "/user/logout",
             "/user/view-login",
             "/user/users",
               //Nuevas Bojita
@@ -55,20 +57,14 @@ public class ServletUser extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         action = req.getServletPath();
         switch (action){
+            case "/ucq":
+                redirect = "/index.jsp";
+                break;
             case "/user/admin":
                 List<User> users = new DaoUser().findAll();
                 req.setAttribute("users", users);
                 redirect = "/views/admin/index.jsp";
                 break;
-
-            case "/user/user-view":
-                redirect = "/views/admin/create-students.jsp";
-                break;
-
-            case "/user/view-view-teacher":
-                redirect="/views/admin/create-teacher.jsp";
-                break;
-
             case "/user/user-view-update":
                 id= req.getParameter("id");
                 User user3 = new DaoUser().findOne(id != null ? Long.parseLong(id):0);
@@ -155,6 +151,34 @@ public class ServletUser extends HttpServlet {
                                     StandardCharsets.UTF_8);
                 }
                 break;
+            case "/user/logout":
+                try {
+                    // Get the current session and invalidate it to clear session data
+                    HttpSession session = req.getSession(false);
+                    if (session != null) {
+                        session.invalidate();
+                    }
+
+                    // Redirect the user to the login page after logout
+                    redirect = "/user/view-login?result=true&message=" + URLEncoder.encode("Sesión cerrada correctamente", StandardCharsets.UTF_8);
+                } catch (Exception e) {
+                    switch (Math.toIntExact(user.getType_user())) {
+                        case 1:
+                            redirect = "/user/admin?result=false&message=" + URLEncoder.encode("Error al cerrar sesión", StandardCharsets.UTF_8);
+                            break;
+                        case 2:
+                            redirect = "/user/index-teacher?result=false&message=" + URLEncoder.encode("Error al cerrar sesión", StandardCharsets.UTF_8);
+                            break;
+                        case 3:
+                            redirect = "/user/student?result=false&message=" + URLEncoder.encode("Error al cerrar sesión", StandardCharsets.UTF_8);
+                            break;
+                        default:
+                            redirect = "/user/view-login?result=false&message=" + URLEncoder.encode("Usuario Afectado acude al administrador", StandardCharsets.UTF_8);
+                            break;
+                    }
+                }
+                break;
+
             case "/user/update":
                 id = req.getParameter("id");
                 name = req.getParameter("name");
