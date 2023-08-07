@@ -46,7 +46,7 @@
     </div>
 
     <div>
-      <button type="button" class="btn" style="background-color: transparent; border: transparent" onclick="redirectToTeacherIndex()">
+      <button type="button" class="btn" style="background-color: transparent; border: transparent" onclick="redirectToAdminIndex()">
         <img src="../../assets/img/back-48.png">
       </button>
     </div>
@@ -183,8 +183,8 @@
       // Ocultar el botón "Cambiar contraseña"
       document.getElementById('changePasswordBtn').style.display = 'none';
     }
-    function redirectToTeacherIndex() {
-      window.location.href = "/user/index-teacher";
+    function redirectToAdminIndex() {
+      window.location.href = "/user/admin";
     }
     function confirmPassword() {
       // Obtener el valor de las contraseñas

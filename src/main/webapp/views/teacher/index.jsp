@@ -59,21 +59,19 @@
       </button>
       <ul class="dropdown-menu" style="background-color: #00AA83; border-bottom-color: #002F5D; margin: 0; padding: 0;">
         <li class="list-group-item" style="background-color: #00AA83; border-bottom: 1px solid #002F5D; margin: 0; padding: 0;"
-            onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='none';
-                    this.style.color='#002F5D';"
-            onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='1px solid #002F5D';
-                    this.style.color='white';"
-            onclick="window.location.href='user/view-exam';">
+            onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='none'; this.style.color='#002F5D';"
+            onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='1px solid #002F5D'; this.style.color='white';"
+            onclick="window.location.href='/user/profile';">
           <div style="cursor: pointer; padding: 8px;">
-            <h6 style="color: white; margin: 0;">perfil</h6>
+            <h6 style="color: white; margin: 0;">Perfil</h6>
           </div>
         </li>
         <li class="list-group-item" style="background-color: #00AA83; color: white; margin: 0; padding: 0;"
             onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='1px solid #002F5D';"
             onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='transparent';"
-            onclick="window.location.href='user/view-login';">
+            onclick="window.location.href='/user/view-login';">
           <div style="cursor: pointer; padding: 8px;">
-            <h6 style="margin: 0;">cerrar sesión</h6>
+            <h6 style="margin: 0;">Cerrar sesión</h6>
           </div>
         </li>
       </ul>
@@ -87,13 +85,14 @@
     <div class="col">
       <div class="card mt-5 ">
         <div class="car-header" style="background-color: #00AA83; color: white"
-        ><h4 class="text-center">crear examen</h4></div>
+        ><h4 class="text-center">Crear examen</h4></div>
         <div class="card-body" >
           <form>
             <div class="form-group mb-3 ">
               <div class="d-grid">
                 <button type="button" class="btn btn-outline-success btn-sm"  onclick="location.href='/teacher/view'">
-                  crear nuevo examen
+                  Crear nuevo examen
+
                 </button>
               </div>
             </div>
@@ -103,22 +102,19 @@
     </div>
   </div>
 </div>
-
-
 <div class="container-fluid w-100 p-3 ">
   <div class="row">
     <div class="col" style="background-color: transparent;">
       <div class="card" style="border-color: #002F5D">
         <div class="car-header" style="background-color: #00AA83; color: white;">
-          <h3 class="text-center mt-3">Examenes creados</h3>
+          <h3 class="text-center mt-3">Exámenes creados</h3>
         </div>
-
         <table class="table table-striped">
           <thead style="background-color: #002F5D">
           <th style="color: white">#</th>
           <th style="color: white">Nombre del examen</th>
           <th style="color: white">Fecha inicio</th>
-          <th style="color: white">Fecha finalizacion</th>
+          <th style="color: white">Fecha finalización</th>
           <th style="color: white">Caliificar </th>
           </thead>
           <tbody>
@@ -136,11 +132,14 @@
           </tr>
           </tbody>
         </table>
-
       </div>
+      ---
     </div>
   </div>
 </div>
+</body>
+</html>
+
 
 <jsp:include page="../../layouts/footer.jsp"/>
 

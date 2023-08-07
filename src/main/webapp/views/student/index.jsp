@@ -2,7 +2,7 @@
   Created by IntelliJ IDEA.
   User: angry
   Date: 17/06/2023
-  Time: 09:56 p. m.
+  Time: 09:56 p. m.
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -70,21 +70,19 @@
             </button>
             <ul class="dropdown-menu" style="background-color: #00AA83; border-bottom-color: #002F5D; margin: 0; padding: 0;">
                 <li class="list-group-item" style="background-color: #00AA83; border-bottom: 1px solid #002F5D; margin: 0; padding: 0;"
-                    onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='none';
-                    this.style.color='#002F5D';"
-                    onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='1px solid #002F5D';
-                    this.style.color='white';"
-                    onclick="window.location.href='user/view-exam';">
+                    onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='none'; this.style.color='#002F5D';"
+                    onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='1px solid #002F5D'; this.style.color='white';"
+                    onclick="window.location.href='/user/profile-s';">
                     <div style="cursor: pointer; padding: 8px;">
-                        <h6 style="color: white; margin: 0;">perfil</h6>
+                        <h6 style="color: white; margin: 0;">Perfil</h6>
                     </div>
                 </li>
                 <li class="list-group-item" style="background-color: #00AA83; color: white; margin: 0; padding: 0;"
                     onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='1px solid #002F5D';"
                     onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='transparent';"
-                    onclick="window.location.href='user/view-login';">
+                    onclick="window.location.href='/user/view-login';">
                     <div style="cursor: pointer; padding: 8px;">
-                        <h6 style="margin: 0;">cerrar sesión</h6>
+                        <h6 style="margin: 0;">Cerrar sesión</h6>
                     </div>
                 </li>
             </ul>
@@ -99,16 +97,16 @@
         <div class="col" >
             <div class="card mt-5">
                 <div class="car-header" style="background-color: #00AA83; color: white"
-                ><h4 class="text-center">Codigo de acceso</h4></div>
+                ><h4 class="text-center">Código de acceso</h4></div> <!-- Corregido con tilde en "Código" -->
                 <div class="card-body" ><br> <br> <br>
                     <form>
                         <div class="form-group mt-2 position-absolute top-50 start-50 translate-middle">
                             <div class="row">
                                 <div class="col text-center d-grid mt-2">
                                     <input  type="text" name="codigo" id="codigo" class="form-control
-                   mt-4" required style="background-color: #D9D9D9;">
+                   mt-4" required style="background-color: #D9D9D9;" maxlength="8">
                                     <button type="submit" class="btn btn-outline-success btn-sm mt-3">
-                                        aceptar
+                                        Aceptar
                                     </button>
                                 </div>
                             </div>
@@ -126,7 +124,7 @@
         <div class="col" style="background-color: transparent;">
             <div class="card" style="border-color: #002F5D">
                 <div class="car-header" style="background-color: #00AA83; color: white;">
-                    <h3 class="text-center mt-3">Examenes pendientes</h3>
+                    <h3 class="text-center mt-3">Exámenes pendientes</h3> <!-- Corregido con tilde en "Exámenes" -->
                 </div>
 
                 <table class="table table-striped">
@@ -134,7 +132,7 @@
                     <th style="color: white">#</th>
                     <th style="color: white">Nombre examen</th>
                     <th style="color: white">Fecha inicio</th>
-                    <th style="color: white">Fecha finalizacion</th>
+                    <th style="color: white">Fecha finalización</th> <!-- Corregido con tilde en "finalización" -->
                     <th style="color: white">Profesor</th>
                     </thead>
                     <tbody>
@@ -147,7 +145,7 @@
                     </tr>
                     <tr>
                         <td colspan="6" class="text-center">
-                            Sin registros
+                            No hay exámenes pendientes <!-- Corregido con tilde en "exámenes" -->
                         </td>
                     </tr>
                     </tbody>

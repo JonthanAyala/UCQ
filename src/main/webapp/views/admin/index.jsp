@@ -57,10 +57,7 @@
 <body style="background-color: white; overflow-x: hidden;">
 
 <div class="grid-container position-absolute">
-
 </div>
-
-
 <nav class="navbar navbar-expand-lg" style="background-color: #002F5D;">
     <div class="container d-flex align-content-between">
         <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
@@ -206,10 +203,7 @@
             </table>
         </div>
     </div>
-
-
             <!-- CARDS DE ALUMNO Y DE MAESTRO --->
-
             <div class="modal fade" id="ModalTeacher" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -236,7 +230,6 @@
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                 </div>
-
                                 <div class="form-group mb-3">
                                     <div class="row">
                                         <div class="col">
@@ -278,14 +271,12 @@
                             <button type="button" id="SaveTeacher" class="btn btn-primary" onclick="validateForm()">Guardar</button>
                         </div>
                         </form>
-
                     </div>
                 </div>
             </div>
 
 
             <!-- ---------------------------------------- SECCIÓN DE EDITAR EL USUARIO -------------------------------------------------------- -->
-
             <div class="modal fade" id="ModalStudent" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -294,7 +285,6 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-
                             <form class="needs-validation" novalidate action="/user/save-student" method="post" novalidate>
                                 <div class="row">
 
@@ -315,7 +305,6 @@
                                     </div>
 
                                 </div>
-
                                 <div class="form-group mb-3">
                                     <div class="row">
                                         <div class="col">
@@ -357,13 +346,9 @@
                             <button type="submit" id="SaveStudent" class="btn btn-primary" onclick="validateFormStudent()">Guardar</button>
                         </div>
                         </form>
-
                     </div>
                 </div>
             </div>
-
-
-
             <div class="modal fade" id="EditUser" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -392,6 +377,7 @@
                                     </div>
 
                                 </div>
+
 
                                 <div class="form-group mb-3">
                                     <div class="row">
@@ -434,11 +420,9 @@
                             <button type="submit" id="SaveEdit" class="btn btn-primary" onclick="validateFormEdit()">Guardar</button>
                         </div>
                         </form>
-
                     </div>
                 </div>
             </div>
-
 
 
             <jsp:include page="../../layouts/footer.jsp"/>
@@ -481,7 +465,6 @@
 
                     return true;
                 }
-
                 (() => {
                     'use strict';
 

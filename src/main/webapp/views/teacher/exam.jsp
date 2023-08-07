@@ -93,8 +93,23 @@
 
             <div>
                 <button type="button" class="btn" style="background-color: transparent; border: transparent"
-                        onclick="verificarYNavegar() ">
-                    <img src="../../assets/img/icons8-volver-48.png">
+                        onclick=" Swal.fire({
+            title: '¿Deseas guardar los cambios?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Guardar',
+            denyButtonText: `No guardar`,
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                Swal.fire('EXAMEN GUARDADO', '', 'success')
+                //LA ALERTA APARECERÁ EN CASO DE QUE APRETEN EL BOTON DE REGRESAR Y NO SE HAYAN GUARDADOS LOS CAMBIOS
+                //REDIRIGIR A LA PAGINA PRINCIPAL CON LOS CAMBIOS GUARDADOS
+            } else if (result.isDenied) {
+               //REDIRIGIR SOLAMENTE A LA PAGINA PRINCIPAL
+            }
+        })">
+                    <img src="../../assets/img/back-48.png">
                 </button>
             </div>
 

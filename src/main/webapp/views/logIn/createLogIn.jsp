@@ -88,41 +88,37 @@
             </div>
             <div class="card-body">
 
-                <form  class="needs-validation" id="loginForm" action="/user/login" novalidate method="post">
-
+                <form class="needs-validation" id="loginForm" action="/user/login" novalidate method="post">
                     <tr style="background-color: white;">
                         <th style="border: 2px solid #374b43;">
-                            <div class="form-outline ">
-                                <input  id="loginCredential" name="loginCredential" type="text" class="form-control" style="background-color: #D9D9D9;" required>
-                                <label class="form-label" for="loginCredential"> Usuario </label>
-                                <div class="invalid-feedback text-start">
+                            <div class="form-outline">
+                                <label class="form-label" for="loginCredential">Usuario</label>
+                                <input id="loginCredential" name="loginCredential" type="text" class="form-control" style="background-color: #D9D9D9;" required maxlength="22">
+                                <div class="invalid-feedback">
                                     Campo obligatorio
                                 </div>
                             </div>
 
                             <div class="form-outline">
-                                <input id="password" name="password"  maxlength="8" type="password" class="form-control" style="background-color: #D9D9D9;" required>
-                                <label class="form-label" for="password"> Contraseña </label>
-                                <div class="invalid-feedback text-start">
+                                <label class="form-label" for="password">Contraseña</label>
+                                <input id="password" name="password"  type="password" class="form-control" style="background-color: #D9D9D9;" required maxlength="16">
+                                <div class="invalid-feedback">
                                     Campo obligatorio
                                 </div>
                             </div>
-
                         </th>
-
                     </tr>
 
-                    <h6 style="color: #002F5D" href=""> ¿olvidaste tu contraseña? </h6>
+                    <h6 style="color: #002F5D" href="">¿Olvidaste tu contraseña?</h6>
                     <div class="card-footer">
-                        <div class="d-grid ">
-                            <button id="login" type="submit" class="btn btn-primary btn-block " value="login" style="background-color: #00AA83 !important;">
-                                <i data-feather="log-in"></i> Iniciar sesion
+                        <div class="d-grid">
+                            <button id="login" type="submit" class="btn btn-primary btn-block" value="login" style="background-color: #00AA83 !important;">
+                                <i data-feather="log-in"></i> Iniciar sesión
                             </button>
-
-
                         </div>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
@@ -144,6 +140,28 @@
 <jsp:include page="../../layouts/footer.jsp"/>
 
 <script>
+    document.getElementById('login').addEventListener('click', function(event) {
+        var form = document.getElementById('loginForm');
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+            form.classList.add('was-validated');
+        } else {
+            var loginCredential = document.getElementById('loginCredential').value;
+            var password = document.getElementById('password').value;
+
+            // validación con el servidor
+            var validUser = mail;
+            var validPassword = password;
+
+            if (loginCredential !== validUser || password !== validPassword) {
+                event.preventDefault();
+                form.classList.add('was-validated');
+                document.getElementById('loginCredential').classList.add('is-invalid');
+                document.getElementById('password').classList.add('is-invalid');
+            }
+        }
+    });
     window.addEventListener("DOMContentLoaded", () => {
         feather.replace();
         const form = document.getElementById("loginForm");
