@@ -131,21 +131,22 @@ public class DaoUser implements DaoRepository<User>{
 
 
         @Override
-        public boolean update(User object) {
+        public boolean
+        update(User object) {
             try {
                 conn = new MySQLConnection().connect();
-                String query = "UPDATE users SET name = ?, surname = ?, curp = ?, status = ?, type_user = ?, mail = ?, enrollment = ?, password = ? where id = ?";
+                String query = "UPDATE users SET name = ?,lastname= ?, surname = ?, curp = ?, status = ?, mail = ?, enrollment = IFNULL(?, enrollment), password = ? where id_user = ?;";
                 pstm = conn.prepareStatement(query);
                 pstm.setString(1,object.getName());
-                pstm.setString(2,object.getSurname());
-                pstm.setString(3, object.getCurp());
-                pstm.setString(4,object.getStatus());
-                pstm.setLong(5,object.getType_user());
+                pstm.setString(2,object.getLastname());
+                pstm.setString(3,object.getSurname());
+                pstm.setString(4,object.getCurp());
+                pstm.setString(5,object.getStatus());
                 pstm.setString(6,object.getMail());
-                pstm.setString(7,object.getEnrollment());
+                pstm.setObject(7, object.getEnrollment());
                 pstm.setString(8,object.getPassword());
                 pstm.setLong(9,object.getId());
-                return pstm.executeUpdate() > 0; // == 1
+                return pstm.executeUpdate() == 1; // == 1
             }catch (SQLException e){
                 Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE,"Error save"+e.getMessage());
             }finally {
@@ -157,7 +158,7 @@ public class DaoUser implements DaoRepository<User>{
     public boolean delete(Long id) {
         try {
             conn = new MySQLConnection().connect();
-            String query = "DELETE FROM users where id_user = ?";
+            String query = "DELETE FROM users where id_user = ?;";
             pstm = conn.prepareStatement(query);
             pstm.setLong(1,id);
             return  pstm.executeUpdate() == 1;

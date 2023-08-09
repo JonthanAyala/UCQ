@@ -192,12 +192,17 @@ public class ServletUser extends HttpServlet {
                 lastname = req.getParameter("lastname");
                 surname = req.getParameter("surname");
                 curp = req.getParameter("curp");
-                status = req.getParameter("status");
+                status = "Activo";
                 type_user = req.getParameter("type_user");
                 mail = req.getParameter("mail");
-                enrollment = req.getParameter("enrollment");
+                if (Long.parseLong(type_user) == 2) {
+                    enrollment = null;
+                } else {
+                    enrollment = req.getParameter("enrollment");
+                }
                 password = req.getParameter("password");
                 user = new User(Long.parseLong(id), name, lastname, surname, curp, status, Long.parseLong(type_user), mail, enrollment, password);
+
                 if (new DaoUser().update(user)){
                     redirect = "/user/admin?result="+true+"&message="+ URLEncoder.encode("¡Exito! Usuario actualizado correctamente.", StandardCharsets.UTF_8);
 

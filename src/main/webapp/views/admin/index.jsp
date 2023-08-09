@@ -160,7 +160,15 @@
                     <c:forEach var="user" items="${users}" varStatus="s">
                         <tr>
                             <td>
-                                <c:out value="${user.enrollment}"/>
+                                <c:choose>
+                                    <c:when test="${user.enrollment == null}">
+                                        NA
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:out value="${user.enrollment}" />
+                                    </c:otherwise>
+                                </c:choose>
+
                             </td>
                             <td>
                                 <c:out value="${user.name}"/> <br> <c:out value="${user.lastname}"/> <br> <c:out value="${user.surname}"/>
@@ -178,10 +186,20 @@
                                 <c:out value="${user.type_user}"/>
                             </td>
                             <td>
-                                <input hidden value="${user.id}" name="id">
                                 <button type="button" class="btn btn-outline-warning btn-sm"
                                         data-bs-toggle="modal" data-bs-target="#EditUser"
-                                        onclick="loadUserDataForEdit(${user.id})">
+                                        onclick="loadUserDataForEdit(${user.id})"
+                                        id="loadUserDataForEdit_${user.id}"
+                                        data-id="${user.id}"
+                                        data-name="${user.name}"
+                                        data-lastname="${user.lastname}"
+                                        data-surname="${user.surname}"
+                                        data-type_user="${user.type_user}"
+                                        data-curp="${user.curp}"
+                                        data-mail="${user.mail}"
+                                        data-enrollment="${user.enrollment}"
+                                        data-password="${user.password}"
+                                        data-confirmpassword="${user.password}">
                                     Editar
                                 </button>
                                 <form method="post" action="/user/delete">
@@ -352,13 +370,70 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body" id="userModalData">
-                        </div>
+                            <form id="EditForm" class="needs-validation" novalidate action="/user/update" method="post">
+                                <div class="row">
+                                    <input hidden value="" id="Eid" name="id">
+                                    <input hidden value="" id="Etype_user" name="type_user">
+                                    <div class="col">
+                                        <label for="name" class="fw-bold col-form-label">Nombre:</label>
+                                        <input type="text" name="name" id="Ename" class="form-control" required/>
+                                        <div class="invalid-feedback">Campo obligatorio</div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="lastname" class="fw-bold col-form-label">Apellido Paterno:</label>
+                                        <input type="text" name="lastname" id="Elastname" class="form-control" required>
+                                        <div class="invalid-feedback">Campo obligatorio</div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="surname" class="fw-bold col-form-label">Apellido Materno:</label>
+                                        <input type="text" name="surname" id="Esurname" class="form-control" required>
+                                        <div class="invalid-feedback">Campo obligatorio</div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group mb-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="enrollment" class="fw-bold col-form-label">Matricula:</label>
+                                            <input type="text" name="enrollment" id="Eenrollment" class="form-control" required>
+                                            <div class="invalid-feedback">Campo obligatorio</div>
+                                        </div>
+                                        <div class="col">
+                                            <label for="curp" class="fw-bold">Curp:</label>
+                                            <input type="text" name="curp" id="Ecurp" class="form-control" required>
+                                            <div class="invalid-feedback">Campo obligatorio</div>
+                                        </div>
+                                        <div class="col">
+                                            <label for="mail" class="fw-bold">Correo :</label>
+                                            <input type="email" name="mail" id="Email" class="form-control" required>
+                                            <div class="invalid-feedback">Campo obligatorio</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <div class="row" >
+                                        <div class="col">
+                                            <label for="password" class="fw-bold">Contraseña:</label>
+                                            <input type="text" name="password" id="Epassword" class="form-control" required>
+                                            <div class="invalid-feedback">Campo obligatorio</div>
+                                        </div>
+                                        <div class="col">
+                                            <label for="ConfirmPassword" class="fw-bold">Confirmar contraseña:</label>
+                                            <input type="text" name="ConfirmPassword" id="EConfirmPassword" class="form-control col-form-label" required>
+                                            <div class="invalid-feedback">Campo obligatorio</div>
+                                        </div>
+                                    </div>
+                                </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
                             <button type="submit" id="SaveEdit" class="btn btn-primary" onclick="validateFormEdit()">Guardar</button>
                         </div>
                         </form>
                     </div>
+                </div>
                 </div>
             </div>
 
@@ -489,9 +564,9 @@
 
                 function validateFormEdit() {
                     // Obtener los elementos del formulario mediante su ID
-                    var form = document.getElementById("EditUser");
-                    var passwordInput = document.getElementById("Editpassword");
-                    var confirmPasswordInput = document.getElementById("EditConfirmPassword");
+                    var form = document.getElementById("EditForm");
+                    var passwordInput = document.getElementById("Epassword");
+                    var confirmPasswordInput = document.getElementById("EConfirmPassword");
 
                     // Validar el formulario antes de enviarlo
                     if (form.checkValidity() && passwordInput.value === confirmPasswordInput.value) {
@@ -652,84 +727,71 @@
                 });
 
                 function loadUserDataForEdit(userId) {
-                    const userRow = document.getElementById(`userRow_${userId}`);
-                    console.log("userRow:", userRow);
-                    const name = userRow.querySelector(".userName").innerText;
-                    const lastname = userRow.querySelector(".userLastname").innerText;
-                    const surname = userRow.querySelector(".userSurname").innerText;
-                    const enrollment = userRow.querySelector(".userEnrollment").innerText;
-                    const curp = userRow.querySelector(".userCurp").innerText;
-                    const mail = userRow.querySelector(".usermail").innerText;
+                    console.log("loadUserDataForEdit", userId);
+                    const btn = document.getElementById("loadUserDataForEdit_" + userId)
+                    const id = btn.dataset.id;
+                    const name = btn.dataset.name;
+                    const lastname = btn.dataset.lastname;
+                    const surname = btn.dataset.surname;
+                    const curp = btn.dataset.curp;
+                    let enrollment; // Declara la variable una vez aquí
+                    if (!btn.dataset.enrollment) {
+                        enrollment = "NA"; // Asigna el valor si no existe el atributo
+                    } else {
+                        enrollment = btn.dataset.enrollment; // Asigna el valor si existe el atributo
+                    }
+                    const mail = btn.dataset.mail;
 
-                    document.getElementById("Editname").value = name;
-                    document.getElementById("EditLastname").value = lastname;
-                    document.getElementById("Editsurname").value = surname;
-                    document.getElementById("Editenrollment").value = enrollment;
-                    document.getElementById("Editcurp").value = curp;
-                    document.getElementById("EditMail").value = mail;
-
-                    const userModalData = document.getElementById("userModalData");
-                    userModalData.innerHTML = `
-                            <form class="needs-validation" novalidate action="/user/update" method="post">
-                                <div class="row">
-
-                                    <div class="col">
-                                        <label for="Editname" class="fw-bold col-form-label">Nombre:</label>
-                                        <input type="text" name="Editname" id="Editname" class="form-control" required/>
-                                        <div class="invalid-feedback">Campo obligatorio</div>
-                                    </div>
-                                    <div class="col">
-                                        <label for="Editlastname" class="fw-bold col-form-label">Apellido Paterno:</label>
-                                        <input type="text" name="Editlastname" id="Editlastname" class="form-control" required>
-                                        <div class="invalid-feedback">Campo obligatorio</div>
-                                    </div>
-                                    <div class="col">
-                                        <label for="Editsurname" class="fw-bold col-form-label">Apellido Materno:</label>
-                                        <input type="text" name="Editsurname" id="Editsurname" class="form-control" required>
-                                        <div class="invalid-feedback">Campo obligatorio</div>
-                                    </div>
-
-                                </div>
-
-
-                                <div class="form-group mb-3">
-                                    <div class="row">
-                                        <div class="col">
-                                            <label for="Editenrollment" class="fw-bold col-form-label">Matricula:</label>
-                                            <input type="text" name="Editenrollment" id="Editenrollment" class="form-control" required>
-                                            <div class="invalid-feedback">Campo obligatorio</div>
-                                        </div>
-                                        <div class="col">
-                                            <label for="Editcurp" class="fw-bold">Curp:</label>
-                                            <input type="text" name="Editcurp" id="Editcurp" class="form-control" required>
-                                            <div class="invalid-feedback">Campo obligatorio</div>
-                                        </div>
-
-                                        <div class="col">
-                                            <label for="EditMail" class="fw-bold">Correo :</label>
-                                            <input type="email" name="EditMail" id="EditMail" class="form-control" required>
-                                            <div class="invalid-feedback">Campo obligatorio</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <div class="row" >
-                                        <div class="col">
-                                            <label for="Editpassword" class="fw-bold">Contraseña:</label>
-                                            <input type="text" name="Editpassword" id="Editpassword" class="form-control" required>
-                                            <div class="invalid-feedback">Campo obligatorio</div>
-                                        </div>
-                                        <div class="col">
-                                            <label for="EditConfirmPassword" class="fw-bold">Confirmar contraseña:</label>
-                                            <input type="text" name="EditConfirmPassword" id="EditConfirmPassword" class="form-control col-form-label" required>
-                                            <div class="invalid-feedback">Campo obligatorio</div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
-                        `;
+                    const password = btn.dataset.password;
+                    const confirmpassword = btn.dataset.confirmpassword;
+                    const type_user = btn.dataset.type_user;
+                    /*--------------------------------------------------------*/
+                    console.log("id "+id);
+                    console.log("name "+name);
+                    console.log("lastname "+lastname);
+                    console.log("surname "+surname);
+                    console.log("curp "+curp);
+                    console.log("mail "+mail);
+                    console.log("enroolment "+enrollment);
+                    console.log("password "+password);
+                    console.log("Confirm password "+confirmpassword);
+                    console.log("type_user "+type_user);
+                    /*--------------------------------------------------*/
+                    document.getElementById("Eid").value = id;
+                    document.getElementById("Ename").value = name;
+                    document.getElementById("Elastname").value = lastname;
+                    document.getElementById("Esurname").value = surname;
+                    document.getElementById("Ecurp").value = curp;
+                    document.getElementById("Email").value = mail;
+                    document.getElementById("Eenrollment").value = enrollment;
+                    document.getElementById("Epassword").value = password;
+                    document.getElementById("EConfirmPassword").value = confirmpassword;
+                    document.getElementById("Etype_user").value = type_user;
                 }
+                (() => {
+                    'use strict';
+
+                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                    const forms = document.querySelectorAll('.needs-validation');
+
+                    // Loop over them and prevent submission
+                    Array.from(forms).forEach(form => {
+                        form.addEventListener('submit', event => {
+                            if (!form.checkValidity()) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+
+                            // Validar el formulario adicionalmente con la función personalizada
+                            if (!validateFormEdit()) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            // Agregar la clase 'was-validated' al formulario para mantener los estilos de validación de Bootstrap
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+                })();
 
     </script>
 </body>
