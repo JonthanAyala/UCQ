@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import mx.edu.utez.ucq.models.exam.DaoExam;
+import mx.edu.utez.ucq.models.exam.Exam;
 import mx.edu.utez.ucq.models.user.DaoUser;
 import mx.edu.utez.ucq.models.user.User;
 
@@ -84,8 +86,10 @@ public class ServletUser extends HttpServlet {
             case "/user/view-login":
                 redirect="/views/logIn/createLogIn.jsp";
                 break;
-            //AXEL-VIEWS
             case "/user/index-teacher":
+                id = req.getParameter("id_user");
+                List<Exam> exams = new DaoExam().findAllExam(Long.valueOf(id));
+                req.setAttribute("exams",exams);
                 redirect="/views/teacher/index.jsp";
                 break;
             case "/user/mark-exam":
@@ -102,6 +106,36 @@ public class ServletUser extends HttpServlet {
                 break;
             case "/user/view-exam":
                 redirect = "/views/student/exam.jsp";
+                break;
+            case "/user/logout":
+                try {
+                    HttpSession session = req.getSession(false);  // Obtener la sesión existente (sin crear una nueva)
+                    if (session != null) {
+                        session.invalidate();  // Invalidar la sesión para cerrarla
+                    }
+                    redirect = "/user/view-login?result=true&message=" + URLEncoder
+                            .encode("Sesión cerrada correctamente", StandardCharsets.UTF_8);
+                } catch (Exception e) {
+                    int userType = (user != null) ? Math.toIntExact(user.getType_user()) : -1;
+                    switch (userType) {
+                        case 1:
+                            redirect = "/user/admin?result=false&message=" + URLEncoder
+                                    .encode("Error al cerrar sesión", StandardCharsets.UTF_8);
+                            break;
+                        case 2:
+                            redirect = "/user/index-teacher?result=false&message=" + URLEncoder
+                                    .encode("Error al cerrar sesión", StandardCharsets.UTF_8);
+                            break;
+                        case 3:
+                            redirect = "/user/student?result=false&message=" + URLEncoder
+                                    .encode("Error al cerrar sesión", StandardCharsets.UTF_8);
+                            break;
+                        default:
+                            redirect = "/user/view-login?result=false&message=" + URLEncoder
+                                    .encode("Usuario afectado, contacta al administrador", StandardCharsets.UTF_8);
+                            break;
+                    }
+                }
                 break;
             default:
                 System.out.println(action);
@@ -130,7 +164,7 @@ public class ServletUser extends HttpServlet {
                                 redirect = "/user/admin";
                                 break;
                             case 2:
-                                redirect = "/user/index-teacher";
+                                redirect = "/user/index-teacher?id_user=" + user.getId();
                                 break;
                             case 3:
                                 redirect = "/user/student";
@@ -149,33 +183,6 @@ public class ServletUser extends HttpServlet {
                     redirect = "/user/view-login?result=false&message=" + URLEncoder
                             .encode("Usuario y/o contraseña incorrecta",
                                     StandardCharsets.UTF_8);
-                }
-                break;
-            case "/user/logout":
-                try {
-                    // Get the current session and invalidate it to clear session data
-                    HttpSession session = req.getSession(false);
-                    if (session != null) {
-                        session.invalidate();
-                    }
-
-                    // Redirect the user to the login page after logout
-                    redirect = "/user/view-login?result=true&message=" + URLEncoder.encode("Sesión cerrada correctamente", StandardCharsets.UTF_8);
-                } catch (Exception e) {
-                    switch (Math.toIntExact(user.getType_user())) {
-                        case 1:
-                            redirect = "/user/admin?result=false&message=" + URLEncoder.encode("Error al cerrar sesión", StandardCharsets.UTF_8);
-                            break;
-                        case 2:
-                            redirect = "/user/index-teacher?result=false&message=" + URLEncoder.encode("Error al cerrar sesión", StandardCharsets.UTF_8);
-                            break;
-                        case 3:
-                            redirect = "/user/student?result=false&message=" + URLEncoder.encode("Error al cerrar sesión", StandardCharsets.UTF_8);
-                            break;
-                        default:
-                            redirect = "/user/view-login?result=false&message=" + URLEncoder.encode("Usuario Afectado acude al administrador", StandardCharsets.UTF_8);
-                            break;
-                    }
                 }
                 break;
 
@@ -212,7 +219,6 @@ public class ServletUser extends HttpServlet {
                 boolean result = new DaoUser().save(user1);
                 if (result){
                     redirect = "/user/admin?result="+result+"&message="+ URLEncoder.encode("¡Exito! Usuario registrado correctamente.", StandardCharsets.UTF_8);
-
                 }else {
                     redirect = "/user/admin?result="+result+"&message="+ URLEncoder.encode("Error accion no realizada correctamente.", StandardCharsets.UTF_8);
                 }

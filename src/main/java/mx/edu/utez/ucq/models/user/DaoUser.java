@@ -22,7 +22,7 @@ public class DaoUser implements DaoRepository<User>{
         try {
             conn = new MySQLConnection().connect();
             String query = "SELECT id_user, mail, type_user FROM users " +
-                    "WHERE mail = ? OR enrollment = ? AND password = ? AND status = 'Activo';";
+                    "WHERE (mail = ? OR enrollment = ?) AND password = ? AND status = 'Activo';";
             pstm = conn.prepareStatement(query);
             pstm.setString(1, loginCredential);
             pstm.setString(2, loginCredential);

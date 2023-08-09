@@ -76,7 +76,7 @@
                     this.style.color='#002F5D';"
                     onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='1px solid #002F5D';
                     this.style.color='white';"
-                    onclick="window.location.href='user/view-exam';">
+                    onclick="window.location.href='/user/profile-a';">
                     <div style="cursor: pointer; padding: 8px;">
                         <h6 style="color: white; margin: 0;">perfil</h6>
                     </div>
@@ -84,8 +84,8 @@
                 <li class="list-group-item" style="background-color: #00AA83; color: white; margin: 0; padding: 0;"
                     onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='1px solid #002F5D';"
                     onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='transparent';"
-                    onclick="window.location.href='user/view-login';">
-                    <div style="cursor: pointer; padding: 8px;">
+                    onclick="window.location.href='${pageContext.request.contextPath}/user/logout';">
+                    <div style="cursor: pointer; padding: 8px;" >
                         <h6 style="margin: 0;">cerrar sesión</h6>
                     </div>
                 </li>
@@ -156,7 +156,7 @@
                     <th>acciones </th>
                 </tr>
                 </thead>
-                <thbody>
+                <tbody>
                     <c:forEach var="user" items="${users}" varStatus="s">
                         <tr>
                             <td>
@@ -178,13 +178,12 @@
                                 <c:out value="${user.type_user}"/>
                             </td>
                             <td>
-                                <form method="get" action="/user/user-view-update">
-                                    <input hidden value="${user.id}" name="id">
-                                    <button type="button" class="btn btn-outline-warning btn-sm"
-                                            data-bs-toggle="modal" data-bs-target="#EditUser">
-                                        Editar
-                                    </button>
-                                </form>
+                                <input hidden value="${user.id}" name="id">
+                                <button type="button" class="btn btn-outline-warning btn-sm"
+                                        data-bs-toggle="modal" data-bs-target="#EditUser"
+                                        onclick="loadUserDataForEdit(${user.id})">
+                                    Editar
+                                </button>
                                 <form method="post" action="/user/delete">
                                     <input hidden value="${user.id}" name="id">
                                     <button type="submit" class="btn btn-outline-danger btn-sm">
@@ -199,7 +198,7 @@
                             SIn registros
                         </td>
                     </tr>
-                </thbody>
+                </tbody>
             </table>
         </div>
     </div>
@@ -208,7 +207,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel"> Nuevo profesor </h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel"> Nuevo professor </h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -233,18 +232,13 @@
                                 <div class="form-group mb-3">
                                     <div class="row">
                                         <div class="col">
-                                            <label for="enrollment" class="fw-bold col-form-label">Matricula:</label>
-                                            <input type="text"  name="enrollment" id="enrollment" class="form-control" required>
-                                            <div class="invalid-feedback">Campo obligatorio</div>
-                                        </div>
-                                        <div class="col">
                                             <label for="curp" class="fw-bold">Curp:</label>
                                             <input type="text" name="curp" id="curp" class="form-control col-form-label" required>
                                             <div class="invalid-feedback">Campo obligatorio</div>
                                         </div>
                                         <div class="col">
                                             <label for="mail" class="fw-bold">Correo:</label>
-                                            <input type="email" name="email" id="mail" class="form-control" required>
+                                            <input type="email" name="mail" id="mail" class="form-control" required>
                                             <div class="invalid-feedback">Campo obligatorio</div>
                                         </div>
                                     </div>
@@ -285,22 +279,21 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form class="needs-validation" novalidate action="/user/save-student" method="post" novalidate>
+                            <form id="StudentForm" class="needs-validation" novalidate action="/user/save-student" method="post">
                                 <div class="row">
-
                                     <div class="col">
-                                        <label for="name2" class="fw-bold col-form-label">Nombre:</label>
-                                        <input type="text" name="name2" id="name2" class="form-control" required>
+                                        <label for="name" class="fw-bold col-form-label">Nombre:</label>
+                                        <input type="text" name="name" id="name" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                     <div class="col">
-                                        <label for="lastname2" class="fw-bold col-form-label">Apellido Paterno:</label>
-                                        <input type="text" name="lastname2" id="lastname2" class="form-control" required>
+                                        <label for="lastname" class="fw-bold col-form-label">Apellido Paterno:</label>
+                                        <input type="text" name="lastname" id="lastname" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
                                     <div class="col">
-                                        <label for="surname2" class="fw-bold col-form-label">Apellido Materno:</label>
-                                        <input type="text" name="surname2" id="surname2" class="form-control" required>
+                                        <label for="surname" class="fw-bold col-form-label">Apellido Materno:</label>
+                                        <input type="text" name="surname" id="surname" class="form-control" required>
                                         <div class="invalid-feedback">Campo obligatorio</div>
                                     </div>
 
@@ -308,19 +301,19 @@
                                 <div class="form-group mb-3">
                                     <div class="row">
                                         <div class="col">
-                                            <label for="enrollment2" class="fw-bold col-form-label">Matricula:</label>
-                                            <input type="text"  name="enrollment2" id="enrollment2" class="form-control" required>
+                                            <label for="enrollment" class="fw-bold col-form-label">Matricula:</label>
+                                            <input type="text"  name="enrollment" id="enrollment" class="form-control" required>
                                             <div class="invalid-feedback">Campo obligatorio</div>
                                         </div>
                                         <div class="col">
-                                            <label for="curp2" class="fw-bold">Curp:</label>
-                                            <input type="text" name="curp2" id="curp2" class="form-control" required>
+                                            <label for="curp" class="fw-bold">Curp:</label>
+                                            <input type="text" name="curp" id="curp" class="form-control" required>
                                             <div class="invalid-feedback">Campo obligatorio</div>
                                         </div>
 
                                         <div class="col">
-                                            <label for="mail2" class="fw-bold">Correo :</label>
-                                            <input type="email" name="mail2" id="mail2" class="form-control" required>
+                                            <label for="mail" class="fw-bold">Correo :</label>
+                                            <input type="email" name="mail" id="mail" class="form-control" required>
                                             <div class="invalid-feedback">Campo obligatorio</div>
                                         </div>
                                     </div>
@@ -329,13 +322,13 @@
                                 <div class="form-group mb-3">
                                     <div class="row" >
                                         <div class="col">
-                                            <label for="password2" class="fw-bold">Contraseña:</label>
-                                            <input type="text" name="password2" id="password2" class="form-control" required>
+                                            <label for="password" class="fw-bold">Contraseña:</label>
+                                            <input type="text" name="password" id="password" class="form-control" required>
                                             <div class="invalid-feedback">Campo obligatorio</div>
                                         </div>
                                         <div class="col">
-                                            <label for="ConfirmPassword2" class="fw-bold">Confirmar contraseña:</label>
-                                            <input type="text" name="ConfirmPassword2" id="ConfirmPassword2" class="form-control col-form-label" required>
+                                            <label for="ConfirmPassword" class="fw-bold">Confirmar contraseña:</label>
+                                            <input type="text" name="ConfirmPassword" id="ConfirmPassword" class="form-control col-form-label" required>
                                             <div class="invalid-feedback">Campo obligatorio</div>
                                         </div>
                                     </div>
@@ -349,6 +342,8 @@
                     </div>
                 </div>
             </div>
+
+
             <div class="modal fade" id="EditUser" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -356,64 +351,7 @@
                             <h1 class="modal-title fs-5" id="exampleModalLabel3"> Editar usuario </h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <form class="needs-validation" novalidate action="/user/save-student" method="post">
-                                <div class="row">
-
-                                    <div class="col">
-                                        <label for="Editname" class="fw-bold col-form-label">Nombre:</label>
-                                        <input type="text" name="Editname" id="Editname" class="form-control" required/>
-                                        <div class="invalid-feedback">Campo obligatorio</div>
-                                    </div>
-                                    <div class="col">
-                                        <label for="Editlastname" class="fw-bold col-form-label">Apellido Paterno:</label>
-                                        <input type="text" name="Editlastname" id="Editlastname" class="form-control" required>
-                                        <div class="invalid-feedback">Campo obligatorio</div>
-                                    </div>
-                                    <div class="col">
-                                        <label for="Editsurname" class="fw-bold col-form-label">Apellido Materno:</label>
-                                        <input type="text" name="Editsurname" id="Editsurname" class="form-control" required>
-                                        <div class="invalid-feedback">Campo obligatorio</div>
-                                    </div>
-
-                                </div>
-
-
-                                <div class="form-group mb-3">
-                                    <div class="row">
-                                        <div class="col">
-                                            <label for="Editenrollment" class="fw-bold col-form-label">Matricula:</label>
-                                            <input type="text" name="Editenrollment" id="Editenrollment" class="form-control" required>
-                                            <div class="invalid-feedback">Campo obligatorio</div>
-                                        </div>
-                                        <div class="col">
-                                            <label for="Editcurp" class="fw-bold">Curp:</label>
-                                            <input type="text" name="Editcurp" id="Editcurp" class="form-control" required>
-                                            <div class="invalid-feedback">Campo obligatorio</div>
-                                        </div>
-
-                                        <div class="col">
-                                            <label for="EditMail" class="fw-bold">Correo :</label>
-                                            <input type="email" name="EditMail" id="EditMail" class="form-control" required>
-                                            <div class="invalid-feedback">Campo obligatorio</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <div class="row" >
-                                        <div class="col">
-                                            <label for="Editpassword" class="fw-bold">Contraseña:</label>
-                                            <input type="text" name="Editpassword" id="Editpassword" class="form-control" required>
-                                            <div class="invalid-feedback">Campo obligatorio</div>
-                                        </div>
-                                        <div class="col">
-                                            <label for="EditConfirmPassword" class="fw-bold">Confirmar contraseña:</label>
-                                            <input type="text" name="EditConfirmPassword" id="EditConfirmPassword" class="form-control col-form-label" required>
-                                            <div class="invalid-feedback">Campo obligatorio</div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="modal-body" id="userModalData">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar </button>
@@ -426,7 +364,7 @@
 
 
             <jsp:include page="../../layouts/footer.jsp"/>
-            <script>
+    <script>
 
 
                 // FUNCIONES PARA LA VALIDACIÓN DE LOS FORMULARIOS DE MAESTRO/ESTUDIANTE Y EDITAR
@@ -493,13 +431,13 @@
 
                 function validateFormStudent() {
                     // Obtener los elementos del formulario mediante su ID
-                    var form = document.getElementById("ModalStudent");
-                    var passwordInput = document.getElementById("password2");
-                    var confirmPasswordInput = document.getElementById("ConfirmPassword2");
+                    var form = document.getElementById("StudentForm");
+                    var passwordInput = document.getElementById("password");
+                    var confirmPasswordInput = document.getElementById("ConfirmPassword");
 
                     // Validar el formulario antes de enviarlo
                     if (form.checkValidity() && passwordInput.value === confirmPasswordInput.value) {
-                        // Si el formulario es válido y las contraseñas coinciden, enviarlo al servidor
+                        // Si el formulario es válido y las contraseñas coinciden,  enviarlo al servidor
                         form.submit();
                     } else if (passwordInput.value !== confirmPasswordInput.value) {
                         // Si las contraseñas no coinciden, mostrar un mensaje de error con SweetAlert2
@@ -713,7 +651,86 @@
                     btn.addEventListener('mouseout', restoreImageColor); // Para restaurar el color de la imagen si el puntero sale del botón sin hacer clic
                 });
 
+                function loadUserDataForEdit(userId) {
+                    const userRow = document.getElementById(`userRow_${userId}`);
+                    console.log("userRow:", userRow);
+                    const name = userRow.querySelector(".userName").innerText;
+                    const lastname = userRow.querySelector(".userLastname").innerText;
+                    const surname = userRow.querySelector(".userSurname").innerText;
+                    const enrollment = userRow.querySelector(".userEnrollment").innerText;
+                    const curp = userRow.querySelector(".userCurp").innerText;
+                    const mail = userRow.querySelector(".usermail").innerText;
 
-            </script>
+                    document.getElementById("Editname").value = name;
+                    document.getElementById("EditLastname").value = lastname;
+                    document.getElementById("Editsurname").value = surname;
+                    document.getElementById("Editenrollment").value = enrollment;
+                    document.getElementById("Editcurp").value = curp;
+                    document.getElementById("EditMail").value = mail;
+
+                    const userModalData = document.getElementById("userModalData");
+                    userModalData.innerHTML = `
+                            <form class="needs-validation" novalidate action="/user/update" method="post">
+                                <div class="row">
+
+                                    <div class="col">
+                                        <label for="Editname" class="fw-bold col-form-label">Nombre:</label>
+                                        <input type="text" name="Editname" id="Editname" class="form-control" required/>
+                                        <div class="invalid-feedback">Campo obligatorio</div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="Editlastname" class="fw-bold col-form-label">Apellido Paterno:</label>
+                                        <input type="text" name="Editlastname" id="Editlastname" class="form-control" required>
+                                        <div class="invalid-feedback">Campo obligatorio</div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="Editsurname" class="fw-bold col-form-label">Apellido Materno:</label>
+                                        <input type="text" name="Editsurname" id="Editsurname" class="form-control" required>
+                                        <div class="invalid-feedback">Campo obligatorio</div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group mb-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="Editenrollment" class="fw-bold col-form-label">Matricula:</label>
+                                            <input type="text" name="Editenrollment" id="Editenrollment" class="form-control" required>
+                                            <div class="invalid-feedback">Campo obligatorio</div>
+                                        </div>
+                                        <div class="col">
+                                            <label for="Editcurp" class="fw-bold">Curp:</label>
+                                            <input type="text" name="Editcurp" id="Editcurp" class="form-control" required>
+                                            <div class="invalid-feedback">Campo obligatorio</div>
+                                        </div>
+
+                                        <div class="col">
+                                            <label for="EditMail" class="fw-bold">Correo :</label>
+                                            <input type="email" name="EditMail" id="EditMail" class="form-control" required>
+                                            <div class="invalid-feedback">Campo obligatorio</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <div class="row" >
+                                        <div class="col">
+                                            <label for="Editpassword" class="fw-bold">Contraseña:</label>
+                                            <input type="text" name="Editpassword" id="Editpassword" class="form-control" required>
+                                            <div class="invalid-feedback">Campo obligatorio</div>
+                                        </div>
+                                        <div class="col">
+                                            <label for="EditConfirmPassword" class="fw-bold">Confirmar contraseña:</label>
+                                            <input type="text" name="EditConfirmPassword" id="EditConfirmPassword" class="form-control col-form-label" required>
+                                            <div class="invalid-feedback">Campo obligatorio</div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        `;
+                }
+
+    </script>
 </body>
 </html>

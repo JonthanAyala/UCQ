@@ -1,6 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 
 <html>
 <head>
@@ -84,8 +84,8 @@
   <div class="row">
     <div class="col">
       <div class="card mt-5 ">
-        <div class="car-header" style="background-color: #00AA83; color: white"
-        ><h4 class="text-center">Crear examen</h4></div>
+        <div class="car-header" style="background-color: #00AA83; color: white">
+          <h4 class="text-center">Crear examen</h4></div>
         <div class="card-body" >
           <form>
             <div class="form-group mb-3 ">
@@ -111,20 +111,28 @@
         </div>
         <table class="table table-striped">
           <thead style="background-color: #002F5D">
-          <th style="color: white">#</th>
+          <th style="color: white">Codigo</th>
           <th style="color: white">Nombre del examen</th>
           <th style="color: white">Fecha inicio</th>
           <th style="color: white">Fecha finalización</th>
-          <th style="color: white">Caliificar </th>
+          <th style="color: white">Acciones </th>
           </thead>
           <tbody>
+              <c:forEach var="exam" items="${exams}" varStatus="s">
           <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td><c:out value="${exam.code}"/></td>
+            <td><c:out value="${exam.name_exam}"/> </td>
+            <td><c:out value="${exam.start_time}"/></td>
+            <td><c:out value="${exam.end_time}"/></td>
+            <td>
+                <input hidden value="${exam.id_exam}" name="id">
+                <button type="button" class="btn btn-outline-warning btn-sm"
+                data-bs-toggle="modal" data-bs-target="#EditUser">
+                Editar
+                </button>
+                </td>
           </tr>
+              </c:forEach>
           <tr>
             <td colspan="6" class="text-center">
               Sin registros
@@ -133,7 +141,6 @@
           </tbody>
         </table>
       </div>
-      ---
     </div>
   </div>
 </div>

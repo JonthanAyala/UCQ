@@ -20,7 +20,7 @@ public class RequestFilter implements Filter {
         //Endpoints publicos
         whiteList.add("/ucq");
         whiteList.add("/user/view-login");
-        whiteList.add("/api/auth/recovery");
+        whiteList.add("/user/login");
         whiteList.add("/api/user/view-register");
         whiteList.add("/api/user/register");
     }

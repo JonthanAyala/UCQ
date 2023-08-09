@@ -181,7 +181,7 @@
             }
             form.classList.add('was-validated');
         }, false);
-        if (!${param['result'] != null ? param['result']: true}) {
+        if (!${param['result'] != null ? param['result'] : true}) {
             Swal.fire({
                 title: 'Acceso denegado',
                 text: '${param['message']}',
