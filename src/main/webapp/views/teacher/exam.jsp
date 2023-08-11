@@ -118,7 +118,7 @@
     </nav>
 </div>
 
-
+<form action="/path/to/save-exam.jsp" method="post">
 <div class="d-flex">
     <div class="container col-xl-4 vh-100 m-0 sticky-top"
          style="text-align: left; background-color: #00AA83;">
@@ -126,7 +126,7 @@
         <br>
         <br>
 
-        <form action="/path/to/save-exam.jsp" method="post">
+
             <div class="d-grid">
                 <button type="button" class="btn mt-5" onclick="addQuestionClose()" style="background-color: #d9d9d9" >
                     Opción multiple
@@ -137,7 +137,7 @@
                     <img src="../../assets/img/icons8-add2-48.png">
                 </button>
             </div>
-        </form>
+
 
         <div class=" container mt-5 col-4" style="text-align: center">
             <div class="form-group">
@@ -169,9 +169,8 @@
 
         </div>
     </div>
-
 </div>
-
+</form>
 
 
 <jsp:include page="../../layouts/footer.jsp"/>
@@ -183,7 +182,7 @@
         var questionContainer = document.getElementById("questions-container");
 
         generarId++;
-
+        console.log(generarId);
         var card = document.createElement("div");
         card.className = "card mt-3 card-color";
         card.id = "card-" + generarId;
@@ -206,7 +205,7 @@
 
         var scoreGroup = document.createElement("div");
         scoreGroup.className = "form-group col-md-1 col-lg-2";
-
+        //Label para la puntuacion
         var scoreLabel = document.createElement("label");
         scoreLabel.setAttribute("for", "question-score");
         scoreLabel.innerHTML = "Puntaje:";
@@ -234,9 +233,9 @@
 
         scoreGroup.appendChild(scoreLabel);
         scoreGroup.appendChild(scoreInput);
-
         cardBody.appendChild(scoreGroup);
-
+        // no se que sea apeenchild
+        //
         var questionLabel = document.createElement("label");
         questionLabel.setAttribute("for", "closed-question");
         questionLabel.innerHTML = "Pregunta:";
@@ -311,7 +310,7 @@
         var answerGroup = document.createElement("div");
         answerGroup.className = "form-group align-items-center";
         answerGroup.setAttribute("data-card-id", cardId);
-
+        console.log("respuesta"+cardId);
         var divInputGroup = document.createElement("div");
         divInputGroup.className="input-group-text  mb-2 input-group-sm mt-2 col-6";
 
@@ -375,7 +374,7 @@
         var questionContainer = document.getElementById("questions-container");
 
         generarId++;
-
+        console.log(generarId);
         var card = document.createElement("div");
         card.className = "card mt-3 card-color";
         card.id = "card-" + generarId;
@@ -597,7 +596,6 @@
 
 
 </script>
-
 </script>
 </body>
 </html>

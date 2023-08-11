@@ -2,7 +2,7 @@ package mx.edu.utez.ucq.models.exam;
 
 public class Question {
     private long id_question;
-    private String ur_image;
+    private String url_image;
     private Long type_question;
     private String Description;
     private Long points;
@@ -10,11 +10,11 @@ public class Question {
     public Question() {
     }
 
-    public Question(long id_question, String ur_image, Long type_question, String description, Long points) {
+    public Question(long id_question, String url_image, Long type_question, String description, Long points) {
         this.id_question = id_question;
-        this.ur_image = ur_image;
+        this.url_image = url_image;
         this.type_question = type_question;
-        Description = description;
+        this.Description = description;
         this.points = points;
     }
 
@@ -26,12 +26,12 @@ public class Question {
         this.id_question = id_question;
     }
 
-    public String getUr_image() {
-        return ur_image;
+    public String getUrl_image() {
+        return url_image;
     }
 
-    public void setUr_image(String ur_image) {
-        this.ur_image = ur_image;
+    public void setUrl_image(String url_image) {
+        this.url_image = url_image;
     }
 
     public Long getType_question() {

@@ -1,8 +1,5 @@
 package mx.edu.utez.ucq.models.exam;
 
-import mx.edu.utez.ucq.models.crud.DaoRepository;
-import mx.edu.utez.ucq.models.user.DaoUser;
-import mx.edu.utez.ucq.models.user.User;
 import mx.edu.utez.ucq.utils.MySQLConnection;
 
 import java.sql.Connection;
@@ -19,58 +16,53 @@ public class DaoExam{
     private PreparedStatement pstm;
     private ResultSet rs;
 
-    public boolean saveExam (Exam object){
+    public boolean saveExam(Exam object) {
         try {
             conn = new MySQLConnection().connect();
-            String query = "INSERT INTO exams (name_exam,code,fk_user) VALUES (?,?,?)";
+            String query = "INSERT INTO exams (name_exam, code, fk_user) VALUES (?, ?, ?);";
             pstm = conn.prepareStatement(query);
-            pstm.setString(1,object.getName_exam());
-            pstm.setString(2,object.getCode());
-            pstm.setLong(3,object.getFk_user());
-            return pstm.executeUpdate() > 0; // == 1
-        }catch (SQLException e){
-            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE,"Error save"+e.getMessage());
-        }finally {
+            pstm.setString(1, object.getName_exam());
+            pstm.setString(2, object.getCode());
+            pstm.setLong(3, object.getFk_user());
+            return pstm.executeUpdate() > 0 ;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
             close();
         }
         return false;
     }
 
-    public boolean saveQuestion (Question object){
+    public boolean saveQuestion(Question object) {
         try {
-            /*
-        private long id_question;
-        private String ur_image;
-        private Long type_question;
-        private String Description;
-        private Long points;
-        */
             conn = new MySQLConnection().connect();
-            String query = "INSERT INTO questions () VALUES (?,?,?)";
-
-            return pstm.executeUpdate() > 0; // == 1
-        }catch (SQLException e){
-            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE,"Error save"+e.getMessage());
-        }finally {
+            String query = "INSERT INTO Questions (url_image, type_question, description, points) VALUES (?, ?, ?, ?);";
+            pstm = conn.prepareStatement(query);
+            pstm.setString(1, object.getUrl_image());
+            pstm.setLong(2, object.getType_question());
+            pstm.setString(3, object.getDescription());
+            pstm.setLong(4, object.getPoints());
+            return pstm.executeUpdate() > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
             close();
         }
         return false;
     }
-    public boolean saveAnswer (Answer object){
-        try {
-            /*
-        private Long id_question_answer;
-        private String answer;
-        private boolean if_answer;
-        private Long fk_question;
-        */
-            conn = new MySQLConnection().connect();
-            String query = "INSERT INTO questions_answer () VALUES (?,?,?)";
 
-            return pstm.executeUpdate() > 0; // == 1
-        }catch (SQLException e){
-            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE,"Error save"+e.getMessage());
-        }finally {
+    public boolean saveAnswer(Answer object) {
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "INSERT INTO Questions_answer (answer, is_correct, fk_question) VALUES (?, ?, ?);";
+            pstm = conn.prepareStatement(query);
+            pstm.setString(1, object.getAnswer());
+            pstm.setBoolean(2, object.isIf_answer());
+            pstm.setLong(3, object.getFk_question());
+            return pstm.executeUpdate() > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
             close();
         }
         return false;
@@ -111,5 +103,55 @@ public class DaoExam{
 
         }
 
+    }
+
+    public Long extractId(Long userId) {
+        Long id = null;
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "SELECT MAX(id_exam) AS id_exam FROM exams WHERE fk_user = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setString(1, String.valueOf(userId));
+            if (rs.next()) {
+                id = rs.getLong("id_exam"); // Obtener el valor de la columna "id_exam"
+            }
+        }catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
+        }finally {
+            close();
+        }
+        return id;
+    }
+    public Long extractIdQuestion() {
+        Long id = null;
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "SELECT MAX(id_Question) AS id_question FROM question;";
+            pstm = conn.prepareStatement(query);
+            if (rs.next()) {
+                id = rs.getLong("id_question"); // Obtener el valor de la columna "id_exam"
+            }
+        }catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
+        }finally {
+            close();
+        }
+        return id;
+    }
+
+    public boolean saveEQ(Long fkExam, Long idQuestion) {
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "INSERT INTO exams_questions (fk_question, fk_exam) VALUES (?, ?);";
+            pstm = conn.prepareStatement(query);
+            pstm.setString(1, String.valueOf(idQuestion));
+            pstm.setString(2, String.valueOf(fkExam));
+            return pstm.executeUpdate() > 0;
+        }catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
+        }finally {
+            close();
+        }
+        return false;
     }
 }
