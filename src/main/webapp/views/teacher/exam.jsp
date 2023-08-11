@@ -118,7 +118,7 @@
     </nav>
 </div>
 
-<form action="/path/to/save-exam.jsp" method="post">
+<form action="/exam/save-exam" method="post">
 <div class="d-flex">
     <div class="container col-xl-4 vh-100 m-0 sticky-top"
          style="text-align: left; background-color: #00AA83;">
@@ -565,6 +565,10 @@
 
     // Función para marcar los cambios como guardados y cambiar el color del botón
     function marcarCambiosYCambiarColor() {
+
+        for (i=0;i<question-score.length;i++){
+            console.log(question-score[i]);
+        }
         marcarCambiosComoGuardados(); // Marcar cambios como guardados
         cambiarColorTemporarily(); // Cambiar el color del botón temporalmente
     }

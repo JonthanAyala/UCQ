@@ -55,7 +55,7 @@ public class ServletExam extends HttpServlet {
         resp.setContentType("text/html");
         action = req.getServletPath();
         switch (action){
-            case "/exams/save-exam":
+            case "/exam/save-exam":
                 String examTitle = req.getParameter("nameExam");
                 String examCode = req.getParameter("exam-code");
                 Long userId = (Long) req.getSession().getAttribute("user_id");
@@ -111,7 +111,6 @@ public class ServletExam extends HttpServlet {
                     // Handle exam save failure
                     resp.sendRedirect("/ruta/a/pagina-de-error");
                 }
-
                 break;
             default:
                 System.out.println(action);
