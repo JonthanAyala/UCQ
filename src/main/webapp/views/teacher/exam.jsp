@@ -141,15 +141,16 @@
 
         <div class=" container mt-5 col-4" style="text-align: center">
             <div class="form-group">
-                <label for="exam-code" class="placeholder-name-exam"> <h6> Código del examen:</h6> </label>
-                <input type="text" class="form-control" id="exam-code" style="background-color:#D9D9D9;" readonly>
+                <label for="exam-code" class="placeholder-exam-code"> <h6> Código del examen:</h6> </label>
+                <input type="text" class="form-control" id="exam-code" name="exam-code" style="background-color:#D9D9D9;" readonly>
             </div>
         </div>
 
         <div class="container mb-5">
             <div class=" container mt-5 mb-5 d-grid" style="text-align: center">
+                <input type="text" hidden id="fk_user" name="fk_user" value="<%= session.getAttribute("user_id") %>" >
                 <button id="guardarButton" type="submit" class="btn btn-success" style="background-color: #002F5D!important;
-                color: white !important;" onclick="marcarCambiosYCambiarColor()">Guardar</button>
+                color: white !important;" onclick="marcarCambiosYCambiarColor(  )">Guardar</button>
             </div>
         </div>
     </div>
@@ -180,7 +181,6 @@
 
     function addQuestionClose() {
         var questionContainer = document.getElementById("questions-container");
-
         generarId++;
         console.log(generarId);
         var card = document.createElement("div");
@@ -216,8 +216,8 @@
         scoreInput.setAttribute("value", 0);
         scoreInput.setAttribute("max", 10);
         scoreInput.setAttribute("min", 0);
-        scoreInput.setAttribute("id", "question-score");
-        scoreInput.setAttribute("name", "question-score");
+        scoreInput.setAttribute("id", "score-"+generarId);
+        scoreInput.setAttribute("name", "score-"+generarId);
         scoreInput.addEventListener("input", function () {
             if (this.value.length > 2)
                 this.value = this.value.slice(0, 2);
@@ -245,8 +245,8 @@
         questionTextarea.style.resize = "none";
         questionTextarea.contentEditable = "true";
         questionTextarea.maxLength = 255;
-        questionTextarea.setAttribute("id", "closed-question");
-        questionTextarea.setAttribute("name", "closed-question");
+        questionTextarea.setAttribute("id", "description-"+generarId);
+        questionTextarea.setAttribute("name", "description-"+generarId);
         questionTextarea.style.overflow = "hidden";
         questionTextarea.addEventListener("input", resizeInput);
         questionTextarea.addEventListener("keyup", resizeInput);
@@ -259,17 +259,17 @@
         formGroupQuestion.appendChild(questionTextarea);
 
         var answerContainer = document.createElement("div");
-        answerContainer.setAttribute("id", "answer-container");
+        answerContainer.setAttribute("id", "answer-container-" + generarId);
 
         var divButtons = document.createElement("div");
         divButtons.className = "form-group";
-
+        var answer = 1;
         var addButton = document.createElement("button");
         addButton.className = "btn btn-primary mt-2";
         addButton.setAttribute("type", "button");
         addButton.innerHTML = "Agregar Respuesta";
         addButton.addEventListener("click", function () {
-            addAnswerClose(card.id);
+            addAnswerClose(generarId);
         });
 
         var divRemoveQuestion = document.createElement("div");
@@ -303,36 +303,37 @@
     }
 
 
-    function addAnswerClose(cardId) {
-        var answerContainer = document.getElementById("answer-container");
-        var card = document.getElementById(cardId);
+    function addAnswerClose(idQ) {
+        console.log("Pregunta no: " + idQ);
+        var answerContainer = document.getElementById("answer-container-" + idQ);
+        var answerId = idQ + "-" + (answerContainer.children.length + 1);
+        var card = document.getElementById("card-" + idQ); // Corregido aquí
+        console.log("respuesta no: " + answerId);
 
         var answerGroup = document.createElement("div");
         answerGroup.className = "form-group align-items-center";
-        answerGroup.setAttribute("data-card-id", cardId);
-        console.log("respuesta"+cardId);
+        answerGroup.setAttribute("data-card-id", idQ);
+
         var divInputGroup = document.createElement("div");
-        divInputGroup.className="input-group-text  mb-2 input-group-sm mt-2 col-6";
+        divInputGroup.className = "input-group mb-2 input-group-sm"; // Ajustado el margen aquí
 
         var divInputGroupText = document.createElement("div");
-        divInputGroupText.className = "input-group-text ";
+        divInputGroupText.className = "input-group-prepend"; // Ajustado el nombre de la clase
 
         var inputCheckbox = document.createElement("input");
         inputCheckbox.className = "form-check-input mt-0";
         inputCheckbox.type = "checkbox";
         inputCheckbox.value = "";
         inputCheckbox.setAttribute("aria-label", "correctAnswer");
-        inputCheckbox.setAttribute("name", "correct-answer");
+        inputCheckbox.setAttribute("name", "correct-answer-"+answerId);
 
         divInputGroupText.appendChild(inputCheckbox);
 
-
         var answerInput2 = document.createElement("textarea");
-        answerContainer.setAttribute("id", "answer-container");
-        answerInput2.className ="form-control input-high-size"
-        answerInput2.setAttribute("aria-label", "correctAnswer");
+        answerInput2.className = "form-control input-high-size";
+        answerInput2.setAttribute("aria-label", "answer-" + answerId); // Ajustado el atributo aria-label
         answerInput2.maxLength = 255;
-        answerInput2.setAttribute("name", "answer");
+        answerInput2.setAttribute("name", "answer-" + answerId); // Ajustado el atributo name
         answerInput2.setAttribute("placeholder", "Respuesta");
         answerInput2.style.resize = "none";
         answerInput2.rows = 1;
@@ -340,7 +341,7 @@
         answerInput2.style.overflow = "hidden";
         answerInput2.addEventListener("input", resizeInput);
         answerInput2.addEventListener("keyup", resizeInput);
-        function resizeInput(){
+        function resizeInput() {
             this.style.height = "auto";
             this.style.height = this.scrollHeight + "px";
         }
@@ -349,25 +350,24 @@
         divInputGroup.appendChild(answerInput2);
 
         var divRemoveButton = document.createElement("div");
-        divRemoveButton.className ="mb-2";
+        divRemoveButton.className = "mb-2";
 
         var removeButton = document.createElement("button");
         removeButton.className = "btn btn-danger";
         removeButton.setAttribute("type", "button");
         removeButton.innerHTML = "Eliminar";
-        removeButton.addEventListener("click", function() {
-            answerGroup.parentNode.removeChild(answerGroup)
+        removeButton.addEventListener("click", function () {
+            answerGroup.parentNode.removeChild(answerGroup);
         });
 
         divRemoveButton.appendChild(removeButton);
 
         answerGroup.appendChild(divInputGroup);
+        answerGroup.appendChild(divRemoveButton);
 
-        answerGroup.appendChild(divRemoveButton)
-
-        card.querySelector("#answer-container").appendChild(answerGroup);
-
+        answerContainer.appendChild(answerGroup); // Corregido aquí
     }
+
 
 
     function addQuestionOpen() {
@@ -407,8 +407,8 @@
         scoreInput.setAttribute("value", 0);
         scoreInput.setAttribute("max", 10);
         scoreInput.setAttribute("min", 0);
-        scoreInput.setAttribute("id", "question-score");
-        scoreInput.setAttribute("name", "question-score");
+        scoreInput.setAttribute("id", "score-"+generarId);
+        scoreInput.setAttribute("name", "score-"+generarId);
         scoreInput.addEventListener("input", function () {
             if (this.value.length > 2)
                 this.value = this.value.slice(0, 2);
@@ -439,8 +439,8 @@
         questionTextarea.style.resize = "none";
         questionTextarea.contentEditable = "true";
         questionTextarea.maxLength = 255;
-        questionTextarea.setAttribute("id", "open-question");
-        questionTextarea.setAttribute("name", "open-question");
+        questionTextarea.setAttribute("id", "description-"+generarId);
+        questionTextarea.setAttribute("name", "description-"+generarId);
         questionTextarea.style.overflow = "hidden";
         questionTextarea.addEventListener("input", resizeInput);
         questionTextarea.addEventListener("keyup", resizeInput);
@@ -565,10 +565,14 @@
 
     // Función para marcar los cambios como guardados y cambiar el color del botón
     function marcarCambiosYCambiarColor() {
+        console.log("Datos a enviar:");
+        console.log(fk_user);
+        var inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(function(input) {
+            console.log(input.name + ": " + input.value);
+        });
+        console.log(fk_user);
 
-        for (i=0;i<question-score.length;i++){
-            console.log(question-score[i]);
-        }
         marcarCambiosComoGuardados(); // Marcar cambios como guardados
         cambiarColorTemporarily(); // Cambiar el color del botón temporalmente
     }
@@ -591,7 +595,7 @@
     // Generar el código aleatorio al cargar la página y mostrarlo en el input
     window.addEventListener('load', function() {
         const codeInput = document.getElementById('exam-code');
-        const generatedCode = generateRandomCode(6);
+        const generatedCode = generateRandomCode(5);
         codeInput.value = generatedCode;
     });
 

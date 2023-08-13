@@ -56,62 +56,50 @@ public class ServletExam extends HttpServlet {
         action = req.getServletPath();
         switch (action){
             case "/exam/save-exam":
-                String examTitle = req.getParameter("nameExam");
-                String examCode = req.getParameter("exam-code");
-                Long userId = (Long) req.getSession().getAttribute("user_id");
+            String examCode = req.getParameter("exam-code");
+            String nameExam = req.getParameter("nameExam");
+            Long userId = Long.valueOf(req.getParameter("fk_user"));
+            String[] questionTypes = req.getParameterValues("question-type");
+            String[] questionDescriptions = req.getParameterValues("description");
+            String[] questionScores = req.getParameterValues("score");
 
-                Exam exam = new Exam(null,examTitle, examCode,null,null, userId);
+            // Guardar examen y obtener su ID
+            Exam exam = new Exam(null, nameExam, examCode, null, null, userId);
+            boolean resultE = new DaoExam().saveExam(exam);
 
-                boolean resultE = new DaoExam().saveExam(exam);
-                if (resultE) {
-                    Long fk_Exam = new DaoExam().extractId(userId);
-                    List<Question> questions = new ArrayList<>();
+            if (resultE) {
+                Long examId = new DaoExam().extractId(userId);
 
-                    String[] typeQuestion = req.getParameterValues("type_question");
-                    String[] questionTexts = req.getParameterValues("closed-question");
-                    String[] questionScores = req.getParameterValues("question-score");
+                for (int i = 0; i < questionDescriptions.length; i++) {
+                    int questionType = Integer.parseInt(questionTypes[i]);
+                    String description = questionDescriptions[i];
+                    int score = Integer.parseInt(questionScores[i]);
 
-                    if (typeQuestion != null && questionTexts != null && questionScores != null) {
+                    // Guardar pregunta y obtener su ID
+                    Question question = new Question(i,null, (long) questionType, description, (long) score);
+                    boolean resultQ = new DaoExam().saveQuestion(question);
+                    Long questionId = new DaoExam().extractIdQuestion();
 
-                        for (int i = 0; i < questionTexts.length; i++) {
-                            int questionType = Integer.parseInt(typeQuestion[i]);
-                            String questionText = questionTexts[i];
-                            int questionScore = Integer.parseInt(questionScores[i]);
+                    // Guardar respuestas asociadas a la pregunta
+                    String[] answers = req.getParameterValues("answer-" + i);
+                    String correctAnswer = req.getParameter("correct-answer-" + i);
+                    if (answers != null) {
+                        for (int j = 0; j < answers.length; j++) {
+                            String answerText = answers[j];
+                            boolean isCorrect = (j == Integer.parseInt(correctAnswer));
 
-                            Question question = new Question(i, null, (long) questionType, questionText, (long) questionScore);
-
-                            questions.add(question);
-
-
-                            boolean resultQ = new DaoExam().saveQuestion(question);
-                            Long id_question = new DaoExam().extractIdQuestion();
-                            boolean resultEQ =  new DaoExam().saveEQ(fk_Exam,id_question);
-
-                            if (resultQ && resultEQ) {
-                                // Obtener respuestas generadas del formulario
-                                String[] answers = req.getParameterValues("answers_" + i);
-                                String correctAnswerValue = req.getParameter("correct-answer_" + i);
-
-                                if (answers != null) {
-                                    for (int j = 0; j < answers.length; j++) {
-                                        String answerText = answers[j];
-                                        boolean isCorrect = (j == Integer.parseInt(correctAnswerValue));
-
-                                        // Crear un objeto Answer y establecer sus atributos
-                                        Answer answer = new Answer(null, answerText, isCorrect, id_question);
-                                        boolean resultA = new DaoExam().saveAnswer(answer);
-                                        // Manejar el resultado de guardar la respuesta si es necesario
-                                    }
-                                }
-                            }
+                            Answer answer = new Answer(null, answerText, isCorrect, questionId);
+                            boolean resultA = new DaoExam().saveAnswer(answer);
                         }
                     }
-                    resp.sendRedirect("/user/index-teacher");
-                } else {
-                    // Handle exam save failure
-                    resp.sendRedirect("/ruta/a/pagina-de-error");
                 }
-                break;
+
+                redirect ="/user/index-teacher";
+            } else {
+                redirect ="/user/index-teacher?result=false&message=" + URLEncoder
+                        .encode("Error no se guardo el examen", StandardCharsets.UTF_8);
+            }
+            break;
             default:
                 System.out.println(action);
 

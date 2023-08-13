@@ -124,6 +124,7 @@
     function redirectToStudentsIndex() {
         window.location.href = "/user/student";
     }
+
 </script>
 </body>
 </html>

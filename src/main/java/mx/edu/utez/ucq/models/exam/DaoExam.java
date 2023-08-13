@@ -154,4 +154,19 @@ public class DaoExam{
         }
         return false;
     }
+
+    public Exam findExam(Long code) {
+        Exam exam = new Exam();
+        try {
+        conn = new MySQLConnection().connect();
+        String query = "SELECT name,id_exam from exams where code=?;";
+        pstm = conn.prepareStatement(query);
+        pstm.setString(1, String.valueOf(code));
+        }catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
+        }finally {
+            close();
+        }
+        return exam;
+    }
 }
