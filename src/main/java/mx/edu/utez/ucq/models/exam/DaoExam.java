@@ -122,12 +122,13 @@ public class DaoExam{
         }
         return id;
     }
-    public Long extractIdQuestion() {
+    public Long extractIdQuestion(String questionDescription) {
         Long id = null;
         try {
             conn = new MySQLConnection().connect();
-            String query = "SELECT MAX(id_Question) AS id_question FROM question;";
+            String query = "SELECT MAX(id_Question) AS id_question FROM question where description = ?;";
             pstm = conn.prepareStatement(query);
+            pstm.setString(1, questionDescription);
             if (rs.next()) {
                 id = rs.getLong("id_question"); // Obtener el valor de la columna "id_exam"
             }

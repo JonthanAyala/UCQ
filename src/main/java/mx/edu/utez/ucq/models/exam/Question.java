@@ -10,7 +10,7 @@ public class Question {
     public Question() {
     }
 
-    public Question(long id_question, String url_image, Long type_question, String description, Long points) {
+    public Question(Long id_question, String url_image, Long type_question, String description, Long points) {
         this.id_question = id_question;
         this.url_image = url_image;
         this.type_question = type_question;

@@ -148,7 +148,7 @@
 
         <div class="container mb-5">
             <div class=" container mt-5 mb-5 d-grid" style="text-align: center">
-                <input type="text" hidden id="fk_user" name="fk_user" value="<%= session.getAttribute("user_id") %>" >
+                <input type="text" hidden id="fk_user" name="fk_user" value="${sessionScope.user.id}" >
                 <button id="guardarButton" type="submit" class="btn btn-success" style="background-color: #002F5D!important;
                 color: white !important;" onclick="marcarCambiosYCambiarColor(  )">Guardar</button>
             </div>
@@ -210,6 +210,12 @@
         scoreLabel.setAttribute("for", "question-score");
         scoreLabel.innerHTML = "Puntaje:";
 
+        var quesiontype = document.createElement("input");
+        quesiontype.setAttribute("id", "question-type");
+        quesiontype.setAttribute("name", "question-type");
+        quesiontype.value = "2";
+        questiontype.style.display = "none";
+
         var scoreInput = document.createElement("input");
         scoreInput.className = "form-control";
         scoreInput.setAttribute("type", "number");
@@ -255,6 +261,7 @@
             this.style.height = this.scrollHeight + "px";
         }
 
+        formGroupQuestion.appendChild(quesiontype);
         formGroupQuestion.appendChild(questionLabel);
         formGroupQuestion.appendChild(questionTextarea);
 
@@ -345,6 +352,17 @@
             this.style.height = "auto";
             this.style.height = this.scrollHeight + "px";
         }
+        // Aquí agregamos el evento para manejar la respuesta correcta
+        inputCheckbox.addEventListener("change", function() {
+            if (this.checked) {
+                var otherCheckboxes = answerContainer.querySelectorAll("input[type='checkbox']");
+                otherCheckboxes.forEach(function(checkbox) {
+                    if (checkbox !== inputCheckbox) {
+                        checkbox.checked = false;
+                    }
+                });
+            }
+        });
 
         divInputGroup.appendChild(divInputGroupText);
         divInputGroup.appendChild(answerInput2);
@@ -572,7 +590,6 @@
             console.log(input.name + ": " + input.value);
         });
         console.log(fk_user);
-
         marcarCambiosComoGuardados(); // Marcar cambios como guardados
         cambiarColorTemporarily(); // Cambiar el color del botón temporalmente
     }
@@ -598,10 +615,6 @@
         const generatedCode = generateRandomCode(5);
         codeInput.value = generatedCode;
     });
-
-
-
-
 
 </script>
 </script>
