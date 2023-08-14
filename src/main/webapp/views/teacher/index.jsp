@@ -125,11 +125,13 @@
             <td><c:out value="${exam.start_time}"/></td>
             <td><c:out value="${exam.end_time}"/></td>
             <td>
+                <form method="post" action="/exam/delete">
                 <input hidden value="${exam.id_exam}" name="id">
-                <button type="button" class="btn btn-outline-warning btn-sm"
-                data-bs-toggle="modal" data-bs-target="#EditUser">
-                Editar
+                  <input type="text" hidden id="id_user" name="id_user" value="${sessionScope.user.id}" >
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                  Eliminar
                 </button>
+                </form>
                 </td>
           </tr>
               </c:forEach>

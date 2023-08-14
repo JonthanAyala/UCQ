@@ -1,5 +1,6 @@
 package mx.edu.utez.ucq.models.exam;
 
+import mx.edu.utez.ucq.models.user.DaoUser;
 import mx.edu.utez.ucq.utils.MySQLConnection;
 
 import java.sql.Connection;
@@ -36,12 +37,11 @@ public class DaoExam{
     public boolean saveQuestion(Question object) {
         try {
             conn = new MySQLConnection().connect();
-            String query = "INSERT INTO Questions (url_image, type_question, description, points) VALUES (?, ?, ?, ?);";
+            String query = "INSERT INTO questions (type_question, description, points) VALUES (?, ?, ?);";
             pstm = conn.prepareStatement(query);
-            pstm.setString(1, object.getUrl_image());
-            pstm.setLong(2, object.getType_question());
-            pstm.setString(3, object.getDescription());
-            pstm.setLong(4, object.getPoints());
+            pstm.setLong(1, object.getType_question());
+            pstm.setString(2, object.getDescription());
+            pstm.setLong(3, object.getPoints());
             return pstm.executeUpdate() > 0;
         } catch (SQLException e) {
             Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
@@ -112,11 +112,12 @@ public class DaoExam{
             String query = "SELECT MAX(id_exam) AS id_exam FROM exams WHERE fk_user = ?;";
             pstm = conn.prepareStatement(query);
             pstm.setString(1, String.valueOf(userId));
+            rs = pstm.executeQuery();
             if (rs.next()) {
                 id = rs.getLong("id_exam"); // Obtener el valor de la columna "id_exam"
             }
         }catch (SQLException e) {
-            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error extractId"+e.getMessage());
         }finally {
             close();
         }
@@ -129,6 +130,7 @@ public class DaoExam{
             String query = "SELECT MAX(id_Question) AS id_question FROM question where description = ?;";
             pstm = conn.prepareStatement(query);
             pstm.setString(1, questionDescription);
+            rs = pstm.executeQuery();
             if (rs.next()) {
                 id = rs.getLong("id_question"); // Obtener el valor de la columna "id_exam"
             }
@@ -155,7 +157,20 @@ public class DaoExam{
         }
         return false;
     }
-
+    public boolean delete(Long id) {
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "DELETE FROM exams where id_exam = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1,id);
+            return  pstm.executeUpdate() == 1;
+        }catch (SQLException e){
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error delete"+e.getMessage());
+        }finally {
+            close();
+        }
+        return false;
+    }
     public Exam findExam(Long code) {
         Exam exam = new Exam();
         try {

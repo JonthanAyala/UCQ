@@ -211,10 +211,10 @@
         scoreLabel.innerHTML = "Puntaje:";
 
         var quesiontype = document.createElement("input");
-        quesiontype.setAttribute("id", "question-type");
-        quesiontype.setAttribute("name", "question-type");
+        quesiontype.setAttribute("id", "question-type-"+generarId);
+        quesiontype.setAttribute("name", "question-type-"+generarId);
         quesiontype.value = "2";
-        questiontype.style.display = "none";
+        quesiontype.style.display = "none";
 
         var scoreInput = document.createElement("input");
         scoreInput.className = "form-control";
@@ -363,7 +363,6 @@
                 });
             }
         });
-
         divInputGroup.appendChild(divInputGroupText);
         divInputGroup.appendChild(answerInput2);
 
@@ -388,7 +387,7 @@
 
 
 
-    function addQuestionOpen() {
+    function addQuestionOpen()  {
         var questionContainer = document.getElementById("questions-container");
 
         generarId++;
@@ -418,6 +417,12 @@
         var scoreLabel = document.createElement("label");
         scoreLabel.setAttribute("for", "question-score");
         scoreLabel.innerHTML = "Puntaje:";
+
+        var quesiontype = document.createElement("input");
+        quesiontype.setAttribute("id", "question-type-"+generarId);
+        quesiontype.setAttribute("name", "question-type-"+generarId);
+        quesiontype.value = "1";
+        quesiontype.style.display = "none";
 
         var scoreInput = document.createElement("input");
         scoreInput.className = "form-control";
