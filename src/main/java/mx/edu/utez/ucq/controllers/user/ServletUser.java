@@ -87,6 +87,8 @@ public class ServletUser extends HttpServlet {
                 redirect="/views/logIn/createLogIn.jsp";
                 break;
             case "/user/index-teacher":
+                session = req.getSession();
+                session.setAttribute("user", user);
                 id = req.getParameter("id_user");
                 List<Exam> exams = new DaoExam().findAllExam(Long.valueOf(id));
                 req.setAttribute("exams",exams);

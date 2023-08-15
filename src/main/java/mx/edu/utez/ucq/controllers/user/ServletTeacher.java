@@ -27,6 +27,7 @@ public class ServletTeacher extends HttpServlet {
         action = req.getServletPath();
         switch (action){
             case "/teacher/view":
+
                 redirect = "/views/teacher/exam.jsp";
                 break;
             default:

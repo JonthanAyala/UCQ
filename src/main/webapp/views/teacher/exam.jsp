@@ -118,7 +118,6 @@
     </nav>
 </div>
 
-<form action="/exam/save-exam" method="post">
 <div class="d-flex">
     <div class="container col-xl-4 vh-100 m-0 sticky-top"
          style="text-align: left; background-color: #00AA83;">
@@ -160,10 +159,13 @@
     box-shadow: 0 0 8px rgba(0, 170, 131, 0.3);">
 
         <div class="container-fluid mt-5">
+            <form id="examForm" action="/exam/save-exam" method="post">
         <textarea class="form-control textareaTittle" name="nameExam"
                   style="font-size: 30px; overflow: hidden; resize: none"
                   maxlength="50" oninput="autoResize(this)"
-                  placeholder="Titulo Examen" required></textarea>
+                  placeholder="Titulo Examen" required onfocusout="saveExam(nameExam)">
+        </textarea>
+                </form>
         </div>
 
         <div id="questions-container" class="overflow-y-auto">
@@ -171,7 +173,6 @@
         </div>
     </div>
 </div>
-</form>
 
 
 <jsp:include page="../../layouts/footer.jsp"/>
@@ -179,6 +180,23 @@
 
     var generarId = 0;
 
+    var fk_user = ${sessionScope.user.id};
+
+    var idExam = null;
+
+    function saveExam(textarea){
+        var examTitle = textarea.value;
+        console.log("Contenido del examen guardado:", examTitle);
+        document.getElementById("examForm").submit();
+
+    }
+
+    function saveQuestionClose(){
+
+    }
+    function saveQuestionsOpen(){
+
+    }
     function addQuestionClose() {
         var questionContainer = document.getElementById("questions-container");
         generarId++;

@@ -36,6 +36,7 @@ public class ServletExam extends HttpServlet {
 
     private  String id, name, surname, lastname, username, birthday, status;
     private User user;
+    private HttpSession session;
 
 
     @Override
@@ -61,6 +62,9 @@ public class ServletExam extends HttpServlet {
         switch (action) {
             case "/exam/save-exam":
                 Long fkUser = Long.valueOf(req.getParameter("fk_user"));
+                session = req.getSession();
+                session.setAttribute("user", user);
+                id = req.getParameter("id_user");
                 try {
                     // Recuperar los valores del formulario
                     String examCode = req.getParameter("exam-code");
@@ -72,57 +76,9 @@ public class ServletExam extends HttpServlet {
 
                     if (resultE) {
                         Long examId = new DaoExam().extractId(fkUser);
-
-                        Enumeration<String> parameterNames = req.getParameterNames();
-
-                        while (parameterNames.hasMoreElements()) {
-                            String paramName = parameterNames.nextElement();
-
-                            if (paramName.startsWith("description-")) {
-                                Long questionIndex = Long.valueOf(paramName.substring("description-".length()));
-                                String questionDescription = req.getParameter(paramName);
-                                Long questionScore = Long.valueOf(req.getParameter("score-" + questionIndex));
-                                Long questionType = Long.valueOf(req.getParameter("question-type-" + questionIndex));
-
-                                Question question = new Question(null, null, questionType, questionDescription, questionScore);
-                                boolean resultQ = new DaoExam().saveQuestion(question);
-                                Long id_Q = new DaoExam().extractIdQuestion(questionDescription);
-                                boolean resultEQ = new DaoExam().saveEQ(examId, id_Q);
-
-                                if (resultEQ && resultQ) {
-                                    if (questionType == 2) {
-                                        int answerIndex = 1;
-                                        while (true) {
-                                            String answerParamName = "answer-" + questionIndex + "-" + answerIndex;
-                                            String answer = req.getParameter(answerParamName);
-
-                                            if (answer == null || answer.isEmpty()) {
-                                                break;
-                                            }
-
-                                            // Aquí debes incluir la lógica para verificar si la respuesta es correcta
-                                            boolean isCorrectAnswer = req.getParameter("correct-answer-" + questionIndex).equals(answerParamName);
-
-                                            // Crear y guardar la respuesta
-                                            Answer answerObj = new Answer(null, answer, isCorrectAnswer, id_Q);
-                                            boolean resultA = new DaoExam().saveAnswer(answerObj);
-
-                                            answerIndex++;
-                                        }
-                                        redirect = "/user/index-teacher?id_user="+ fkUser+"&?result=true&message=" + URLEncoder
-                                                .encode("Examen guardado", StandardCharsets.UTF_8);
-                                    }
-                                }
-                                redirect = "/user/index-teacher?id_user="+ fkUser+"&?result=false&message=" + URLEncoder
-                                        .encode("No se guardo la pregunta", StandardCharsets.UTF_8);
-                            }
-                        }
-                    }else {
-                        redirect = "/user/index-teacher?id_user="+ fkUser+"&?result=false&message=" + URLEncoder
-                                .encode("Error no se guardo el examen1", StandardCharsets.UTF_8);
                     }
-                } catch (Exception e) {
-                    redirect = "/user/index-teacher?id_user="+ fkUser+"&?result=false&message=" + URLEncoder
+                }catch (Exception e) {
+                    redirect = "/user/index-teacher?result=false&message=" + URLEncoder
                             .encode("Error no se guardo el examen2", StandardCharsets.UTF_8);
                 }
                 break;
