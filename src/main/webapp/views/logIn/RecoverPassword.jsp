@@ -4,7 +4,7 @@
 
 <html>
 <head>
-    <title>logIn</title>
+    <title>Recuperar contraseña</title>
     <jsp:include page="../../layouts/head.jsp"/>
 
 </head>
@@ -84,7 +84,7 @@
     <div class="col-4">
         <div class="card" style="border-color: #002F5D ">
             <div class="card-header" style=" background-color:  #002F5D; text-align: center">
-                <h5 style="color: white"> Inicio de sesión </h5>
+                <h5 style="color: white"> Recuperar contraseña </h5>
             </div>
             <div class="card-body">
 
@@ -109,7 +109,6 @@
                         </th>
                     </tr>
 
-                    <a href="user/recover-password"> <h6 style="color: #002F5D" >¿Olvidaste tu contraseña?</h6> </a>
                     <div class="card-footer">
                         <div class="d-grid">
                             <button id="login" type="submit" class="btn btn-primary btn-block" value="login" style="background-color: #00AA83 !important;">
@@ -129,7 +128,7 @@
 <div class="position-relative">
     <div class="container">
         <div class="position-absolute top-100 start-100 translate-middle"
-        style="bottom: 90%">
+             style="bottom: 90%">
             <div class="circulo"></div>
         </div>
     </div>

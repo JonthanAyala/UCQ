@@ -42,7 +42,8 @@ import java.util.Objects;
             "/user/profile",
             "/user/profile-s",
             "/user/profile-a",
-            "/user/view-exam"
+            "/user/view-exam",
+            "/user/recover-password"
 
 })
 
@@ -78,13 +79,14 @@ public class ServletUser extends HttpServlet {
                             "&messages" + URLEncoder.encode("", StandardCharsets.UTF_8);
                 }
                 break;
-
             case "/user/student":
                 redirect = "/views/student/index.jsp";
                 break;
-
             case "/user/view-login":
                 redirect="/views/logIn/createLogIn.jsp";
+                break;
+            case "/user/recover-password":
+                redirect = "/views/logIn/RecoverPassword.jsp";
                 break;
             case "/user/index-teacher":
                 id = req.getParameter("id_user");
