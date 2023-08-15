@@ -18,11 +18,19 @@ public class RequestFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         //Endpoints publicos
+        whiteList.add("/");
         whiteList.add("/ucq");
         whiteList.add("/user/view-login");
         whiteList.add("/user/login");
         whiteList.add("/api/user/view-register");
         whiteList.add("/api/user/register");
+        whiteList.add("/assets/css/bootstrap.min.css");
+        whiteList.add("/assets/css/sweetalert2.min.css");
+        whiteList.add("/assets/img/examen.jpg");
+        whiteList.add("/assets/js/bootstrap.bundle.min.js");
+        whiteList.add("/assets/js/sweetalert2.all.min.js");
+        whiteList.add("/assets/img/Logo_UCQ.png");
+        whiteList.add("/favicon.ico");
     }
 
     @Override
@@ -32,6 +40,7 @@ public class RequestFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String action = request.getServletPath();
+        System.out.println(action);
         if (whiteList.contains(action)) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
