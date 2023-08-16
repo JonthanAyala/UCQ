@@ -159,12 +159,13 @@
     box-shadow: 0 0 8px rgba(0, 170, 131, 0.3);">
 
         <div class="container-fluid mt-5">
-            <form id="examForm" action="/exam/save-exam" method="post">
+            <form id="NexamForm" action="/exam/save-exam" method="post">
         <textarea class="form-control textareaTittle" name="nameExam"
                   style="font-size: 30px; overflow: hidden; resize: none"
                   maxlength="50" oninput="autoResize(this)"
                   placeholder="Titulo Examen" required onfocusout="saveExam(nameExam)">
         </textarea>
+                <input type="text" class="form-control" id="exam-code1" name="exam-code" hidden>
                 </form>
         </div>
 
@@ -177,9 +178,9 @@
 
 <jsp:include page="../../layouts/footer.jsp"/>
 <script>
-
+    var codigo = '';
     var generarId = 0;
-
+    console.log(codigo);
     var fk_user = ${sessionScope.user.id};
 
     var idExam = null;
@@ -187,16 +188,18 @@
     function saveExam(textarea){
         var examTitle = textarea.value;
         console.log("Contenido del examen guardado:", examTitle);
-        document.getElementById("examForm").submit();
+        document.getElementById("NexamForm").submit();
+    }
+    function saveDescription(){
+
+    }
+    function saveScore(){
+
+    }
+    function saveAnswer(){
 
     }
 
-    function saveQuestionClose(){
-
-    }
-    function saveQuestionsOpen(){
-
-    }
     function addQuestionClose() {
         var questionContainer = document.getElementById("questions-container");
         generarId++;
@@ -629,6 +632,7 @@
             const randomIndex = Math.floor(Math.random() * characters.length);
             code += characters.charAt(randomIndex);
         }
+        codigo = code;
         return code;
     }
 
@@ -637,8 +641,10 @@
         const codeInput = document.getElementById('exam-code');
         const generatedCode = generateRandomCode(5);
         codeInput.value = generatedCode;
+        const codeInput1 = document.getElementById('exam-code1');
+        codeInput1.value = generatedCode;
+        console.log(generatedCode);
     });
-
 </script>
 </script>
 </body>

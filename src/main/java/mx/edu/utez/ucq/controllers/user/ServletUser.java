@@ -87,10 +87,11 @@ public class ServletUser extends HttpServlet {
                 redirect="/views/logIn/createLogIn.jsp";
                 break;
             case "/user/index-teacher":
-                session = req.getSession();
-                session.setAttribute("user", user);
-                id = req.getParameter("id_user");
-                List<Exam> exams = new DaoExam().findAllExam(Long.valueOf(id));
+                User user2 = (User) session.getAttribute("user");// se guardan los datos en un objeto
+                System.out.println(session);// pa ver si hay una sesion
+                Long userId = user2.getId(); // se obtiene el campo a utilizar
+                System.out.println("User ID: " + userId); // simplemente pa verlo en pantalla
+                List<Exam> exams = new DaoExam().findAllExam(userId);
                 req.setAttribute("exams",exams);
                 redirect="/views/teacher/index.jsp";
                 break;
@@ -158,15 +159,17 @@ public class ServletUser extends HttpServlet {
                 try {
                     user = new DaoUser()
                             .loadUserByUsernameAndPassword(loginCredential, password);
+
                     if (user != null) {
                         session = req.getSession();
                         session.setAttribute("user", user);
+                        System.out.println(session);
                         switch (Math.toIntExact(user.getType_user())) {
                             case 1:
                                 redirect = "/user/admin";
                                 break;
                             case 2:
-                                redirect = "/user/index-teacher?id_user=" + user.getId();
+                                redirect = "/user/index-teacher";
                                 break;
                             case 3:
                                 redirect = "/user/student";
@@ -178,8 +181,9 @@ public class ServletUser extends HttpServlet {
                                 break;
                         }
                     } else {
-                        throw new Exception("Credentials mismatch");
-
+                        redirect = "/user/view-login?result=false&message=" + URLEncoder
+                                .encode("Credenciales inválidas. Intenta de nuevo",
+                                        StandardCharsets.UTF_8);
                     }
                 } catch (Exception e) {
                     redirect = "/user/view-login?result=false&message=" + URLEncoder

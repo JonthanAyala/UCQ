@@ -21,7 +21,7 @@ public class DaoUser implements DaoRepository<User>{
     public User loadUserByUsernameAndPassword(String loginCredential, String password) {
         try {
             conn = new MySQLConnection().connect();
-            String query = "SELECT id_user, mail, type_user FROM users " +
+            String query = "SELECT id_user, mail, type_user, name FROM users " +
                     "WHERE (mail = ? OR enrollment = ?) AND password = ? AND status = 'Activo';";
             pstm = conn.prepareStatement(query);
             pstm.setString(1, loginCredential);
@@ -33,6 +33,7 @@ public class DaoUser implements DaoRepository<User>{
                 user.setId(rs.getLong("id_user"));
                 user.setEnrollment(rs.getString("mail"));
                 user.setType_user(rs.getLong("type_user"));
+                user.setName(rs.getString("name"));
                 return user;
             }
         } catch (SQLException e) {

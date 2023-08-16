@@ -35,6 +35,7 @@ public class ServletExam extends HttpServlet {
     private String redirect = "/exam/exams";
 
     private  String id, name, surname, lastname, username, birthday, status;
+    private Long id_user;
     private User user;
     private HttpSession session;
 
@@ -45,6 +46,10 @@ public class ServletExam extends HttpServlet {
         action = req.getServletPath();
         switch (action){
             case "/exam/exams":
+                User user2 = (User) session.getAttribute("user");// se guardan los datos en un objeto
+                System.out.println(session);// pa ver si hay una sesion
+                Long userId = user2.getId(); // se obtiene el campo a utilizar
+                System.out.println("User ID: " + userId); // simplemente pa verlo en pantalla
                 redirect = "/views/pruebas/exam.jsp";
                 break;
 
@@ -61,27 +66,36 @@ public class ServletExam extends HttpServlet {
         action = req.getServletPath();
         switch (action) {
             case "/exam/save-exam":
-                Long fkUser = Long.valueOf(req.getParameter("fk_user"));
                 session = req.getSession();
-                session.setAttribute("user", user);
-                id = req.getParameter("id_user");
-                try {
-                    // Recuperar los valores del formulario
+                System.out.println(session);// pa ver si hay una sesion
+                User user1 = (User) session.getAttribute("user");
+                if (user1 != null) {
+                    id_user = user1.getId();
+                    System.out.println("User ID: " + id_user);
+
                     String examCode = req.getParameter("exam-code");
                     String nameExam = req.getParameter("nameExam");
+                    System.out.println("Name Exam: " + nameExam);
+                    System.out.println("Exam Code: " + examCode);
+                    try {
+                        Exam exam = new Exam(null, nameExam, examCode, null, null, id_user);
+                        boolean resultE = new DaoExam().saveExam(exam);
 
-                    // Guardar examen y obtener su ID
-                    Exam exam = new Exam(null, nameExam, examCode, null, null, fkUser);
-                    boolean resultE = new DaoExam().saveExam(exam);
-
-                    if (resultE) {
-                        Long examId = new DaoExam().extractId(fkUser);
+                        if (resultE) {
+                            Long examId = new DaoExam().extractId(id_user);
+                            System.out.println("Exam ID: " + examId);
+                            // Puedes hacer algo con examId si es necesario
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace(); // Imprime detalles del error para el diagnóstico
+                        redirect = "/user/index-teacher?result=false&message=" + URLEncoder
+                                .encode("Error al guardar el examen", StandardCharsets.UTF_8);
                     }
-                }catch (Exception e) {
-                    redirect = "/user/index-teacher?result=false&message=" + URLEncoder
-                            .encode("Error no se guardo el examen2", StandardCharsets.UTF_8);
+                } else {
+                    System.out.println("User session is not valid.");
                 }
                 break;
+
             case "/exam/delete":
                 Long userId = Long.valueOf(req.getParameter("id_user"));
                 id = req.getParameter("id");

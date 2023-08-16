@@ -3,4 +3,17 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
          version="5.0">
+
+    <!-- Define el filtro -->
+    <filter>
+        <filter-name>RequestFilter</filter-name>
+        <filter-class>mx.edu.utez.ucq.utils.RequestFilter</filter-class>
+    </filter>
+
+    <!-- Asigna el filtro a las URL o patrones que deseas filtrar -->
+    <filter-mapping>
+        <filter-name>RequestFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
 </web-app>
