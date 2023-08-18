@@ -197,9 +197,12 @@
                 "nameExam": examTitle
             },
             success: function(response) {
-                $("#resultado").text("ID de examen guardado: " + response);
+                console.log(response);
+                idExam = response;
+                console.log("Examen Id: "+idExam);
             }
         });
+        console.log(response);
     }
 
     function saveDescription(){

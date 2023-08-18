@@ -81,8 +81,9 @@ public class ServletExam extends HttpServlet {
                             String examIdStr = String   .valueOf(id_exam);
                             System.out.println("Exam ID en String: "+examIdStr);
 
-                            resp.getWriter().write("123");
-
+                            resp.getWriter().write(examIdStr);
+                            resp.getWriter().flush();
+                            return;
                         }
                     } catch (Exception e) {
                         e.printStackTrace(); // Imprime detalles del error para el diagnóstico
