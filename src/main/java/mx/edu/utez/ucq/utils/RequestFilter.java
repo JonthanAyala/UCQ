@@ -24,6 +24,7 @@ public class RequestFilter implements Filter {
         whiteList.add("/user/login");
         whiteList.add("/api/user/view-register");
         whiteList.add("/api/user/register");
+        whiteList.add("http://localhost:8080/path/to/bootstrap.min.css");
         whiteList.add("/assets/css/bootstrap.min.css");
         whiteList.add("/assets/css/sweetalert2.min.css");
         whiteList.add("/assets/img/examen.jpg");

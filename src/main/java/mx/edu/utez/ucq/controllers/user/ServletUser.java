@@ -11,13 +11,10 @@ import mx.edu.utez.ucq.models.exam.Exam;
 import mx.edu.utez.ucq.models.user.DaoUser;
 import mx.edu.utez.ucq.models.user.User;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
     @WebServlet(name = "users",urlPatterns = {
@@ -90,7 +87,7 @@ public class ServletUser extends HttpServlet {
                 User user2 = (User) session.getAttribute("user");// se guardan los datos en un objeto
                 System.out.println(session);// pa ver si hay una sesion
                 Long userId = user2.getId(); // se obtiene el campo a utilizar
-                System.out.println("User ID: " + userId); // simplemente pa verlo en pantalla
+                System.out.println("1User ID: " + userId); // simplemente pa verlo en pantalla
                 List<Exam> exams = new DaoExam().findAllExam(userId);
                 req.setAttribute("exams",exams);
                 redirect="/views/teacher/index.jsp";

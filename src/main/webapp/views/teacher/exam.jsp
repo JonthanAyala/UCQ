@@ -136,13 +136,22 @@
                     <img src="../../assets/img/icons8-add2-48.png">
                 </button>
             </div>
+        <div class="container-fluid mt-5">
+            <form id="NexamForm">
+        <textarea class="form-control textareaTittle" name="nameExam"
+                  style="font-size: 30px; overflow: hidden; resize: none"
+                  maxlength="50" oninput="autoResize(this)"
+                  placeholder="Titulo Examen" required onfocusout="saveExam(nameExam)">
+        </textarea>
+                <div class=" container mt-5 col-4" style="text-align: center">
+                    <div class="form-group">
+                        <label for="exam-code1" class="placeholder-exam-code1"> <h6> Código del examen:</h6> </label>
+                        <input type="text" class="form-control" id="exam-code1" style="background-color:#D9D9D9;" readonly>
+                        <input hidden name="exam-code" id="exam-code" name="exam-code">
+                    </div>
+                </div>
 
-
-        <div class=" container mt-5 col-4" style="text-align: center">
-            <div class="form-group">
-                <label for="exam-code" class="placeholder-exam-code"> <h6> Código del examen:</h6> </label>
-                <input type="text" class="form-control" id="exam-code" name="exam-code" style="background-color:#D9D9D9;" readonly>
-            </div>
+            </form>
         </div>
 
         <div class="container mb-5">
@@ -158,16 +167,7 @@
     <div class="container mt-5 w-50 p-3 containerExam mb-5" style="background-color: white;
     box-shadow: 0 0 8px rgba(0, 170, 131, 0.3);">
 
-        <div class="container-fluid mt-5">
-            <form id="NexamForm" action="/exam/save-exam" method="post">
-        <textarea class="form-control textareaTittle" name="nameExam"
-                  style="font-size: 30px; overflow: hidden; resize: none"
-                  maxlength="50" oninput="autoResize(this)"
-                  placeholder="Titulo Examen" required onfocusout="saveExam(nameExam)">
-        </textarea>
-                <input type="text" class="form-control" id="exam-code1" name="exam-code" hidden>
-                </form>
-        </div>
+
 
         <div id="questions-container" class="overflow-y-auto">
 
@@ -182,14 +182,26 @@
     var generarId = 0;
     console.log(codigo);
     var fk_user = ${sessionScope.user.id};
-
+    console.log(fk_user);
     var idExam = null;
 
-    function saveExam(textarea){
+    function saveExam(textarea) {
         var examTitle = textarea.value;
-        console.log("Contenido del examen guardado:", examTitle);
-        document.getElementById("NexamForm").submit();
+        var examCode = document.getElementById("exam-code").value;
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/exam/save-exam",
+            data: {
+                "exam-code": examCode,
+                "nameExam": examTitle
+            },
+            success: function(response) {
+                $("#resultado").text("ID de examen guardado: " + response);
+            }
+        });
     }
+
     function saveDescription(){
 
     }
@@ -632,18 +644,18 @@
             const randomIndex = Math.floor(Math.random() * characters.length);
             code += characters.charAt(randomIndex);
         }
-        codigo = code;
         return code;
     }
 
     // Generar el código aleatorio al cargar la página y mostrarlo en el input
+    // Generar el código aleatorio al cargar la página y mostrarlo en el input
     window.addEventListener('load', function() {
-        const codeInput = document.getElementById('exam-code');
         const generatedCode = generateRandomCode(5);
+        const codeInput = document.getElementById('exam-code');
         codeInput.value = generatedCode;
-        const codeInput1 = document.getElementById('exam-code1');
-        codeInput1.value = generatedCode;
-        console.log(generatedCode);
+        const codeInput2 = document.getElementById('exam-code1');
+        codeInput2.value = generatedCode;
+        console.log(generatedCode)
     });
 </script>
 </script>
