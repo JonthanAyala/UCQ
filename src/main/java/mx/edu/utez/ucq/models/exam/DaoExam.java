@@ -25,7 +25,16 @@ public class DaoExam{
             pstm.setString(2, object.getCode());
             pstm.setLong(3, object.getFk_user());
             System.out.println(pstm.executeUpdate());
-            return pstm.executeUpdate() > 0 ;
+            if (pstm.executeUpdate() == 0){
+                conn = new MySQLConnection().connect();
+                String query2 = "UPDATE exams SET name_exam = ? WHERE id_exam = ?;";
+                pstm = conn.prepareStatement(query2);
+                pstm.setString(1, object.getName_exam());
+                pstm.setLong(2,object.getId_exam());
+                return pstm.executeUpdate() > 0 ;
+            }else{
+                return pstm.executeUpdate() > 0 ;
+            }
         } catch (SQLException e) {
             Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
         } finally {
