@@ -22,7 +22,9 @@ public class RequestFilter implements Filter {
         whiteList.add("/ucq");
         whiteList.add("/user/view-login");
         whiteList.add("/user/login");
+        whiteList.add("/user/recover-password");
         whiteList.add("/api/user/view-register");
+        whiteList.add("/views/logIn/RecoverPassword.jsp");
         whiteList.add("/api/user/register");
         whiteList.add("/assets/css/bootstrap.min.css");
         whiteList.add("/assets/css/sweetalert2.min.css");
@@ -31,6 +33,8 @@ public class RequestFilter implements Filter {
         whiteList.add("/assets/js/sweetalert2.all.min.js");
         whiteList.add("/assets/img/Logo_UCQ.png");
         whiteList.add("/favicon.ico");
+        whiteList.add("/user/view-recover");
+
     }
 
     @Override

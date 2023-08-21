@@ -109,7 +109,7 @@
                         </th>
                     </tr>
 
-                    <a href="user/recover-password"> <h6 style="color: #002F5D" >¿Olvidaste tu contraseña?</h6> </a>
+                    <a href='/user/view-recover'><h6 class="text-center">¿Olvidaste tu contraseña?</h6></a>
                     <div class="card-footer">
                         <div class="d-grid">
                             <button id="login" type="submit" class="btn btn-primary btn-block" value="login" style="background-color: #00AA83 !important;">
@@ -129,7 +129,7 @@
 <div class="position-relative">
     <div class="container">
         <div class="position-absolute top-100 start-100 translate-middle"
-        style="bottom: 90%">
+             style="bottom: 90%">
             <div class="circulo"></div>
         </div>
     </div>
@@ -191,6 +191,8 @@
         }
     }, false);
 </script>
+
+
 
 </body>
 </html>

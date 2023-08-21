@@ -6,6 +6,7 @@ public interface DaoRepository <T>{
 
 
     List<T> findAll();
+    T findAllp(String password);
 
     T findOne(long id);
 

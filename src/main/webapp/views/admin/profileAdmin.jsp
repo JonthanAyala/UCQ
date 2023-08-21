@@ -1,4 +1,5 @@
-<%--
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="mx.edu.utez.ucq.models.user.User" %><%--
   Created by IntelliJ IDEA.
   User: axelj_7
   Date: 19/07/2023
@@ -83,23 +84,24 @@
           <div class="container">
 
             <%--FALTA TRAER DATOS DE LA BD--%>
-
-            <form id="user-form" class="needs-validation" novalidate action="/user/save" method="post">
+              <%User userA = (User) request.getAttribute("user");%>
+            <form id="user-form" class="needs-validation" novalidate action="/user/update" method="post">
               <div class="form-group">
                 <div class="row">
+
                   <div class="col">
                     <label for="name" class="fw-bold">Nombre:</label>
-                    <input type="text" name="name" id="name" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
+                    <input type="text" name="name" id="name" value="<%= userA.getName() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25" >
                   </div>
 
                   <div class="col">
                     <label for="surnames" class="fw-bold">Apellidos:</label>
-                    <input type="text" name="surnames" id="surnames" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
+                    <input type="text" name="surnames" id="surnames" value="<%= userA.getLastname() %> <%= userA.getSurname() %>"class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
                   </div>
 
                   <div class="col">
                     <label for="curp" class="fw-bold">CURP:</label>
-                    <input type="text" name="curp" id="curp" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="18"> <!-- Modificado el maxlength a 18 -->
+                    <input type="text" name="curp" id="curp" value="<%= userA.getCurp() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="18"> <!-- Modificado el maxlength a 18 -->
                   </div>
                 </div>
               </div>
@@ -108,17 +110,16 @@
                 <div class="row">
                   <div class="col">
                     <label for="tuition" class="fw-bold">Correo:</label>
-                    <input type="text" name="tuition" id="tuition" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="23">
+                    <input type="text" name="tuition" id="tuition" class="form-control" value="<%= userA.getMail() %>" style="background-color: #D9D9D9" required readonly maxlength="23">
                   </div>
-
                   <div class="col">
                     <label for="password" class="fw-bold">Contraseña:</label>
-                    <input type="password" name="password" id="password" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="16">
+                    <input type="password" name="password" value="<%= userA.getPassword() %>" id="password" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="16">
 
                     <label id="confPassTxt" for="confirmPassword" class="fw-bold" style="display: none">Confirmar contraseña:</label>
                     <input type="password" name="confimPassword" class="form-control" id="confirmPassword" style="display: none" maxlength="16">
 
-                    <button type="button" class="btn mt-2" id="savePasswordBtn" style="background-color: green; display: none">
+                    <button type="submit" class="btn mt-2" id="savePasswordBtn" style="background-color: green; display: none">
                       <a style="color: white">Confirmar cambios</a>
                     </button>
                   </div>

@@ -1,4 +1,4 @@
-<%--
+<%@ page import="mx.edu.utez.ucq.models.user.User" %><%--
   Created by IntelliJ IDEA.
   User: axelj_7
   Date: 19/07/2023
@@ -83,23 +83,24 @@
           <div class="container">
 
             <%--FALTA TRAER DATOS DE LA BD--%>
+                <%User userT = (User) request.getAttribute("user");%>
 
-            <form id="user-form" class="needs-validation" novalidate action="/user/save" method="post">
+            <form id="user-form" class="needs-validation" novalidate action="/user/update-Tprofile" method="post">
               <div class="form-group">
                 <div class="row">
                   <div class="col">
                     <label for="name" class="fw-bold">Nombre:</label>
-                    <input type="text" name="name" id="name" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
+                    <input type="text" name="name" id="name" value="<%= userT.getName() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
                   </div>
 
                   <div class="col">
-                    <label for="surnames" class="fw-bold">Apellidos:</label>
-                    <input type="text" name="surnames" id="surnames" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
+                    <label for="lastname" class="fw-bold">Apellidos:</label>
+                    <input type="text" name="lastname" id="lastname" value="<%= userT.getLastname() %> <%= userT.getSurname() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
                   </div>
 
                   <div class="col">
                     <label for="curp" class="fw-bold">CURP:</label>
-                    <input type="text" name="curp" id="curp" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="18"> <!-- Modificado el maxlength a 18 -->
+                    <input type="text" name="curp" id="curp" value="<%= userT.getCurp() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="18"> <!-- Modificado el maxlength a 18 -->
                   </div>
                 </div>
               </div>
@@ -107,20 +108,21 @@
               <div class="form-group">
                 <div class="row">
                   <div class="col">
-                    <label for="tuition" class="fw-bold">Correo:</label>
-                    <input type="text" name="tuition" id="tuition" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="23">
+                    <label for="mail" class="fw-bold">Correo:</label>
+                    <input type="text" name="mail" id="mail" value="<%= userT.getMail() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="23">
                   </div>
 
                   <div class="col">
                     <label for="password" class="fw-bold">Contraseña:</label>
-                    <input type="password" name="password" id="password" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="16">
+                    <input type="password" name="password" id="password" value="<%= userT.getPassword() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="16">
 
                     <label id="confPassTxt" for="confirmPassword" class="fw-bold" style="display: none">Confirmar contraseña:</label>
                     <input type="password" name="confimPassword" class="form-control" id="confirmPassword" style="display: none" maxlength="16">
 
-                    <button type="button" class="btn mt-2" id="savePasswordBtn" style="background-color: green; display: none">
+                    <button type="submit" class="btn mt-2" id="savePasswordBtn" style="background-color: green; display: none">
                       <a style="color: white">Confirmar cambios</a>
                     </button>
+
                   </div>
 
                   <div class="col align-self-end"> <!-- Agregamos la clase "align-self-end" para alinear el botón al final del contenedor de columna -->
@@ -166,12 +168,12 @@
       // Habilitar todos los inputs de contraseña para escritura
       document.getElementById('name').readOnly = false;
       document.getElementById('name').style.backgroundColor = 'white';
-      document.getElementById('surnames').readOnly = false;
-      document.getElementById('surnames').style.backgroundColor = 'white';
+      document.getElementById('lastname').readOnly = false;
+      document.getElementById('lastname').style.backgroundColor = 'white';
       document.getElementById('curp').readOnly = false;
       document.getElementById('curp').style.backgroundColor = 'white';
-      document.getElementById('tuition').readOnly = false;
-      document.getElementById('tuition').style.backgroundColor = 'white';
+      document.getElementById('mail').readOnly = false;
+      document.getElementById('mail').style.backgroundColor = 'white';
       document.getElementById('password').readOnly = false;
       document.getElementById('password').style.backgroundColor = 'white';
 
@@ -184,7 +186,8 @@
       document.getElementById('changePasswordBtn').style.display = 'none';
     }
     function redirectToTeacherIndex() {
-      window.location.href = "/user/index-teacher";
+
+      window.location.href = "/user/index-teacher?id_user=" + <%= userT.getId() %>;
     }
     function confirmPassword() {
       // Obtener el valor de las contraseñas

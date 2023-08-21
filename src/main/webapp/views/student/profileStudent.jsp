@@ -1,3 +1,5 @@
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ <%@ page import="mx.edu.utez.ucq.models.user.User" %>
 <%--
   Created by IntelliJ IDEA.
   User: axelj_7
@@ -95,18 +97,20 @@
           <div class="container">
 
             <%--FALTA TRAER DATOS DE LA BD--%>
-
+              <%User user1 = (User) request.getAttribute("user");%>
+            <tbody>
             <form id="user-form" class="needs-validation" novalidate action="/user/save" method="post">
+
               <div class="form-group">
                 <div class="row">
                   <div class="col">
                     <label for="name" class="fw-bold">Nombre:</label>
-                    <input type="text" name="name" id="name" class="form-control" style="background-color: #D9D9D9" required readonly>
+                    <input type="text" name="name" id="name" value="<%= user1.getName() %>" class="form-control" style="background-color: #D9D9D9" required readonly>
                   </div>
 
                   <div class="col">
                     <label for="surnames" class="fw-bold">Apellidos:</label>
-                    <input type="text" name="surnames" id="surnames" class="form-control" style="background-color: #D9D9D9" required readonly>
+                    <input type="text" name="surnames" id="surnames" value="<%= user1.getLastname() %> <%= user1.getSurname() %>" class="form-control" style="background-color: #D9D9D9" required readonly>
                   </div>
                 </div>
               </div>
@@ -115,12 +119,12 @@
                 <div class="row">
                   <div class="col">
                     <label for="enrollment" class="fw-bold">Matrícula:</label> <!-- Corregido con tilde en "Matrícula" -->
-                    <input type="text" name="enrollments" id="enrollment" class="form-control" style="background-color: #D9D9D9" required readonly>
+                    <input type="text" name="enrollments" id="enrollment" value="<%= user1.getEnrollment() %>" class="form-control" style="background-color: #D9D9D9" required readonly>
                   </div>
 
                   <div class="col">
                     <label for="password" class="fw-bold">Contraseña:</label>
-                    <input type="password" name="password" id="password" class="form-control" style="background-color: #D9D9D9" required readonly>
+                    <input type="password" name="password" id="password" value="<%= user1.getPassword() %>" class="form-control" style="background-color: #D9D9D9" required readonly>
 
                     <label id="confPassTxt" for="confirmPassword" class="fw-bold" style="display: none">Confirmar contraseña:</label>
                     <input type="password" name="confimPassword" class="form-control" id="confirmPassword" style="display: none">
@@ -144,8 +148,9 @@
                 <div id="changePassword-container">
                 </div>
               </div>
-            </form>
 
+            </form>
+            </tbody>
 
           </div>
 

@@ -69,7 +69,7 @@
         <li class="list-group-item" style="background-color: #00AA83; color: white; margin: 0; padding: 0;"
             onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='1px solid #002F5D';"
             onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='transparent';"
-            onclick="window.location.href='/user/view-login';">
+            onclick="window.location.href='${pageContext.request.contextPath}/user/logout';">
           <div style="cursor: pointer; padding: 8px;">
             <h6 style="margin: 0;">Cerrar sesión</h6>
           </div>
