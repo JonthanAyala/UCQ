@@ -1,6 +1,5 @@
 package mx.edu.utez.ucq.models.user;
 
-import com.mysql.cj.MysqlConnection;
 import mx.edu.utez.ucq.models.crud.DaoRepository;
 import mx.edu.utez.ucq.utils.MySQLConnection;
 
@@ -120,8 +119,9 @@ public class DaoUser implements DaoRepository<User>{
                 pstm.setString(7,object.getMail());
                 pstm.setString(8,object.getEnrollment());
                 pstm.setString(9,object.getPassword());
-                return pstm.executeUpdate() > 0; // == 1
-
+                int result = pstm.executeUpdate();
+                System.out.println(result);
+                return result > 0; // == 1
             }catch (SQLException e){
                 Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE,"Error save"+e.getMessage());
             }finally {

@@ -6,16 +6,18 @@ public class Question {
     private Long type_question;
     private String Description;
     private Long points;
+    private Long fk_exam;
 
     public Question() {
     }
 
-    public Question(Long id_question, String url_image, Long type_question, String description, Long points) {
+    public Question(Long id_question, String url_image, Long type_question, String description, Long points, Long fk_exam) {
         this.id_question = id_question;
         this.url_image = url_image;
         this.type_question = type_question;
         this.Description = description;
         this.points = points;
+        this.fk_exam = fk_exam;
     }
 
     public long getId_question() {
@@ -56,5 +58,13 @@ public class Question {
 
     public void setPoints(Long points) {
         this.points = points;
+    }
+
+    public Long getFk_exam() {
+        return fk_exam;
+    }
+
+    public void setFk_exam(Long fk_exam) {
+        this.fk_exam = fk_exam;
     }
 }

@@ -137,12 +137,12 @@
                 </button>
             </div>
         <div class="container-fluid mt-5">
-            <form id="NexamForm">
-        <textarea class="form-control textareaTittle" name="nameExam"
+            <form>
+                <textarea class="form-control textareaTittle" name="nameExam" id="nameExam"
                   style="font-size: 30px; overflow: hidden; resize: none"
                   maxlength="50" oninput="autoResize(this)"
-                  placeholder="Titulo Examen" required onfocusout="saveExam(nameExam)">
-        </textarea>
+                  placeholder="Titulo Examen" required onfocusout="saveExam()">
+                </textarea>
                 <div class=" container mt-5 col-4" style="text-align: center">
                     <div class="form-group">
                         <label for="exam-code1" class="placeholder-exam-code1"> <h6> Código del examen:</h6> </label>
@@ -150,15 +150,14 @@
                         <input hidden name="exam-code" id="exam-code" name="exam-code">
                     </div>
                 </div>
-
             </form>
         </div>
 
         <div class="container mb-5">
             <div class=" container mt-5 mb-5 d-grid" style="text-align: center">
                 <input type="text" hidden id="fk_user" name="fk_user" value="${sessionScope.user.id}" >
-                <button id="guardarButton" type="submit" class="btn btn-success" style="background-color: #002F5D!important;
-                color: white !important;" onclick="marcarCambiosYCambiarColor(  )">Guardar</button>
+                <button id="guardarButton" type="" class="btn btn-success" style="background-color: #002F5D!important;
+                color: white !important;" onclick="marcarCambiosYCambiarColor( )">Guardar</button>
             </div>
         </div>
     </div>
@@ -180,33 +179,68 @@
 <script>
     var codigo = '';
     var generarId = 0;
-    console.log(codigo);
     var fk_user = ${sessionScope.user.id};
     console.log(fk_user);
     var idExam = null;
 
-    function saveExam(textarea) {
-        var examTitle = textarea.value;
+    var questionsID = [];
+
+    function saveExam() {
+        var examTitle = document.getElementById("nameExam").value;
         var examCode = document.getElementById("exam-code").value;
+
+        if (!idExam || idExam === "") {
+            $.ajax({
+                type: "POST",
+                url: "/exam/save-exam",
+                data: {
+                    "exam-code": examCode,
+                    "nameExam": examTitle
+                },
+                success: function (response) {
+                    idExam = response;
+                    console.log("nuevo Examen Id: " + response);
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error en la solicitud AJAX:", error);
+                },
+            });
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/exam/update",
+                data: {
+                    "nameExam": examTitle,
+                    "id_exam": idExam
+                },
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error en la solicitud AJAX:", error);
+                },
+            });
+        }
+    }
+
+    function saveDescription(arreglo){
+        var descriptionElement = document.getElementById("description-" + arreglo);
+        var description = descriptionElement.value;
 
         $.ajax({
             type: "POST",
-            url: "http://localhost:8080/exam/save-exam",
+            url: "/exam/save-description",
             data: {
-                "exam-code": examCode,
-                "nameExam": examTitle
+                "id_question": questionsID[arreglo],
+                "description": description,
             },
-            success: function(response) {
-                console.log(response);
-                idExam = response;
-                console.log("Examen Id: "+idExam);
-            }
+            success: function (response) {
+                console.log("Descripcion guardada");
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
         });
-        console.log(response);
-    }
-
-    function saveDescription(){
-
     }
     function saveScore(){
 
@@ -216,9 +250,26 @@
     }
 
     function addQuestionClose() {
+        $.ajax({
+            type: "POST",
+            url: "/exam/createQ",
+            data: {
+                "id_exam": idExam,
+                "type_question": "2"
+            },
+            success: function (response) {
+                questionsID[generarId] = response;
+                console.log("Question" + generarId + ": " + response);
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
+        });
+
         var questionContainer = document.getElementById("questions-container");
         generarId++;
         console.log(generarId);
+
         var card = document.createElement("div");
         card.className = "card mt-3 card-color";
         card.id = "card-" + generarId;
@@ -230,54 +281,46 @@
         cardTitle.className = "card-title";
         cardTitle.innerHTML = "Opción multiple";
 
-
         cardHeader.appendChild(cardTitle);
 
         var cardBody = document.createElement("div");
         cardBody.className = "card-body";
 
-        var formGroupQuestion = document.createElement("div");
-        formGroupQuestion.className = "form-group";
-
+        var scoreForm = document.createElement("form");
         var scoreGroup = document.createElement("div");
         scoreGroup.className = "form-group col-md-1 col-lg-2";
-        //Label para la puntuacion
+
         var scoreLabel = document.createElement("label");
         scoreLabel.setAttribute("for", "question-score");
         scoreLabel.innerHTML = "Puntaje:";
 
-        var quesiontype = document.createElement("input");
-        quesiontype.setAttribute("id", "question-type-"+generarId);
-        quesiontype.setAttribute("name", "question-type-"+generarId);
-        quesiontype.value = "2";
-        quesiontype.style.display = "none";
-
         var scoreInput = document.createElement("input");
         scoreInput.className = "form-control";
         scoreInput.setAttribute("type", "number");
-        scoreInput.setAttribute("value", 0);
-        scoreInput.setAttribute("max", 10);
-        scoreInput.setAttribute("min", 0);
+        scoreInput.setAttribute("value", "0");
+        scoreInput.setAttribute("max", "10");
+        scoreInput.setAttribute("min", "0");
         scoreInput.setAttribute("id", "score-"+generarId);
         scoreInput.setAttribute("name", "score-"+generarId);
+        scoreInput.setAttribute("onfocusout", "saveScore("+generarId+")");
         scoreInput.addEventListener("input", function () {
-            if (this.value.length > 2)
+            if (this.value.length > 2) {
                 this.value = this.value.slice(0, 2);
-        });
-        scoreInput.addEventListener("input", function () {
-            if (this.value > 10)
+            }
+            if (this.value > 10) {
                 this.value = 10;
-        });
-        scoreInput.addEventListener("input", function () {
-            if (this.value < 0)
+            }
+            if (this.value < 0) {
                 this.value = 0;
+            }
         });
 
         scoreGroup.appendChild(scoreLabel);
         scoreGroup.appendChild(scoreInput);
-        cardBody.appendChild(scoreGroup);
-        // no se que sea apeenchild
-        //
+        scoreForm.appendChild(scoreGroup);
+        cardBody.appendChild(scoreForm);
+
+        var questionForm = document.createElement("form");
         var questionLabel = document.createElement("label");
         questionLabel.setAttribute("for", "closed-question");
         questionLabel.innerHTML = "Pregunta:";
@@ -285,28 +328,30 @@
         var questionTextarea = document.createElement("textarea");
         questionTextarea.className = "form-control";
         questionTextarea.style.resize = "none";
-        questionTextarea.contentEditable = "true";
-        questionTextarea.maxLength = 255;
+        questionTextarea.style.overflow = "hidden";
+        questionTextarea.maxLength = "255";
         questionTextarea.setAttribute("id", "description-"+generarId);
         questionTextarea.setAttribute("name", "description-"+generarId);
-        questionTextarea.style.overflow = "hidden";
+        questionTextarea.setAttribute("onfocusout", "saveDescription("+generarId+")");
         questionTextarea.addEventListener("input", resizeInput);
         questionTextarea.addEventListener("keyup", resizeInput);
+
         function resizeInput() {
             this.style.height = "auto";
             this.style.height = this.scrollHeight + "px";
         }
 
-        formGroupQuestion.appendChild(quesiontype);
-        formGroupQuestion.appendChild(questionLabel);
-        formGroupQuestion.appendChild(questionTextarea);
+        questionForm.appendChild(questionLabel);
+        questionForm.appendChild(questionTextarea);
+        cardBody.appendChild(questionForm);
 
         var answerContainer = document.createElement("div");
-        answerContainer.setAttribute("id", "answer-container-" + generarId);
+        answerContainer.id = "answer-container-" + generarId;
+        cardBody.appendChild(answerContainer);
 
-        var divButtons = document.createElement("div");
-        divButtons.className = "form-group";
-        var answer = 1;
+        var buttonGroup = document.createElement("div");
+        buttonGroup.className = "form-group";
+
         var addButton = document.createElement("button");
         addButton.className = "btn btn-primary mt-2";
         addButton.setAttribute("type", "button");
@@ -315,35 +360,30 @@
             addAnswerClose(generarId);
         });
 
-        var divRemoveQuestion = document.createElement("div");
-        divRemoveQuestion.className = "form-group";
-        divRemoveQuestion.style = "text-align: right";
+        var removeButtonGroup = document.createElement("div");
+        removeButtonGroup.className = "form-group";
+        removeButtonGroup.style.textAlign = "right";
 
-        var removeQuestion = document.createElement("button");
-        removeQuestion.className = "btn btn-danger mt-2";
-        removeQuestion.setAttribute("type", "button");
-        removeQuestion.innerHTML = "Eliminar pregunta";
-        removeQuestion.addEventListener("click", function () {
+        var removeButton = document.createElement("button");
+        removeButton.className = "btn btn-danger mt-2";
+        removeButton.setAttribute("type", "button");
+        removeButton.innerHTML = "Eliminar pregunta";
+        removeButton.addEventListener("click", function () {
             deleteQuestion(card.id);
         });
 
-        divRemoveQuestion.appendChild(removeQuestion);
-
-        divButtons.appendChild(addButton);
-        divRemoveQuestion.appendChild(removeQuestion);
-        divButtons.appendChild(divRemoveQuestion);
-
-        cardBody.appendChild(formGroupQuestion);
-        cardBody.appendChild(answerContainer);
-        cardBody.appendChild(divButtons);
+        buttonGroup.appendChild(addButton);
+        removeButtonGroup.appendChild(removeButton);
+        buttonGroup.appendChild(removeButtonGroup);
+        cardBody.appendChild(buttonGroup);
 
         card.appendChild(cardHeader);
         card.appendChild(cardBody);
 
         questionContainer.appendChild(card);
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
     }
+
 
 
     function addAnswerClose(idQ) {
@@ -455,8 +495,8 @@
         scoreLabel.innerHTML = "Puntaje:";
 
         var quesiontype = document.createElement("input");
-        quesiontype.setAttribute("id", "question-type-"+generarId);
-        quesiontype.setAttribute("name", "question-type-"+generarId);
+        quesiontype.setAttribute("id", "question-type");
+        quesiontype.setAttribute("name", "question-type");
         quesiontype.value = "1";
         quesiontype.style.display = "none";
 
@@ -466,8 +506,8 @@
         scoreInput.setAttribute("value", 0);
         scoreInput.setAttribute("max", 10);
         scoreInput.setAttribute("min", 0);
-        scoreInput.setAttribute("id", "score-"+generarId);
-        scoreInput.setAttribute("name", "score-"+generarId);
+        scoreInput.setAttribute("id", "score");
+        scoreInput.setAttribute("name", "score");
         scoreInput.addEventListener("input", function () {
             if (this.value.length > 2)
                 this.value = this.value.slice(0, 2);
@@ -498,8 +538,8 @@
         questionTextarea.style.resize = "none";
         questionTextarea.contentEditable = "true";
         questionTextarea.maxLength = 255;
-        questionTextarea.setAttribute("id", "description-"+generarId);
-        questionTextarea.setAttribute("name", "description-"+generarId);
+        questionTextarea.setAttribute("id", "description");
+        questionTextarea.setAttribute("name", "description");
         questionTextarea.style.overflow = "hidden";
         questionTextarea.addEventListener("input", resizeInput);
         questionTextarea.addEventListener("keyup", resizeInput);
@@ -546,11 +586,6 @@
                 deleteQuestion(currentCard.id);
             });
         }
-
-        // Decrementa el contador de IDs
-        generarId--;
-
-        // ...
     }
 
     function autoResize(textarea) {
@@ -624,7 +659,7 @@
 
     // Función para marcar los cambios como guardados y cambiar el color del botón
     function marcarCambiosYCambiarColor() {
-        console.log("Datos a enviar:");
+        /*console.log("Datos a enviar:");
         console.log(fk_user);
         var inputs = document.querySelectorAll('input, textarea');
         inputs.forEach(function(input) {
@@ -632,7 +667,7 @@
         });
         console.log(fk_user);
         marcarCambiosComoGuardados(); // Marcar cambios como guardados
-        cambiarColorTemporarily(); // Cambiar el color del botón temporalmente
+        cambiarColorTemporarily(); // Cambiar el color del botón temporalmente*/
     }
 
 

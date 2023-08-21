@@ -223,12 +223,11 @@ public class ServletUser extends HttpServlet {
                 enrollment = req.getParameter("enrollment");
                 password = req.getParameter("password");
                 User user1 = new User(0L, name, lastname, surname, curp, "Activo", 2L, mail, enrollment, password);
-
                 boolean result = new DaoUser().save(user1);
                 if (result){
-                    redirect = "/user/admin?result="+result+"&message="+ URLEncoder.encode("¡Exito! Usuario registrado correctamente.", StandardCharsets.UTF_8);
+                    redirect = "/user/admin";
                 }else {
-                    redirect = "/user/admin?result="+result+"&message="+ URLEncoder.encode("Error accion no realizada correctamente.", StandardCharsets.UTF_8);
+                    redirect = "/user/admin";
                 }
                 break;
             case "/user/save-student":
