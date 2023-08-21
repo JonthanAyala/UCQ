@@ -237,6 +237,8 @@
 
     // Agregar el evento de clic al botón "Guardar Contraseña"
     document.getElementById('savePasswordBtn').addEventListener('click', savePassword);
+
+
   </script>
 
 </body>

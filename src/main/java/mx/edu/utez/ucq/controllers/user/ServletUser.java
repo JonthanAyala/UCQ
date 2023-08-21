@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import mx.edu.utez.ucq.models.exam.DaoExam;
 import mx.edu.utez.ucq.models.exam.Exam;
+import mx.edu.utez.ucq.models.user.DaoTeacher;
 import mx.edu.utez.ucq.models.user.DaoUser;
 import mx.edu.utez.ucq.models.user.User;
 
@@ -55,7 +56,7 @@ public class ServletUser extends HttpServlet {
     private String redirect = "/user/users";
     HttpSession session;
     private String id, name, lastname, surname, curp, status, type_user, mail, enrollment, password, loginCredential, code;
-    private User user;
+    private User user, userT;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -243,20 +244,25 @@ public class ServletUser extends HttpServlet {
                 }
                 break;
             case "/user/update-Tprofile":
+
+
+                id = req.getParameter("id");
                 name = req.getParameter("name");
                 lastname = req.getParameter("lastname");
                 surname = req.getParameter("surname");
-                curp=req.getParameter("curp");
+                curp = req.getParameter("curp");
+                status = "Activo";
+                type_user = req.getParameter("type_user");
                 mail = req.getParameter("mail");
-                password= req.getParameter("password");
+                password = req.getParameter("password");
 
-                user = new User(Long.parseLong(id), name, lastname, surname, curp, status, Long.parseLong(type_user), mail, enrollment, password, code);
+                userT = new User(Long.parseLong(id), name, lastname, surname, curp, status, Long.parseLong(type_user), mail, enrollment, password, code);
 
                 if (new DaoUser().update(user)){
-                    redirect = "/user/profile?result="+true+"&message="+ URLEncoder.encode("¡Exito! Usuario actualizado correctamente.", StandardCharsets.UTF_8);
+                    redirect = "/user/profile?result="+ user.getId() + true+"&message="+ URLEncoder.encode("¡Exito! Usuario actualizado correctamente.", StandardCharsets.UTF_8);
 
                 }else {
-                    redirect = "/user/profile?result="+false+"&message="+ URLEncoder.encode("Error accion no actualizado correctamente.", StandardCharsets.UTF_8);
+                    redirect = "/user/profile?result="+ user.getId() + false+"&message="+ URLEncoder.encode("Error accion no actualizado correctamente.", StandardCharsets.UTF_8);
 
                 }
                 break;
@@ -288,7 +294,7 @@ public class ServletUser extends HttpServlet {
                 password = req.getParameter("password");
                 User user = new User(0L, name, lastname, surname, curp, "Activo", 3L, mail, enrollment, password, code);
 
-                boolean result2 = new DaoUser().save(user);
+                boolean result2 = new DaoTeacher().save(user);
                 if (result2) {
                     redirect = "/user/admin?result=" + result2 + "&message=" + URLEncoder.encode("¡Exito! Usuario registrado correctamente.", StandardCharsets.UTF_8);
 
