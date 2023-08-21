@@ -84,6 +84,23 @@ public class DaoExam{
         }
         return false;
     }
+    public boolean saveScore(Question object){
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "UPDATE questions SET points = ? WHERE id_Question = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1,object.getPoints());
+            pstm.setLong(2,object.getId_question());
+            int result = pstm.executeUpdate();
+            System.out.println("Se guardo la puntuacion: "+result);
+            return result > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
     public boolean saveAnswer(Answer object) {
         try {
             conn = new MySQLConnection().connect();

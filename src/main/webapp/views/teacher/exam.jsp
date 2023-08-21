@@ -222,7 +222,6 @@
             });
         }
     }
-
     function saveDescription(arreglo){
         var descriptionElement = document.getElementById("description-" + arreglo);
         var description = descriptionElement.value;
@@ -242,9 +241,27 @@
             },
         });
     }
-    function saveScore(){
+    function saveScore(arreglo){
 
+        var scoreElement = document.getElementById("score-" + arreglo);
+        var score = scoreElement.value;
+
+        $.ajax({
+            type: "POST",
+            url: "/exam/save-score",
+            data: {
+                "id_question": questionsID[arreglo],
+                "score": score ,
+            },
+            success: function (response) {
+                console.log("Descripcion guardada");
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
+        });
     }
+    // borrar el trigger drop trigger delete_exam_question;
     function saveAnswer(){
 
     }

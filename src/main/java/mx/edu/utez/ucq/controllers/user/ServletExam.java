@@ -20,7 +20,8 @@ import java.nio.charset.StandardCharsets;
         "/exam/delete",
         "/exam/update",
         "/exam/createQ",
-        "/exam/save-description"
+        "/exam/save-description",
+        "/exam/save-score"
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 
@@ -174,6 +175,33 @@ public class ServletExam extends HttpServlet {
                     e.printStackTrace(); // Imprime detalles del error para el diagnóstico
                     resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
+                break;
+            case "/exam/save-score":
+                try {
+                    Long idQuestion = Long.valueOf(req.getParameter("id_question"));
+                    Long score = Long.valueOf(req.getParameter("score"));
+
+                    Question question3;
+                    question3 = new Question(idQuestion, null, 0L, null, score, 0L);
+
+                    boolean resultS = new DaoExam().saveScore(question3);
+                    System.out.println(resultS);
+
+                    if (resultS) {
+                        // La descripción se guardó correctamente
+                        resp.setStatus(HttpServletResponse.SC_OK);
+                        resp.getWriter().write("La descripción se guardó correctamente.");
+                    } else {
+                        // Ocurrió un error al guardar la descripción
+                        resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                        resp.getWriter().write("No se pudo guardar la descripción.");
+                    }
+
+                }catch (Exception e) {
+                    e.printStackTrace(); // Imprime detalles del error para el diagnóstico
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+
                 break;
             default:
                     System.out.println(action);
