@@ -185,6 +185,10 @@
 
     var questionsID = [];
 
+    var answerID = [];
+
+    var i = 0;
+
     function saveExam() {
         var examTitle = document.getElementById("nameExam").value;
         var examCode = document.getElementById("exam-code").value;
@@ -254,7 +258,7 @@
                 "score": score ,
             },
             success: function (response) {
-                console.log("Descripcion guardada");
+                console.log("Score  guardada");
             },
             error: function (xhr, status, error) {
                 console.log("Error en la solicitud AJAX:", error);
@@ -262,8 +266,26 @@
         });
     }
     // borrar el trigger drop trigger delete_exam_question;
-    function saveAnswer(){
 
+    function saveAnswer(arregloi, answerId){
+        var answerElement = document.getElementById("answer-" + answerId);
+        var answer = answerElement.value;
+
+        console.log("A enviar respuesta: "+answer);
+        $.ajax({
+            type: "POST",
+            url: "/exam/save-answer",
+            data: {
+                "id_answer": answerID[arregloi],
+                "answer": answer ,
+            },
+            success: function (response) {
+                console.log("respuesta  guardada");
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
+        });
     }
 
     function addQuestionClose() {
@@ -276,7 +298,6 @@
             },
             success: function (response) {
                 questionsID[generarId] = response;
-                console.log("Question" + generarId + ": " + response);
             },
             error: function (xhr, status, error) {
                 console.log("Error en la solicitud AJAX:", error);
@@ -285,7 +306,6 @@
 
         var questionContainer = document.getElementById("questions-container");
         generarId++;
-        console.log(generarId);
 
         var card = document.createElement("div");
         card.className = "card mt-3 card-color";
@@ -373,9 +393,8 @@
         addButton.className = "btn btn-primary mt-2";
         addButton.setAttribute("type", "button");
         addButton.innerHTML = "Agregar Respuesta";
-        addButton.addEventListener("click", function () {
-            addAnswerClose(generarId);
-        });
+        addButton.setAttribute("onclick", "(function(id) { addAnswerClose(id); })(" + generarId + ")");
+
 
         var removeButtonGroup = document.createElement("div");
         removeButtonGroup.className = "form-group";
@@ -385,9 +404,7 @@
         removeButton.className = "btn btn-danger mt-2";
         removeButton.setAttribute("type", "button");
         removeButton.innerHTML = "Eliminar pregunta";
-        removeButton.addEventListener("click", function () {
-            deleteQuestion(card.id);
-        });
+        removeButton.setAttribute("onclick", "(function(id) { deleteQuestion('" + card.id + "', " + generarId + "); })()");
 
         buttonGroup.appendChild(addButton);
         removeButtonGroup.appendChild(removeButton);
@@ -404,10 +421,26 @@
 
 
     function addAnswerClose(idQ) {
-        console.log("Pregunta no: " + idQ);
-        var answerContainer = document.getElementById("answer-container-" + idQ);
-        var answerId = idQ + "-" + (answerContainer.children.length + 1);
-        var card = document.getElementById("card-" + idQ); // Corregido aquí
+        $.ajax({
+            type: "POST",
+            url: "/exam/create-Answer",
+            data: {
+                "Id_Question": questionsID[idQ]
+            },
+            success: function (response) {
+                answerID[i] = response;
+
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
+        });
+
+        var answerContainer = document.getElementById("answer-container-" + idQ); // Corrige esta línea
+        var answerId = "answer-" + idQ + "-" + (answerContainer.children.length + 1); // Corrige esta línea
+        var card = document.getElementById("card-" + idQ);
+
+        console.log("Respuesta para pregunta no : " + idQ);
         console.log("respuesta no: " + answerId);
 
         var answerGroup = document.createElement("div");
@@ -434,7 +467,9 @@
         answerInput2.setAttribute("aria-label", "answer-" + answerId); // Ajustado el atributo aria-label
         answerInput2.maxLength = 255;
         answerInput2.setAttribute("name", "answer-" + answerId); // Ajustado el atributo name
+        answerInput2.setAttribute("id","answer-"+ answerId);
         answerInput2.setAttribute("placeholder", "Respuesta");
+        answerInput2.setAttribute("onfocusout", "saveAnswer("+i+","+answerId+")");
         answerInput2.style.resize = "none";
         answerInput2.rows = 1;
         answerInput2.required = true;
@@ -445,6 +480,7 @@
             this.style.height = "auto";
             this.style.height = this.scrollHeight + "px";
         }
+
         // Aquí agregamos el evento para manejar la respuesta correcta
         inputCheckbox.addEventListener("change", function() {
             if (this.checked) {
@@ -456,6 +492,7 @@
                 });
             }
         });
+
         divInputGroup.appendChild(divInputGroupText);
         divInputGroup.appendChild(answerInput2);
 
@@ -476,11 +513,27 @@
         answerGroup.appendChild(divRemoveButton);
 
         answerContainer.appendChild(answerGroup); // Corregido aquí
+        i++;
     }
 
 
 
     function addQuestionOpen()  {
+        $.ajax({
+            type: "POST",
+            url: "/exam/createQ",
+            data: {
+                "id_exam": idExam,
+                "type_question": "1"
+            },
+            success: function (response) {
+                questionsID[generarId] = response;
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
+        });
+
         var questionContainer = document.getElementById("questions-container");
 
         generarId++;
@@ -586,7 +639,21 @@
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    function deleteQuestion(cardId) {
+    function deleteQuestion(cardId,arreglo) {
+        console.log("Pregunta a eliminar: "+ questionsID[arreglo])
+        $.ajax({
+            type: "POST",
+            url: "/exam/deleteQ",
+            data: {
+                "id_question": questionsID[arreglo],
+            },
+            success: function (response) {
+                console.log("Pregunta Eliminada");
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
+        });
         var card = document.getElementById(cardId);
         var currentCardId = parseInt(cardId.split("-")[1]);
 
@@ -702,7 +769,6 @@
         return code;
     }
 
-    // Generar el código aleatorio al cargar la página y mostrarlo en el input
     // Generar el código aleatorio al cargar la página y mostrarlo en el input
     window.addEventListener('load', function() {
         const generatedCode = generateRandomCode(5);

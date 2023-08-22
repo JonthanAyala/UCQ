@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import mx.edu.utez.ucq.models.exam.Answer;
 import mx.edu.utez.ucq.models.exam.DaoExam;
 import mx.edu.utez.ucq.models.exam.Exam;
 import mx.edu.utez.ucq.models.exam.Question;
@@ -21,7 +22,10 @@ import java.nio.charset.StandardCharsets;
         "/exam/update",
         "/exam/createQ",
         "/exam/save-description",
-        "/exam/save-score"
+        "/exam/save-score",
+        "/exam/deleteQ",
+        "/exam/create-Answer",
+        "/exam/save-answer"
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 
@@ -137,11 +141,14 @@ public class ServletExam extends HttpServlet {
 
                     boolean resultQ = new DaoExam().saveQuestion(question1);
                     System.out.println(resultQ);
+
                     if (resultQ) {
                         Long id_question = new DaoExam().extractIdQuestion(id_exam);
                         System.out.println("Question ID: " + id_question);
+
                         String questionIdStr = String   .valueOf(id_question);
                         System.out.println("Question id en String: "+questionIdStr);
+
                         resp.getWriter().write(questionIdStr);
                         resp.getWriter().flush();
                         return;
@@ -160,16 +167,19 @@ public class ServletExam extends HttpServlet {
                     question2 = new Question(idQuestion, null, 0L, description, 0L, 0L);
 
                     boolean resultD = new DaoExam().saveDescription(question2);
-                    System.out.println(resultD);
 
                     if (resultD) {
                         // La descripción se guardó correctamente
                         resp.setStatus(HttpServletResponse.SC_OK);
                         resp.getWriter().write("La descripción se guardó correctamente.");
+                        resp.getWriter().flush();
+                        return;
                     } else {
                         // Ocurrió un error al guardar la descripción
                         resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                         resp.getWriter().write("No se pudo guardar la descripción.");
+                        resp.getWriter().flush();
+                        return;
                     }
                 }catch (Exception e) {
                     e.printStackTrace(); // Imprime detalles del error para el diagnóstico
@@ -185,16 +195,19 @@ public class ServletExam extends HttpServlet {
                     question3 = new Question(idQuestion, null, 0L, null, score, 0L);
 
                     boolean resultS = new DaoExam().saveScore(question3);
-                    System.out.println(resultS);
 
                     if (resultS) {
                         // La descripción se guardó correctamente
                         resp.setStatus(HttpServletResponse.SC_OK);
                         resp.getWriter().write("La descripción se guardó correctamente.");
+                        resp.getWriter().flush();
+                        return;
                     } else {
                         // Ocurrió un error al guardar la descripción
                         resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                         resp.getWriter().write("No se pudo guardar la descripción.");
+                        resp.getWriter().flush();
+                        return;
                     }
 
                 }catch (Exception e) {
@@ -202,6 +215,58 @@ public class ServletExam extends HttpServlet {
                     resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
 
+                break;
+            case "/exam/deleteQ":
+                try {
+                    Long idQuestion = Long.valueOf(req.getParameter("id_question"));
+                    boolean resultS = new DaoExam().deleteQuestion(idQuestion);
+                }catch (Exception e) {
+                    e.printStackTrace(); // Imprime detalles del error para el diagnóstico
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+                break;
+            case "/exam/create-Answer":
+                try {
+                    Long idQuestion = Long.valueOf(req.getParameter("Id_Question"));
+                    boolean resultA = new DaoExam().createAnswer(idQuestion);
+                    System.out.println(resultA);
+                    if (resultA) {
+                        Long idAnswer = new DaoExam().extractIdAnswer(idQuestion);
+                        String questionIdStr = String.valueOf(idAnswer);
+
+                        resp.getWriter().write(questionIdStr);
+                        resp.getWriter().flush();
+                        return;
+                    }
+                }catch (Exception e) {
+                    e.printStackTrace(); // Imprime detalles del error para el diagnóstico
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+                break;
+            case "/exam/save-answer":
+                try {
+                    Long id_answer = Long.valueOf(req.getParameter("id_answer"));
+                    String answer = req.getParameter("answer");
+                    Answer answer1;
+                    answer1 = new Answer(id_answer,answer,false,null);
+
+                    boolean result = new DaoExam().saveAnswer(answer1);
+                    if (result) {
+                        resp.setStatus(HttpServletResponse.SC_OK);
+                        resp.getWriter().write("La respuesta se guardó correctamente.");
+                        resp.getWriter().flush();
+                        return;
+                    } else {
+                        // Ocurrió un error al guardar la descripción
+                        resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                        resp.getWriter().write("No se pudo guardar la respuesta.");
+                        resp.getWriter().flush();
+                        return;
+                    }
+                }catch (Exception e) {
+                    e.printStackTrace(); // Imprime detalles del error para el diagnóstico
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
                 break;
             default:
                     System.out.println(action);

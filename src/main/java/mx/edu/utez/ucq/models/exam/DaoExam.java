@@ -75,7 +75,6 @@ public class DaoExam{
             pstm.setString(1, object.getDescription());
             pstm.setLong(2,object.getId_question());
             int result = pstm.executeUpdate();
-            System.out.println("Se guardo la description: "+result);
             return result > 0;
         } catch (SQLException e) {
             Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
@@ -101,15 +100,15 @@ public class DaoExam{
         }
         return false;
     }
-    public boolean saveAnswer(Answer object) {
+    public boolean deleteQuestion(Long idQuestion){
         try {
-            conn = new MySQLConnection().connect();
-            String query = "INSERT INTO Questions_answer (answer, is_correct, fk_question) VALUES (?, ?, ?);";
-            pstm = conn.prepareStatement(query);
-            pstm.setString(1, object.getAnswer());
-            pstm.setBoolean(2, object.isIf_answer());
-            pstm.setLong(3, object.getFk_question());
-            return pstm.executeUpdate() > 0;
+        conn = new MySQLConnection().connect();
+        String query = "DELETE FROM questions WHERE id_Question = ?;";
+        pstm = conn.prepareStatement(query);
+        pstm.setLong(1,idQuestion);
+        int result = pstm.executeUpdate();
+        System.out.println("Pregunta Eliminada: "+result);
+        return result > 0;
         } catch (SQLException e) {
             Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
         } finally {
@@ -118,6 +117,40 @@ public class DaoExam{
         return false;
     }
 
+    //crear ID respuesta y colocar la descripcion, si es correcta etc.
+    public boolean createAnswer(Long idQ){
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "INSERT INTO questions_answer (fk_question) VALUES (?);";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1, idQ);
+            int result = pstm.executeUpdate();
+            System.out.println("Se creo la respuesta "+idQ+": "+result);
+            return result > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
+    public boolean saveAnswer(Answer object){
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "UPDATE questions_answer SET answer = ? WHERE id_Question_answer = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setString(1,object.getAnswer());
+            pstm.setLong(2,object.getId_answer());
+            int result = pstm.executeUpdate();
+            System.out.println("Se guardo la respuesta: "+result);
+            return result > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
     public List<Exam> findAllExam(Long id) {
         List<Exam> exams = new ArrayList<>();
         try {
@@ -192,6 +225,25 @@ public class DaoExam{
         return id_question;
     }
 
+    public Long extractIdAnswer(Long idQuestion){
+        Long id_answer = null;
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "SELECT MAX(id_Question_answer) AS id_Question_answer FROM questions_answer where fk_question = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1,idQuestion);
+            rs = pstm.executeQuery();
+            if (rs.next()) {
+                idQuestion = rs.getLong("id_Question_answer"); // Obtener el valor de la columna "id_question"
+            }
+        }catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
+        }finally {
+            close();
+        }
+        return id_answer;
+
+    }
     public boolean delete(Long id) {
         try {
             conn = new MySQLConnection().connect();
@@ -220,4 +272,5 @@ public class DaoExam{
         }
         return exam;
     }
+
 }
