@@ -266,11 +266,13 @@
         });
     }
     // borrar el trigger drop trigger delete_exam_question;
-
     function saveAnswer(arregloi, answerId){
         var answerElement = document.getElementById("answer-" + answerId);
         var answer = answerElement.value;
-
+        console.log("arreglo: "+arregloi);
+        console.log(answerID[arregloi]);
+        var idA = answerID[arregloi];
+        console.log("ID en arreglo: "+idA);
         console.log("A enviar respuesta: "+answer);
         $.ajax({
             type: "POST",
@@ -287,7 +289,7 @@
             },
         });
     }
-
+    ///
     function addQuestionClose() {
         $.ajax({
             type: "POST",
@@ -418,8 +420,6 @@
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-
-
     function addAnswerClose(idQ) {
         $.ajax({
             type: "POST",
@@ -428,8 +428,10 @@
                 "Id_Question": questionsID[idQ]
             },
             success: function (response) {
+                console.log("valor de arreglo :"+i);
                 answerID[i] = response;
-
+                console.log("ID respuesta "+idQ+" : "+answerID[i]);
+                i++;
             },
             error: function (xhr, status, error) {
                 console.log("Error en la solicitud AJAX:", error);
@@ -469,7 +471,7 @@
         answerInput2.setAttribute("name", "answer-" + answerId); // Ajustado el atributo name
         answerInput2.setAttribute("id","answer-"+ answerId);
         answerInput2.setAttribute("placeholder", "Respuesta");
-        answerInput2.setAttribute("onfocusout", "saveAnswer("+i+","+answerId+")");
+        answerInput2.setAttribute("onfocusout", "saveAnswer("+i+",'"+answerId+"')");
         answerInput2.style.resize = "none";
         answerInput2.rows = 1;
         answerInput2.required = true;
@@ -503,8 +505,26 @@
         removeButton.className = "btn btn-danger";
         removeButton.setAttribute("type", "button");
         removeButton.innerHTML = "Eliminar";
+        //removeButton.setAttribute("onclick", "(function(id) { deleteAnswer(" + i +");  })");
+
+        console.log("ID answer a borrar: "+answer);
         removeButton.addEventListener("click", function () {
             answerGroup.parentNode.removeChild(answerGroup);
+
+            $.ajax({
+                type: "POST",
+                url: "/exam/deleteA",
+                data: {
+                    "id_answer": answer,
+                },
+                success: function (response) {
+                    console.log("Respuesta Eliminada");
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error en la solicitud AJAX:", error);
+                },
+            });
+
         });
 
         divRemoveButton.appendChild(removeButton);
@@ -513,10 +533,8 @@
         answerGroup.appendChild(divRemoveButton);
 
         answerContainer.appendChild(answerGroup); // Corregido aquí
-        i++;
+
     }
-
-
 
     function addQuestionOpen()  {
         $.ajax({
@@ -557,6 +575,7 @@
         var formGroupQuestion = document.createElement("div");
         formGroupQuestion.className = "form-group";
 
+        var scoreForm = document.createElement("form");
         var scoreGroup = document.createElement("div");
         scoreGroup.className = "form-group col-md-1 col-lg-1";
 
@@ -564,20 +583,15 @@
         scoreLabel.setAttribute("for", "question-score");
         scoreLabel.innerHTML = "Puntaje:";
 
-        var quesiontype = document.createElement("input");
-        quesiontype.setAttribute("id", "question-type");
-        quesiontype.setAttribute("name", "question-type");
-        quesiontype.value = "1";
-        quesiontype.style.display = "none";
-
         var scoreInput = document.createElement("input");
         scoreInput.className = "form-control";
         scoreInput.setAttribute("type", "number");
         scoreInput.setAttribute("value", 0);
         scoreInput.setAttribute("max", 10);
         scoreInput.setAttribute("min", 0);
-        scoreInput.setAttribute("id", "score");
-        scoreInput.setAttribute("name", "score");
+        scoreInput.setAttribute("id", "score-"+generarId);
+        scoreInput.setAttribute("name", "score-"+generarId);
+        scoreInput.setAttribute("onfocusout", "saveScore("+generarId+")");
         scoreInput.addEventListener("input", function () {
             if (this.value.length > 2)
                 this.value = this.value.slice(0, 2);
@@ -594,11 +608,14 @@
         scoreGroup.appendChild(scoreLabel);
         scoreGroup.appendChild(scoreInput);
 
-        cardBody.appendChild(scoreGroup);
+        scoreForm.appendChild(scoreGroup);
+        cardBody.appendChild(scoreForm);
+
 
         var formGroupQuestion = document.createElement("div");
         formGroupQuestion.className = "form-group";
 
+        var questionForm = document.createElement("form");
         var questionLabel = document.createElement("label");
         questionLabel.setAttribute("for", "open-question");
         questionLabel.innerHTML = "Pregunta:";
@@ -608,8 +625,9 @@
         questionTextarea.style.resize = "none";
         questionTextarea.contentEditable = "true";
         questionTextarea.maxLength = 255;
-        questionTextarea.setAttribute("id", "description");
-        questionTextarea.setAttribute("name", "description");
+        questionTextarea.setAttribute("id", "description-"+generarId);
+        questionTextarea.setAttribute("name", "description-"+generarId);
+        questionTextarea.setAttribute("onfocusout", "saveDescription("+generarId+")");
         questionTextarea.style.overflow = "hidden";
         questionTextarea.addEventListener("input", resizeInput);
         questionTextarea.addEventListener("keyup", resizeInput);
@@ -620,14 +638,14 @@
 
         formGroupQuestion.appendChild(questionLabel);
         formGroupQuestion.appendChild(questionTextarea);
+        cardBody.appendChild(questionForm);
 
         var removeQuestion = document.createElement("button");
         removeQuestion.className = "btn btn-danger mt-2";
         removeQuestion.setAttribute("type", "button");
         removeQuestion.innerHTML = "Eliminar pregunta";
-        removeQuestion.addEventListener("click", function () {
-            deleteQuestion(card.id);
-        });
+        removeQuestion.setAttribute("onclick", "(function(id) { deleteQuestion('" + card.id + "', " + generarId + "); })()");
+
 
         cardBody.appendChild(formGroupQuestion);
         cardBody.appendChild(removeQuestion);
@@ -670,6 +688,22 @@
                 deleteQuestion(currentCard.id);
             });
         }
+    }
+
+    function deleteAnswer(arreglo){
+        $.ajax({
+            type: "POST",
+            url: "/exam/deleteA",
+            data: {
+                "id_answer": answerID[arreglo],
+            },
+            success: function (response) {
+                console.log("Respuesta Eliminada");
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
+        });
     }
 
     function autoResize(textarea) {

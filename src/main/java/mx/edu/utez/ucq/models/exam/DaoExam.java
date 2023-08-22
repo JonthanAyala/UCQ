@@ -151,6 +151,23 @@ public class DaoExam{
         }
         return false;
     }
+
+    public boolean deleteAnswer(Long idA){
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "DELETE FROM questions_answer WHERE id_Question_answer = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1,idA);
+            int result = pstm.executeUpdate();
+            System.out.println("Respuesta Eliminada: "+result);
+            return result > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
     public List<Exam> findAllExam(Long id) {
         List<Exam> exams = new ArrayList<>();
         try {
@@ -234,7 +251,7 @@ public class DaoExam{
             pstm.setLong(1,idQuestion);
             rs = pstm.executeQuery();
             if (rs.next()) {
-                idQuestion = rs.getLong("id_Question_answer"); // Obtener el valor de la columna "id_question"
+                id_answer = rs.getLong("id_Question_answer"); // Obtener el valor de la columna "id_question"
             }
         }catch (SQLException e) {
             Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
