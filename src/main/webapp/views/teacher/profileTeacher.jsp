@@ -79,78 +79,78 @@
 
       <div class="card mt-3">
         <div class="card-body">
+          <%User user = (User) request.getAttribute("user");%>
 
-          <div class="container">
+          <form id="user-form" class="needs-validation" novalidate action="/user/update-Tprofile" method="post">
+            <div class="form-group">
 
-            <%--FALTA TRAER DATOS DE LA BD--%>
-            <%User user = (User) request.getAttribute("user");%>
-
-            <form id="user-form" class="needs-validation" novalidate action="/user/update-Tprofile" method="post">
-              <div class="form-group">
-
-                <div class="row"  style="display: none">
-                  <div class="col">
-                    <input type="text" name="id" id="id" value="<%= user.getId() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
-                  </div>
-                </div>
-
-
-                <div class="row" STYLE="display: none">
-                  <div class="col">
-                    <input type="text" name="type_user" id="type_user" value="<%= user.getType_user() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
-                  </div>
-                </div>
-
-
-                <div class="row">
-                  <div class="col">
-                    <label for="name" class="fw-bold">Nombre:</label>
-                    <input type="text" name="name" id="name" value="<%= user.getName() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
-                  </div>
-
-                  <div class="col">
-                    <label for="lastname" class="fw-bold">Apellido Materno:</label>
-                    <input type="text" name="lastname" id="lastname" value="<%= user.getLastname() %> " class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
-                  </div>
-
-
-                  <div class="col">
-                    <label for="lastname" class="fw-bold">Apellido Materno:</label>
-                    <input type="text" name="surname" id="surname" value="<%= user.getSurname() %> " class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
-                  </div>
-
-                  <div class="col">
-                    <label for="curp" class="fw-bold">CURP:</label>
-                    <input type="text" name="curp" id="curp" value="<%= user.getCurp() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="18"> <!-- Modificado el maxlength a 18 -->
-                  </div>
+              <div class="row"  style="display: none">
+                <div class="col">
+                  <input type="text" name="id" id="id" value="<%= user.getId() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
                 </div>
               </div>
 
-              <div class="form-group">
-                <div class="row">
+
+              <div class="row" STYLE="display: none">
+                <div class="col">
+                  <input type="text" name="type_user" id="type_user" value="<%= user.getType_user() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col">
+                  <label for="name" class="fw-bold">Nombre:</label>
+                  <input type="text" name="name" id="name" value="<%= user.getName() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
+                </div>
+
+                <div class="col">
+                  <label for="lastname" class="fw-bold">Apellido Paterno:</label>
+                  <input type="text" name="lastname" id="lastname" value="<%= user.getLastname() %> " class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
+                </div>
+
+
+                <div class="col">
+                  <label for="lastname" class="fw-bold">Apellido Materno:</label>
+                  <input type="text" name="surname" id="surname" value="<%= user.getSurname() %> " class="form-control" style="background-color: #D9D9D9" required readonly maxlength="25">
+                </div>
+
+                <div class="col">
+                  <label for="curp" class="fw-bold">CURP:</label>
+                  <input type="text" name="curp" id="curp" value="<%= user.getCurp() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="18"> <!-- Modificado el maxlength a 18 -->
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col">
+                  <label for="mail" class="fw-bold">Correo:</label>
+                  <input type="text" name="mail" id="mail" value="<%= user.getMail() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="23">
+                </div>
+
+                <div class="col">
+                  <label for="password" class="fw-bold">Contraseña:</label>
+                  <input type="password" name="password" id="password" value="<%= user.getPassword() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="16">
+
+                  <label id="confPassTxt" for="confirmPassword" class="fw-bold" style="display: none">Confirmar contraseña:</label>
+                  <input type="password" name="confimPassword" class="form-control" id="confirmPassword" style="display: none" maxlength="16" required>
+
+                  <button type="submit" class="btn mt-2" id="savePasswordBtn" style="background-color: green; display: none">
+                    <a style="color: white">Confirmar cambios</a>
+                  </button>
+
+                </div>
+
+                <div class="col align-self-end"> <!-- Agregamos la clase "align-self-end" para alinear el botón al final del contenedor de columna -->
                   <div class="col">
-                    <label for="mail" class="fw-bold">Correo:</label>
-                    <input type="text" name="mail" id="mail" value="<%= user.getMail() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="23">
-                  </div>
-
-                  <div class="col">
-                    <label for="password" class="fw-bold">Contraseña:</label>
-                    <input type="password" name="password" id="password" value="<%= user.getPassword() %>" class="form-control" style="background-color: #D9D9D9" required readonly maxlength="16">
-
-                    <label id="confPassTxt" for="confirmPassword" class="fw-bold" style="display: none">Confirmar contraseña:</label>
-                    <input type="password" name="confimPassword" class="form-control" id="confirmPassword" style="display: none" maxlength="16" required>
-
-                    <button type="submit" class="btn mt-2" id="savePasswordBtn" style="background-color: green; display: none">
-                      <a style="color: white">Confirmar cambios</a>
+                    <button type="button" class="btn mt-2" onclick="changePassword()" style="background-color: green" id="changePasswordBtn"> <!-- Modificamos la clase "mt-5" por "mt-2" para alinear con los campos -->
+                      <a style="color: white">Editar perfil</a>
                     </button>
+          <div class="container">
 
-                  </div>
+            <%--FALTA TRAER DATOS DE LA BD--%>
 
-                  <div class="col align-self-end"> <!-- Agregamos la clase "align-self-end" para alinear el botón al final del contenedor de columna -->
-                    <div class="col">
-                      <button type="button" class="btn mt-2" onclick="changePassword()" style="background-color: green" id="changePasswordBtn"> <!-- Modificamos la clase "mt-5" por "mt-2" para alinear con los campos -->
-                        <a style="color: white">Editar perfil</a>
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -240,6 +240,24 @@
       }, false);
     });
   })();
+
+  function confirmPassword() {
+    // Obtener el valor de las contraseñas
+    const newPassword = document.getElementById('password').value;
+    const confirmNewPassword = document.getElementById('confirmPassword').value;
+
+    // Comparar las contraseñas
+    if (newPassword !== confirmNewPassword) {
+      Swal.fire(
+              'LAS CONTRASEÑAS NO COINCIDEN',
+              'verifica',
+              'warning'
+      )
+      return false;
+    }
+
+    return true;
+  }
 
   function savePassword() {
     // Obtener el valor de las contraseñas
