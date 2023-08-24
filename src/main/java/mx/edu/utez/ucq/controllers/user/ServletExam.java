@@ -13,6 +13,10 @@ import mx.edu.utez.ucq.models.exam.Question;
 import mx.edu.utez.ucq.models.user.User;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 @WebServlet(name = "exams",urlPatterns = {
         "/exam/exams",
         "/exam/save-exam",
@@ -28,13 +32,15 @@ import java.io.IOException;
         "/exam/if-answer",
         "/exam/comenzar",
         "/exam/terminar",
-        "/exam/find-exam"
+        "/exam/find-exam",
+        "/exam/redirect",
+        "/exam/IdsQ"
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 
 public class ServletExam extends HttpServlet {
     private String action;
-    private String redirect = "/exam/exams";
+    private String redirect = "";
 
     private  String name, surname, lastname, username, birthday, status;
     private Long id_user, id_exam;
@@ -47,6 +53,25 @@ public class ServletExam extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         action = req.getServletPath();
         switch (action){
+            case "/exam/redirect":
+                User user6 = (User) session.getAttribute("user");// se guardan los datos en un objeto
+                System.out.println(session);// pa ver si hay una sesion
+                switch (Math.toIntExact(user.getType_user())){
+                    case 1:
+                        redirect = "/user/admin";
+                        break;
+                    case 2:
+                        redirect = "/user/index-teacher";
+                        break;
+                    case 3:
+                        redirect = "/user/student";
+                        break;
+                    default:
+                        redirect = "/user/view-login?result=false&message=" + URLEncoder
+                                .encode("Error grave", StandardCharsets.UTF_8);
+                        break;
+                }
+                break;
             case "/exam/exams":
                 User user2 = (User) session.getAttribute("user");// se guardan los datos en un objeto
                 System.out.println(session);// pa ver si hay una sesion
@@ -309,8 +334,38 @@ public class ServletExam extends HttpServlet {
                     redirect = "/user/index-teacher";
                 break;
             case "/exam/find-exam":
-                String codigo = req.getParameter("codigo");
-                Exam exam = new DaoExam().findExam(codigo);
+                try {
+                    String codigo = req.getParameter("codigo");
+                    id_exam = new DaoExam().findExam(codigo);
+                    System.out.println("IdExam "+id_exam);
+                    if (id_exam != null) {
+                        HttpSession session = req.getSession();
+                        session.setAttribute("id_exam", id_exam);
+                        redirect = "/user/view-exam";
+                    }else {
+                        redirect = "/user/student";
+                    }
+                }catch (Exception e) {
+                    e.printStackTrace(); // Imprime detalles del error para el diagnóstico
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+                break;
+            case "/exam/IdsQ":
+                try {
+                    Long idE = Long.valueOf(req.getParameter("idE"));
+                    //define un arreglo para guardar los ids de las preguntas
+                    Long[] arreglo = new DaoExam().finQuestions(idE);
+                    System.out.println("IDs de preguntas: " + Arrays.toString(arreglo));
+
+                    String idsJSON = Arrays.toString(arreglo);
+
+                    resp.getWriter().write(idsJSON);
+                    resp.getWriter().flush();
+                    return;
+                }catch (Exception e) {
+                    e.printStackTrace(); // Imprime detalles del error para el diagnóstico
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
                 break;
             default:
                     System.out.println(action);

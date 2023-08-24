@@ -33,10 +33,6 @@
 </style>
 <body style="background-color: white;">
 
-<div class="grid-container position-absolute">
-
-</div>
-
 <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
     <div class="container d-flex align-content-between">
 
@@ -58,18 +54,26 @@
 <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="container mt-5 bg-light p-4 rounded shadow">
-            <h1 class="text-center mb-4">Examen Recupera</h1>
+            <h1 class="text-center mb-4">${exam.name_exam}</h1>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="container mt-5 bg-light p-4 rounded shadow">
+            <div class="pregunta p-4 border rounded" id="preguntas-container">
+
+            </div>
         </div>
     </div>
 </div>
 
-
-<div class="row row justify-content-center">
+/*<div class="row row justify-content-center">
     <div class="col-md-6">
         <div class="container mt-5 bg-light p-4 rounded shadow">
             <div class="pregunta p-4 border rounded">
                 <h2>Pregunta 1:</h2>
-                <p>¿Cuánto es 2 + 2?</p>
+                <p>Descripcion-1</p>
 
                 <form>
                     <div class="form-check">
@@ -88,7 +92,6 @@
                         <input class="form-check-input custom-radio" type="radio" name="pregunta1" id="radio4" value="4">
                         <label class="form-check-label" for="radio4">Todas las anteriores</label>
                     </div>
-
                 <style>
                         /* Estilo personalizado para los círculos de selección */
                         .custom-radio {
@@ -109,14 +112,16 @@
             </div>
         </div>
     </div>
-</div>
+</div>*/
+
+<form action="/exam/enviar">
 <div class="d-flex justify-content-center mt-3">
     <button type="submit" class="btn btn-success">
         ENVIAR
     </button>
 </div>
+</form>
 
-</body>
 
 <jsp:include page="../../layouts/footer.jsp"/>
 
@@ -124,6 +129,12 @@
     function redirectToStudentsIndex() {
         window.location.href = "/user/student";
     }
+
+    var questionsID = [
+        <% for (int i = 0; i < idsQ.length; i++) { %>
+        <%= idsQ[i] %>,
+        <% } %>
+    ];
 
 </script>
 </body>

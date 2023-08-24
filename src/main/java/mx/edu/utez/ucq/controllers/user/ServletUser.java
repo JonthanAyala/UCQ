@@ -152,7 +152,19 @@ public class ServletUser extends HttpServlet {
                 break;
 
             case "/user/view-exam":
-                redirect = "/views/student/exam.jsp";
+                session = req.getSession();
+                Long id_exam = (Long) session.getAttribute("id_exam");
+                Exam exam = new DaoExam().LoadExam(id_exam);
+                String end = exam.getEnd_time();
+                System.out.println("name= "+exam.getName_exam());
+                req.setAttribute("exam", exam);
+                if (end == null || end.isEmpty()){
+                    Long[] arreglo = new DaoExam().finQuestions(id_exam);
+                    req.setAttribute("idsQ", arreglo);
+                    redirect = "/views/student/exam.jsp";
+                }else {
+                    redirect = "/user/student";
+                }
                 break;
             case "/user/logout":
                 try {
