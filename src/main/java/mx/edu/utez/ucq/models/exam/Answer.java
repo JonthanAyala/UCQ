@@ -1,7 +1,7 @@
 package mx.edu.utez.ucq.models.exam;
 
 public class Answer {
-    private Long id_question_answer;
+    private Long id_answer;
     private String answer;
     private boolean if_answer;
     private Long fk_question;
@@ -9,19 +9,19 @@ public class Answer {
     public Answer() {
     }
 
-    public Answer(Long id_question_answer, String answer, boolean if_answer, Long fk_question) {
-        this.id_question_answer = id_question_answer;
+    public Answer(Long id_answer, String answer, boolean if_answer, Long fk_question) {
+        this.id_answer = id_answer;
         this.answer = answer;
         this.if_answer = if_answer;
         this.fk_question = fk_question;
     }
 
-    public Long getId_question_answer() {
-        return id_question_answer;
+    public Long getId_answer() {
+        return id_answer;
     }
 
-    public void setId_question_answer(Long id_question_answer) {
-        this.id_question_answer = id_question_answer;
+    public void setId_answer(Long id_answer) {
+        this.id_answer = id_answer;
     }
 
     public String getAnswer() {

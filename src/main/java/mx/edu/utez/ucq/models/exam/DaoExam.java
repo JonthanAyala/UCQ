@@ -1,6 +1,5 @@
 package mx.edu.utez.ucq.models.exam;
 
-import mx.edu.utez.ucq.models.user.DaoUser;
 import mx.edu.utez.ucq.utils.MySQLConnection;
 
 import java.sql.Connection;
@@ -34,15 +33,33 @@ public class DaoExam{
         return false;
     }
 
+    public boolean updateExam(Exam object){
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "UPDATE exams SET name_exam = ? WHERE id_exam = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setString(1, object.getName_exam());
+            pstm.setLong(2,object.getId_exam());
+            System.out.println(pstm.executeUpdate());
+            return pstm.executeUpdate() > 0 ;
+        }catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error update" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
+
     public boolean saveQuestion(Question object) {
         try {
             conn = new MySQLConnection().connect();
-            String query = "INSERT INTO questions (type_question, description, points) VALUES (?, ?, ?);";
+            String query = "INSERT INTO questions (type_question, fk_exam) VALUES (?, ?);";
             pstm = conn.prepareStatement(query);
             pstm.setLong(1, object.getType_question());
-            pstm.setString(2, object.getDescription());
-            pstm.setLong(3, object.getPoints());
-            return pstm.executeUpdate() > 0;
+            pstm.setLong(2,object.getFk_exam());
+            int result = pstm.executeUpdate();
+            System.out.println("Se guardo la pregunta"+result);
+            return result > 0;
         } catch (SQLException e) {
             Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
         } finally {
@@ -50,16 +67,48 @@ public class DaoExam{
         }
         return false;
     }
-
-    public boolean saveAnswer(Answer object) {
+    public boolean saveDescription(Question object){
         try {
             conn = new MySQLConnection().connect();
-            String query = "INSERT INTO Questions_answer (answer, is_correct, fk_question) VALUES (?, ?, ?);";
+            String query = "UPDATE questions SET description = ? WHERE id_Question = ?;";
             pstm = conn.prepareStatement(query);
-            pstm.setString(1, object.getAnswer());
-            pstm.setBoolean(2, object.isIf_answer());
-            pstm.setLong(3, object.getFk_question());
-            return pstm.executeUpdate() > 0;
+            pstm.setString(1, object.getDescription());
+            pstm.setLong(2,object.getId_question());
+            int result = pstm.executeUpdate();
+            return result > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
+    public boolean saveScore(Question object){
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "UPDATE questions SET points = ? WHERE id_Question = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1,object.getPoints());
+            pstm.setLong(2,object.getId_question());
+            int result = pstm.executeUpdate();
+            System.out.println("Se guardo la puntuacion: "+result);
+            return result > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
+    public boolean deleteQuestion(Long idQuestion){
+        try {
+        conn = new MySQLConnection().connect();
+        String query = "DELETE FROM questions WHERE id_Question = ?;";
+        pstm = conn.prepareStatement(query);
+        pstm.setLong(1,idQuestion);
+        int result = pstm.executeUpdate();
+        System.out.println("Pregunta Eliminada: "+result);
+        return result > 0;
         } catch (SQLException e) {
             Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
         } finally {
@@ -68,6 +117,73 @@ public class DaoExam{
         return false;
     }
 
+    //crear ID respuesta y colocar la descripcion, si es correcta etc.
+    public boolean createAnswer(Long idQ){
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "INSERT INTO questions_answer (fk_question) VALUES (?);";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1, idQ);
+            int result = pstm.executeUpdate();
+            System.out.println("Se creo la respuesta "+idQ+": "+result);
+            return result > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
+    public boolean saveAnswer(Answer object){
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "UPDATE questions_answer SET answer = ? WHERE id_Question_answer = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setString(1,object.getAnswer());
+            pstm.setLong(2,object.getId_answer());
+            int result = pstm.executeUpdate();
+            System.out.println("Se guardo la respuesta: "+result);
+            return result > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
+    public boolean answerif(Long idQ, Long idAnswer){
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "CALL respuestasif(?, ?);";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1,idQ);
+            pstm.setLong(2,idAnswer);
+            int result = pstm.executeUpdate();
+            System.out.println("Se hizo? : "+result);
+            return result > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
+    public boolean deleteAnswer(Long idA){
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "DELETE FROM questions_answer WHERE id_Question_answer = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1,idA);
+            int result = pstm.executeUpdate();
+            System.out.println("Respuesta Eliminada: "+result);
+            return result > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
     public List<Exam> findAllExam(Long id) {
         List<Exam> exams = new ArrayList<>();
         try {
@@ -123,39 +239,42 @@ public class DaoExam{
         }
         return id;
     }
-    public Long extractIdQuestion(String questionDescription) {
-        Long id = null;
+    public Long extractIdQuestion(Long fk_exam) {
+        Long id_question = null;
         try {
             conn = new MySQLConnection().connect();
-            String query = "SELECT MAX(id_Question) AS id_question FROM question where description = ?;";
+            String query = "SELECT MAX(id_Question) AS id_question FROM questions where fk_exam = ?;";
             pstm = conn.prepareStatement(query);
-            pstm.setString(1, questionDescription);
+            pstm.setString(1, String.valueOf(fk_exam));
             rs = pstm.executeQuery();
             if (rs.next()) {
-                id = rs.getLong("id_question"); // Obtener el valor de la columna "id_exam"
+                id_question = rs.getLong("id_question"); // Obtener el valor de la columna "id_question"
             }
         }catch (SQLException e) {
             Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
         }finally {
             close();
         }
-        return id;
+        return id_question;
     }
-
-    public boolean saveEQ(Long fkExam, Long idQuestion) {
+    public Long extractIdAnswer(Long idQuestion){
+        Long id_answer = null;
         try {
             conn = new MySQLConnection().connect();
-            String query = "INSERT INTO exams_questions (fk_question, fk_exam) VALUES (?, ?);";
+            String query = "SELECT MAX(id_Question_answer) AS id_Question_answer FROM questions_answer where fk_question = ?;";
             pstm = conn.prepareStatement(query);
-            pstm.setString(1, String.valueOf(idQuestion));
-            pstm.setString(2, String.valueOf(fkExam));
-            return pstm.executeUpdate() > 0;
+            pstm.setLong(1,idQuestion);
+            rs = pstm.executeQuery();
+            if (rs.next()) {
+                id_answer = rs.getLong("id_Question_answer"); // Obtener el valor de la columna "id_question"
+            }
         }catch (SQLException e) {
             Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
         }finally {
             close();
         }
-        return false;
+        return id_answer;
+
     }
     public boolean delete(Long id) {
         try {
@@ -185,4 +304,5 @@ public class DaoExam{
         }
         return exam;
     }
+
 }

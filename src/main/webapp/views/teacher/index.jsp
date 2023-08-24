@@ -98,7 +98,6 @@
               <div class="d-grid">
                 <button type="button" class="btn btn-outline-success btn-sm"  onclick="location.href='/teacher/view'">
                   Crear nuevo examen
-
                 </button>
               </div>
             </div>
@@ -137,6 +136,8 @@
                 <button type="submit" class="btn btn-outline-danger btn-sm">
                   Eliminar
                 </button>
+
+
                 </form>
                 </td>
           </tr>

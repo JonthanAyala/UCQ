@@ -1,6 +1,5 @@
 package mx.edu.utez.ucq.models.user;
 
-import com.mysql.cj.MysqlConnection;
 import mx.edu.utez.ucq.models.crud.DaoRepository;
 import mx.edu.utez.ucq.utils.MySQLConnection;
 
@@ -21,7 +20,7 @@ public class DaoUser implements DaoRepository<User>{
     public User loadUserByUsernameAndPassword(String loginCredential, String password) {
         try {
             conn = new MySQLConnection().connect();
-            String query = "SELECT id_user, mail, type_user FROM users " +
+            String query = "SELECT id_user, mail, type_user, name FROM users " +
                     "WHERE (mail = ? OR enrollment = ?) AND password = ? AND status = 'Activo';";
             pstm = conn.prepareStatement(query);
             pstm.setString(1, loginCredential);
@@ -34,6 +33,7 @@ public class DaoUser implements DaoRepository<User>{
                 user.setId(rs.getLong("id_user"));
                 user.setMail(rs.getString("mail"));
                 user.setType_user(rs.getLong("type_user"));
+                user.setName(rs.getString("name"));
                 return user;
 
 
@@ -178,8 +178,9 @@ public class DaoUser implements DaoRepository<User>{
                 pstm.setString(7,object.getMail());
                 pstm.setString(8,object.getEnrollment());
                 pstm.setString(9,object.getPassword());
-                return pstm.executeUpdate() > 0; // == 1
-
+                int result = pstm.executeUpdate();
+                System.out.println(result);
+                return result > 0; // == 1
             }catch (SQLException e){
                 Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE,"Error save"+e.getMessage());
             }finally {

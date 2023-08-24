@@ -11,13 +11,10 @@ import mx.edu.utez.ucq.models.exam.Exam;
 import mx.edu.utez.ucq.models.user.DaoUser;
 import mx.edu.utez.ucq.models.user.User;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 @WebServlet(name = "users", urlPatterns = {
@@ -106,7 +103,8 @@ public class ServletUser extends HttpServlet {
                 redirect = "/views/logIn/createLogIn.jsp";
                 break;
             case "/user/index-teacher":
-                id = req.getParameter("id_user");
+
+                /*id = req.getParameter("id_user");
                 List<Exam> exams = new DaoExam().findAllExam(Long.valueOf(id));
                 req.setAttribute("exams", exams);
                 HttpSession sessionste = req.getSession();
@@ -116,7 +114,14 @@ public class ServletUser extends HttpServlet {
                 if (user != null) {
                     req.setAttribute("user", user5);
                     redirect = "/views/teacher/index.jsp";
-                }
+                }*/
+                User user2 = (User) session.getAttribute("user");// se guardan los datos en un objeto
+                System.out.println(session);// pa ver si hay una sesion
+                Long userId = user2.getId(); // se obtiene el campo a utilizar
+                System.out.println("1User ID: " + userId); // simplemente pa verlo en pantalla
+                List<Exam> exams = new DaoExam().findAllExam(userId);
+                req.setAttribute("exams",exams);
+                redirect="/views/teacher/index.jsp";
                 break;
             case "/user/mark-exam":
                 redirect = "/views/teacher/markExam.jsp";
@@ -212,15 +217,17 @@ public class ServletUser extends HttpServlet {
                 try {
                     user = new DaoUser()
                             .loadUserByUsernameAndPassword(loginCredential, password);
+
                     if (user != null) {
                         session = req.getSession();
                         session.setAttribute("user", user);
+                        System.out.println(session);
                         switch (Math.toIntExact(user.getType_user())) {
                             case 1:
                                 redirect = "/user/admin";
                                 break;
                             case 2:
-                                redirect = "/user/index-teacher?id_user=" + user.getId();
+                                redirect = "/user/index-teacher";
                                 break;
                             case 3:
                                 redirect = "/user/student";
@@ -232,8 +239,9 @@ public class ServletUser extends HttpServlet {
                                 break;
                         }
                     } else {
-                        throw new Exception("Credentials mismatch");
-
+                        redirect = "/user/view-login?result=false&message=" + URLEncoder
+                                .encode("Credenciales inválidas. Intenta de nuevo",
+                                        StandardCharsets.UTF_8);
                     }
                 } catch (Exception e) {
                     redirect = "/user/view-login?result=false&message=" + URLEncoder
@@ -341,7 +349,6 @@ public class ServletUser extends HttpServlet {
                 enrollment = req.getParameter("enrollment");
                 password = req.getParameter("password");
                 User user1 = new User(0L, name, lastname, surname, curp, "Activo", 2L, mail, enrollment, password, code);
-
                 boolean result = new DaoUser().save(user1);
                 if (result) {
                     redirect = "/user/admin?result=" + result + "&message=" + URLEncoder.encode("¡Exito! Usuario registrado correctamente.", StandardCharsets.UTF_8);
