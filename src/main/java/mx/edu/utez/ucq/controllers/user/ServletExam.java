@@ -26,7 +26,8 @@ import java.nio.charset.StandardCharsets;
         "/exam/deleteQ",
         "/exam/create-Answer",
         "/exam/save-answer",
-        "/exam/deleteA"
+        "/exam/deleteA",
+        "/exam/if-answer"
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 
@@ -275,6 +276,18 @@ public class ServletExam extends HttpServlet {
                 try {
                     Long idAnswer = Long.valueOf(req.getParameter("id_answer"));
                     boolean resultDA = new DaoExam().deleteAnswer(idAnswer);
+                }catch (Exception e) {
+                    e.printStackTrace(); // Imprime detalles del error para el diagnóstico
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+                break;
+            case "/exam/if-answer":
+                try {
+                    Long idQ = Long.valueOf(req.getParameter("IdPregunta"));
+                    Long idAnswer = Long.valueOf(req.getParameter("IdA"));
+                    System.out.println(idQ+","+idAnswer);
+                    boolean resultDA = new DaoExam().answerif(idQ,idAnswer);
+
                 }catch (Exception e) {
                     e.printStackTrace(); // Imprime detalles del error para el diagnóstico
                     resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

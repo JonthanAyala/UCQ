@@ -151,7 +151,23 @@ public class DaoExam{
         }
         return false;
     }
-
+    public boolean answerif(Long idQ, Long idAnswer){
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "CALL respuestasif(?, ?);";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1,idQ);
+            pstm.setLong(2,idAnswer);
+            int result = pstm.executeUpdate();
+            System.out.println("Se hizo? : "+result);
+            return result > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
     public boolean deleteAnswer(Long idA){
         try {
             conn = new MySQLConnection().connect();
@@ -241,7 +257,6 @@ public class DaoExam{
         }
         return id_question;
     }
-
     public Long extractIdAnswer(Long idQuestion){
         Long id_answer = null;
         try {

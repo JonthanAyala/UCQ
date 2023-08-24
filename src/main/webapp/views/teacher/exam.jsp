@@ -284,6 +284,23 @@
             },
         });
     }
+    function saveIfAnswer(ia, idQ){
+        console.log("3---i if:"+ia+"="+answerID[ia]+", idQ if: "+idQ+" = "+questionsID[idQ]);
+        $.ajax({
+            type: "POST",
+            url: "/exam/if-answer", // Cambia la URL según corresponda
+            data: {
+                "IdPregunta": questionsID[idQ],
+                "IdA": answerID[ia]
+            },
+            success: function(response) {
+                // Maneja el éxito
+            },
+            error: function(xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            }
+        });
+    }
     ///
     function addQuestionClose() {
         $.ajax({
@@ -464,8 +481,8 @@
                         this.style.height = "auto";
                         this.style.height = this.scrollHeight + "px";
                     }
-
                     // Aquí agregamos el evento para manejar la respuesta correcta
+                    inputCheckbox.addEventListener("change", new Function("saveIfAnswer('" + i + "', " + idQ + ");"));
                     inputCheckbox.addEventListener("change", function() {
                         if (this.checked) {
                             var otherCheckboxes = answerContainer.querySelectorAll("input[type='checkbox']");
@@ -476,6 +493,7 @@
                             });
                         }
                     });
+
 
                     divInputGroup.appendChild(divInputGroupText);
                     divInputGroup.appendChild(answerInput2);
