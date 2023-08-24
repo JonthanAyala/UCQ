@@ -45,12 +45,11 @@
 <div class="grid-container position-absolute">
 
 </div>
-<%User user = (User) request.getAttribute("user");%>
 
 <nav class="navbar navbar-expand-lg" style="background-color: #002F5D;">
   <div class="container d-flex align-content-between">
 
-    <h4 class="d-inline-block align-text-top me-2" style="color: white"><%= user.getName() %> <%= user.getLastname() %> <%= user.getSurname() %></h4>
+    <h4 class="d-inline-block align-text-top me-2" style="color: white">${sessionScope.user.name} ${sessionScope.user.lastname} ${sessionScope.user.surname}</h4>
 
 
     <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
@@ -130,14 +129,23 @@
             <td><c:out value="${exam.start_time}"/></td>
             <td><c:out value="${exam.end_time}"/></td>
             <td>
+              <form method="post" action="/exam/comenzar">
+                <input hidden value="${exam.id_exam}" name="id">
+                <button type="submit" class="btn btn-outline-success btn-sm">
+                  Comenzar
+                </button>
+              </form>
+              <form method="post" action="/exam/terminar">
+                <input hidden value="${exam.id_exam}" name="id">
+                <button type="submit" class="btn btn-outline-warning btn-sm">
+                  Terminar
+                </button>
+              </form>
                 <form method="post" action="/exam/delete">
                 <input hidden value="${exam.id_exam}" name="id">
-                  <input type="text" hidden id="id_user" name="id_user" value="${sessionScope.user.id}" >
                 <button type="submit" class="btn btn-outline-danger btn-sm">
                   Eliminar
                 </button>
-
-
                 </form>
                 </td>
           </tr>

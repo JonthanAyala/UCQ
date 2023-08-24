@@ -103,18 +103,6 @@ public class ServletUser extends HttpServlet {
                 redirect = "/views/logIn/createLogIn.jsp";
                 break;
             case "/user/index-teacher":
-
-                /*id = req.getParameter("id_user");
-                List<Exam> exams = new DaoExam().findAllExam(Long.valueOf(id));
-                req.setAttribute("exams", exams);
-                HttpSession sessionste = req.getSession();
-                User user5 = (User) sessionste.getAttribute("user");
-                user5 = new DaoUser().findOneByUser(user5.getId());
-                System.out.println(user5);
-                if (user != null) {
-                    req.setAttribute("user", user5);
-                    redirect = "/views/teacher/index.jsp";
-                }*/
                 User user2 = (User) session.getAttribute("user");// se guardan los datos en un objeto
                 System.out.println(session);// pa ver si hay una sesion
                 Long userId = user2.getId(); // se obtiene el campo a utilizar

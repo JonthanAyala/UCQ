@@ -13,8 +13,6 @@ import mx.edu.utez.ucq.models.exam.Question;
 import mx.edu.utez.ucq.models.user.User;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 @WebServlet(name = "exams",urlPatterns = {
         "/exam/exams",
         "/exam/save-exam",
@@ -27,7 +25,9 @@ import java.nio.charset.StandardCharsets;
         "/exam/create-Answer",
         "/exam/save-answer",
         "/exam/deleteA",
-        "/exam/if-answer"
+        "/exam/if-answer",
+        "/exam/comenzar",
+        "/exam/terminar"
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 
@@ -125,12 +125,11 @@ public class ServletExam extends HttpServlet {
                 }
                 break;
             case "/exam/delete":
-                Long userId = Long.valueOf(req.getParameter("id_user"));
                 id_exam = Long.valueOf(req.getParameter("id"));
                 if (new DaoExam().delete(id_exam)) {
-                    redirect = "/user/index-teacher?id_user="+ userId+"&?result="+true+"&message="+ URLEncoder.encode("¡Exito! Examen eliminado correctamente.", StandardCharsets.UTF_8);
+                    redirect = "/user/index-teacher";
                 }else
-                    redirect = "/user/index-teacher?id_user="+ userId+"&?result="+false+"&message="+ URLEncoder.encode("¡ERROR! Usuario no eliminado.", StandardCharsets.UTF_8);
+                    redirect = "/user/index-teacher";
                 break;
             case "/exam/createQ":
                 try {
@@ -292,6 +291,20 @@ public class ServletExam extends HttpServlet {
                     e.printStackTrace(); // Imprime detalles del error para el diagnóstico
                     resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
+                break;
+            case "/exam/comenzar":
+                id_exam = Long.valueOf(req.getParameter("id"));
+                if (new DaoExam().comenzar(id_exam)) {
+                    redirect = "/user/index-teacher";
+                }else
+                    redirect = "/user/index-teacher";
+                break;
+            case "/exam/terminar":
+                id_exam = Long.valueOf(req.getParameter("id"));
+                if (new DaoExam().terminar(id_exam)) {
+                    redirect = "/user/index-teacher";
+                }else
+                    redirect = "/user/index-teacher";
                 break;
             default:
                     System.out.println(action);

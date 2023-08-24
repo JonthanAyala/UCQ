@@ -305,4 +305,38 @@ public class DaoExam{
         return exam;
     }
 
+    public boolean comenzar(Long id_exam){
+        try {
+            // UPDATE `ucq_chido`.`exams` SET `start_time` = 'sysdate()' WHERE (`id_exam` = '53');
+            conn = new MySQLConnection().connect();
+            String query = "UPDATE exams SET start_time = sysdate() where id_exam = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1,id_exam);
+            return  pstm.executeUpdate() == 1;
+        }catch (SQLException e){
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error delete"+e.getMessage());
+        }finally {
+            close();
+        }
+        return false;
+    }
+    public boolean terminar(Long id_exam){
+        try {
+            // UPDATE `ucq_chido`.`exams` SET `start_time` = 'sysdate()' WHERE (`id_exam` = '53');
+            conn = new MySQLConnection().connect();
+            String query = "UPDATE exams SET end_time = sysdate() where id_exam = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1,id_exam);
+            return  pstm.executeUpdate() == 1;
+        }catch (SQLException e){
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error delete"+e.getMessage());
+        }finally {
+            close();
+        }
+        return false;
+    }
+
+    // Buscar examen 
+
+
 }
