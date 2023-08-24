@@ -2,7 +2,30 @@
 INSERT INTO `ucq_chido`.`users` (`id_user`, `name`, `lastname`, `surname`, `curp`, `status`, `type_user`, `mail`, `enrollment`, `password`) VALUES ('1', 'admin', 'utez', 'NA', 'NA', 'Activo', '1', 'admin@utez.edu.mx', 'N/A', 'adminucq');
 INSERT INTO `ucq_chido`.`users` (`id_user`, `name`, `lastname`, `surname`, `curp`, `status`, `type_user`, `mail`, `enrollment`, `password`) VALUES ('2', 'Hugo', 'NA', 'NA', 'NA', 'Activo', '2', 'hugo@utez.edu.mx', 'NA', 'hugoucq');
 INSERT INTO `ucq_chido`.`users` (`id_user`, `name`, `lastname`, `surname`, `curp`, `status`, `type_user`, `mail`, `enrollment`, `password`) VALUES ('3', 'Isai', 'acosta', 'guerra', 'iii', 'Activo', '3', 'isai@utez.edu.mx', '20213tn094', 'isaiucq');
-  */
+
+DELIMITER $$
+CREATE PROCEDURE respuestasif(
+	idQ INT,
+	idAnswer INT
+)
+BEGIN
+    START TRANSACTION;
+    -- Desactivar todas las respuestas de la pregunta
+    UPDATE Questions_answer
+    SET if_answer = 0
+    WHERE fk_question = idQ;
+
+    -- Activar la respuesta específica
+    UPDATE Questions_answer
+    SET if_answer = 1
+    WHERE id_Question_answer = idAnswer;
+
+    -- Confirma los cambios
+    COMMIT;
+END$$
+DELIMITER ;
+
+*/
 
 create database ucq_chido;
 use ucq_chido;

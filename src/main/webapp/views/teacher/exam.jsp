@@ -76,7 +76,7 @@
 </style>
 
 <body style="background-color: white;">
-
+<script>var idExam = null;</script>
 
 <div class="grid-container position-absolute">
 
@@ -98,15 +98,17 @@
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: 'Guardar',
-            denyButtonText: `No guardar`,
-        }).then((result) => {
+            denyButtonText: `Regresar al Index`,
+            }).then((result) => {
 
             if (result.isConfirmed) {
-                Swal.fire('EXAMEN GUARDADO', '', 'success')
-                //LA ALERTA APARECERÁ EN CASO DE QUE APRETEN EL BOTON DE REGRESAR Y NO SE HAYAN GUARDADOS LOS CAMBIOS
-                //REDIRIGIR A LA PAGINA PRINCIPAL CON LOS CAMBIOS GUARDADOS
+                Swal.fire('EXAMEN GUARDADO', '', 'success');
+                // Redirigir después de 3 segundos si el usuario decidió guardar
+                setTimeout(function() {
+                     window.location.href = '/user/index-teacher';
+                }, 1200); // 3000 milisegundos = 3 segundos
             } else if (result.isDenied) {
-               //REDIRIGIR SOLAMENTE A LA PAGINA PRINCIPAL
+                window.location.href = '/user/index-teacher';
             }
         })">
                     <img src="../../assets/img/back-48.png">
@@ -136,20 +138,28 @@
                     <img src="../../assets/img/icons8-add2-48.png">
                 </button>
             </div>
-
-
-        <div class=" container mt-5 col-4" style="text-align: center">
-            <div class="form-group">
-                <label for="exam-code" class="placeholder-exam-code"> <h6> Código del examen:</h6> </label>
-                <input type="text" class="form-control" id="exam-code" name="exam-code" style="background-color:#D9D9D9;" readonly>
-            </div>
+        <div class="container-fluid mt-5">
+            <form>
+                <textarea class="form-control textareaTittle" name="nameExam" id="nameExam"
+                  style="font-size: 30px; overflow: hidden; resize: none"
+                  maxlength="50" oninput="autoResize(this)"
+                  placeholder="Titulo Examen" required onfocusout="saveExam()">
+                </textarea>
+                <div class=" container mt-5 col-4" style="text-align: center">
+                    <div class="form-group">
+                        <label for="exam-code1" class="placeholder-exam-code1"> <h6> Código del examen:</h6> </label>
+                        <input type="text" class="form-control" id="exam-code1" style="background-color:#D9D9D9;" readonly>
+                        <input hidden name="exam-code" id="exam-code" name="exam-code">
+                    </div>
+                </div>
+            </form>
         </div>
 
         <div class="container mb-5">
             <div class=" container mt-5 mb-5 d-grid" style="text-align: center">
                 <input type="text" hidden id="fk_user" name="fk_user" value="${sessionScope.user.id}" >
-                <button id="guardarButton" type="submit" class="btn btn-success" style="background-color: #002F5D!important;
-                color: white !important;" onclick="marcarCambiosYCambiarColor(  )">Guardar</button>
+                <button id="guardarButton" type="button" class="btn btn-success" style="background-color: #002F5D!important;
+                color: white !important;" onclick="marcarCambiosYCambiarColor( )">Guardar</button>
             </div>
         </div>
     </div>
@@ -158,16 +168,7 @@
     <div class="container mt-5 w-50 p-3 containerExam mb-5" style="background-color: white;
     box-shadow: 0 0 8px rgba(0, 170, 131, 0.3);">
 
-        <div class="container-fluid mt-5">
-            <form id="NexamForm" action="/exam/save-exam" method="post">
-        <textarea class="form-control textareaTittle" name="nameExam"
-                  style="font-size: 30px; overflow: hidden; resize: none"
-                  maxlength="50" oninput="autoResize(this)"
-                  placeholder="Titulo Examen" required onfocusout="saveExam(nameExam)">
-        </textarea>
-                <input type="text" class="form-control" id="exam-code1" name="exam-code" hidden>
-                </form>
-        </div>
+
 
         <div id="questions-container" class="overflow-y-auto">
 
@@ -180,30 +181,146 @@
 <script>
     var codigo = '';
     var generarId = 0;
-    console.log(codigo);
     var fk_user = ${sessionScope.user.id};
 
-    var idExam = null;
 
-    function saveExam(textarea){
-        var examTitle = textarea.value;
-        console.log("Contenido del examen guardado:", examTitle);
-        document.getElementById("NexamForm").submit();
+    var questionsID = [];
+
+    var answerID = [];
+
+    var i = 0;
+
+    function saveExam() {
+        var examTitle = document.getElementById("nameExam").value;
+        var examCode = document.getElementById("exam-code").value;
+
+        if (!idExam || idExam === "") {
+            $.ajax({
+                type: "POST",
+                url: "/exam/save-exam",
+                data: {
+                    "exam-code": examCode,
+                    "nameExam": examTitle
+                },
+                success: function (response) {
+                    idExam = response;
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error en la solicitud AJAX:", error);
+                },
+            });
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/exam/update",
+                data: {
+                    "nameExam": examTitle,
+                    "id_exam": idExam
+                },
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error en la solicitud AJAX:", error);
+                },
+            });
+        }
     }
-    function saveDescription(){
+    function saveDescription(arreglo){
+        var descriptionElement = document.getElementById("description-" + arreglo);
+        var description = descriptionElement.value;
 
+        $.ajax({
+            type: "POST",
+            url: "/exam/save-description",
+            data: {
+                "id_question": questionsID[arreglo],
+                "description": description,
+            },
+            success: function (response) {
+                console.log("Descripcion guardada");
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
+        });
     }
-    function saveScore(){
+    function saveScore(arreglo){
 
+        var scoreElement = document.getElementById("score-" + arreglo);
+        var score = scoreElement.value;
+
+        $.ajax({
+            type: "POST",
+            url: "/exam/save-score",
+            data: {
+                "id_question": questionsID[arreglo],
+                "score": score ,
+            },
+            success: function (response) {
+                console.log("Score  guardada");
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
+        });
     }
-    function saveAnswer(){
-
+    // borrar el trigger drop trigger delete_exam_question;
+    function saveAnswer(arregloi, answerId){
+        var answerElement = document.getElementById("answer-" + answerId);
+        var answer = answerElement.value;
+        $.ajax({
+            type: "POST",
+            url: "/exam/save-answer",
+            data: {
+                "id_answer": answerID[arregloi],
+                "answer": answer ,
+            },
+            success: function (response) {
+                console.log("respuesta  guardada");
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
+        });
     }
-
+    function saveIfAnswer(ia, idQ){
+        console.log("3---i if:"+ia+"="+answerID[ia]+", idQ if: "+idQ+" = "+questionsID[idQ]);
+        $.ajax({
+            type: "POST",
+            url: "/exam/if-answer", // Cambia la URL según corresponda
+            data: {
+                "IdPregunta": questionsID[idQ],
+                "IdA": answerID[ia]
+            },
+            success: function(response) {
+                // Maneja el éxito
+            },
+            error: function(xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            }
+        });
+    }
+    ///
     function addQuestionClose() {
+        $.ajax({
+            type: "POST",
+            url: "/exam/createQ",
+            data: {
+                "id_exam": idExam,
+                "type_question": "2"
+            },
+            success: function (response) {
+                questionsID[generarId] = response;
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
+        });
+
         var questionContainer = document.getElementById("questions-container");
         generarId++;
-        console.log(generarId);
+
         var card = document.createElement("div");
         card.className = "card mt-3 card-color";
         card.id = "card-" + generarId;
@@ -215,54 +332,46 @@
         cardTitle.className = "card-title";
         cardTitle.innerHTML = "Opción multiple";
 
-
         cardHeader.appendChild(cardTitle);
 
         var cardBody = document.createElement("div");
         cardBody.className = "card-body";
 
-        var formGroupQuestion = document.createElement("div");
-        formGroupQuestion.className = "form-group";
-
+        var scoreForm = document.createElement("form");
         var scoreGroup = document.createElement("div");
         scoreGroup.className = "form-group col-md-1 col-lg-2";
-        //Label para la puntuacion
+
         var scoreLabel = document.createElement("label");
         scoreLabel.setAttribute("for", "question-score");
         scoreLabel.innerHTML = "Puntaje:";
 
-        var quesiontype = document.createElement("input");
-        quesiontype.setAttribute("id", "question-type-"+generarId);
-        quesiontype.setAttribute("name", "question-type-"+generarId);
-        quesiontype.value = "2";
-        quesiontype.style.display = "none";
-
         var scoreInput = document.createElement("input");
         scoreInput.className = "form-control";
         scoreInput.setAttribute("type", "number");
-        scoreInput.setAttribute("value", 0);
-        scoreInput.setAttribute("max", 10);
-        scoreInput.setAttribute("min", 0);
+        scoreInput.setAttribute("value", "0");
+        scoreInput.setAttribute("max", "10");
+        scoreInput.setAttribute("min", "0");
         scoreInput.setAttribute("id", "score-"+generarId);
         scoreInput.setAttribute("name", "score-"+generarId);
+        scoreInput.setAttribute("onfocusout", "saveScore("+generarId+")");
         scoreInput.addEventListener("input", function () {
-            if (this.value.length > 2)
+            if (this.value.length > 2) {
                 this.value = this.value.slice(0, 2);
-        });
-        scoreInput.addEventListener("input", function () {
-            if (this.value > 10)
+            }
+            if (this.value > 10) {
                 this.value = 10;
-        });
-        scoreInput.addEventListener("input", function () {
-            if (this.value < 0)
+            }
+            if (this.value < 0) {
                 this.value = 0;
+            }
         });
 
         scoreGroup.appendChild(scoreLabel);
         scoreGroup.appendChild(scoreInput);
-        cardBody.appendChild(scoreGroup);
-        // no se que sea apeenchild
-        //
+        scoreForm.appendChild(scoreGroup);
+        cardBody.appendChild(scoreForm);
+
+        var questionForm = document.createElement("form");
         var questionLabel = document.createElement("label");
         questionLabel.setAttribute("for", "closed-question");
         questionLabel.innerHTML = "Pregunta:";
@@ -270,149 +379,189 @@
         var questionTextarea = document.createElement("textarea");
         questionTextarea.className = "form-control";
         questionTextarea.style.resize = "none";
-        questionTextarea.contentEditable = "true";
-        questionTextarea.maxLength = 255;
+        questionTextarea.style.overflow = "hidden";
+        questionTextarea.maxLength = "255";
         questionTextarea.setAttribute("id", "description-"+generarId);
         questionTextarea.setAttribute("name", "description-"+generarId);
-        questionTextarea.style.overflow = "hidden";
+        questionTextarea.setAttribute("onfocusout", "saveDescription("+generarId+")");
         questionTextarea.addEventListener("input", resizeInput);
         questionTextarea.addEventListener("keyup", resizeInput);
+
         function resizeInput() {
             this.style.height = "auto";
             this.style.height = this.scrollHeight + "px";
         }
 
-        formGroupQuestion.appendChild(quesiontype);
-        formGroupQuestion.appendChild(questionLabel);
-        formGroupQuestion.appendChild(questionTextarea);
+        questionForm.appendChild(questionLabel);
+        questionForm.appendChild(questionTextarea);
+        cardBody.appendChild(questionForm);
 
         var answerContainer = document.createElement("div");
-        answerContainer.setAttribute("id", "answer-container-" + generarId);
+        answerContainer.id = "answer-container-" + generarId;
+        cardBody.appendChild(answerContainer);
 
-        var divButtons = document.createElement("div");
-        divButtons.className = "form-group";
-        var answer = 1;
+        var buttonGroup = document.createElement("div");
+        buttonGroup.className = "form-group";
+
         var addButton = document.createElement("button");
         addButton.className = "btn btn-primary mt-2";
         addButton.setAttribute("type", "button");
         addButton.innerHTML = "Agregar Respuesta";
-        addButton.addEventListener("click", function () {
-            addAnswerClose(generarId);
-        });
+        addButton.setAttribute("onclick", "(function(id) { addAnswerClose(id); })(" + generarId + ")");
 
-        var divRemoveQuestion = document.createElement("div");
-        divRemoveQuestion.className = "form-group";
-        divRemoveQuestion.style = "text-align: right";
 
-        var removeQuestion = document.createElement("button");
-        removeQuestion.className = "btn btn-danger mt-2";
-        removeQuestion.setAttribute("type", "button");
-        removeQuestion.innerHTML = "Eliminar pregunta";
-        removeQuestion.addEventListener("click", function () {
-            deleteQuestion(card.id);
-        });
+        var removeButtonGroup = document.createElement("div");
+        removeButtonGroup.className = "form-group";
+        removeButtonGroup.style.textAlign = "right";
 
-        divRemoveQuestion.appendChild(removeQuestion);
+        var removeButton = document.createElement("button");
+        removeButton.className = "btn btn-danger mt-2";
+        removeButton.setAttribute("type", "button");
+        removeButton.innerHTML = "Eliminar pregunta";
+        removeButton.setAttribute("onclick", "(function(id) { deleteQuestion('" + card.id + "', " + generarId + "); })()");
 
-        divButtons.appendChild(addButton);
-        divRemoveQuestion.appendChild(removeQuestion);
-        divButtons.appendChild(divRemoveQuestion);
-
-        cardBody.appendChild(formGroupQuestion);
-        cardBody.appendChild(answerContainer);
-        cardBody.appendChild(divButtons);
+        buttonGroup.appendChild(addButton);
+        removeButtonGroup.appendChild(removeButton);
+        buttonGroup.appendChild(removeButtonGroup);
+        cardBody.appendChild(buttonGroup);
 
         card.appendChild(cardHeader);
         card.appendChild(cardBody);
 
         questionContainer.appendChild(card);
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
     }
 
+        function addAnswerClose(idQ) {
+            $.ajax({
+                type: "POST",
+                url: "/exam/create-Answer",
+                data: {
+                    "Id_Question": questionsID[idQ]
+                },
+                success: function (response) {
+                    answerID[i] = response;
+                    var answerContainer = document.getElementById("answer-container-" + idQ); // Corrige esta línea
+                    var answerId = "answer-" + idQ + "-" + (answerContainer.children.length + 1); // Corrige esta línea
 
-    function addAnswerClose(idQ) {
-        console.log("Pregunta no: " + idQ);
-        var answerContainer = document.getElementById("answer-container-" + idQ);
-        var answerId = idQ + "-" + (answerContainer.children.length + 1);
-        var card = document.getElementById("card-" + idQ); // Corregido aquí
-        console.log("respuesta no: " + answerId);
+                    var answerGroup = document.createElement("div");
+                    answerGroup.className = "form-group align-items-center";
+                    answerGroup.setAttribute("data-card-id", answerId);
 
-        var answerGroup = document.createElement("div");
-        answerGroup.className = "form-group align-items-center";
-        answerGroup.setAttribute("data-card-id", idQ);
+                    var divInputGroup = document.createElement("div");
+                    divInputGroup.className = "input-group mb-2 input-group-sm"; // Ajustado el margen aquí
 
-        var divInputGroup = document.createElement("div");
-        divInputGroup.className = "input-group mb-2 input-group-sm"; // Ajustado el margen aquí
+                    var divInputGroupText = document.createElement("div");
+                    divInputGroupText.className = "input-group-prepend"; // Ajustado el nombre de la clase
 
-        var divInputGroupText = document.createElement("div");
-        divInputGroupText.className = "input-group-prepend"; // Ajustado el nombre de la clase
+                    var inputCheckbox = document.createElement("input");
+                    inputCheckbox.className = "form-check-input mt-0";
+                    inputCheckbox.type = "checkbox";
+                    inputCheckbox.value = "";
+                    inputCheckbox.setAttribute("aria-label", "correctAnswer");
+                    inputCheckbox.setAttribute("name", "correct-answer-"+answerId);
 
-        var inputCheckbox = document.createElement("input");
-        inputCheckbox.className = "form-check-input mt-0";
-        inputCheckbox.type = "checkbox";
-        inputCheckbox.value = "";
-        inputCheckbox.setAttribute("aria-label", "correctAnswer");
-        inputCheckbox.setAttribute("name", "correct-answer-"+answerId);
+                    divInputGroupText.appendChild(inputCheckbox);
 
-        divInputGroupText.appendChild(inputCheckbox);
-
-        var answerInput2 = document.createElement("textarea");
-        answerInput2.className = "form-control input-high-size";
-        answerInput2.setAttribute("aria-label", "answer-" + answerId); // Ajustado el atributo aria-label
-        answerInput2.maxLength = 255;
-        answerInput2.setAttribute("name", "answer-" + answerId); // Ajustado el atributo name
-        answerInput2.setAttribute("placeholder", "Respuesta");
-        answerInput2.style.resize = "none";
-        answerInput2.rows = 1;
-        answerInput2.required = true;
-        answerInput2.style.overflow = "hidden";
-        answerInput2.addEventListener("input", resizeInput);
-        answerInput2.addEventListener("keyup", resizeInput);
-        function resizeInput() {
-            this.style.height = "auto";
-            this.style.height = this.scrollHeight + "px";
-        }
-        // Aquí agregamos el evento para manejar la respuesta correcta
-        inputCheckbox.addEventListener("change", function() {
-            if (this.checked) {
-                var otherCheckboxes = answerContainer.querySelectorAll("input[type='checkbox']");
-                otherCheckboxes.forEach(function(checkbox) {
-                    if (checkbox !== inputCheckbox) {
-                        checkbox.checked = false;
+                    var answerInput2 = document.createElement("textarea");
+                    answerInput2.className = "form-control input-high-size";
+                    answerInput2.setAttribute("aria-label", "answer-" + answerId); // Ajustado el atributo aria-label
+                    answerInput2.maxLength = 255;
+                    answerInput2.setAttribute("name", "answer-" + answerId); // Ajustado el atributo name
+                    answerInput2.setAttribute("id","answer-"+ answerId);
+                    answerInput2.setAttribute("placeholder", "Respuesta");
+                    answerInput2.setAttribute("onfocusout", "saveAnswer("+i+",'"+answerId+"')");
+                    answerInput2.style.resize = "none";
+                    answerInput2.rows = 1;
+                    answerInput2.required = true;
+                    answerInput2.style.overflow = "hidden";
+                    answerInput2.addEventListener("input", resizeInput);
+                    answerInput2.addEventListener("keyup", resizeInput);
+                    function resizeInput() {
+                        this.style.height = "auto";
+                        this.style.height = this.scrollHeight + "px";
                     }
-                });
-            }
-        });
-        divInputGroup.appendChild(divInputGroupText);
-        divInputGroup.appendChild(answerInput2);
-
-        var divRemoveButton = document.createElement("div");
-        divRemoveButton.className = "mb-2";
-
-        var removeButton = document.createElement("button");
-        removeButton.className = "btn btn-danger";
-        removeButton.setAttribute("type", "button");
-        removeButton.innerHTML = "Eliminar";
-        removeButton.addEventListener("click", function () {
-            answerGroup.parentNode.removeChild(answerGroup);
-        });
-
-        divRemoveButton.appendChild(removeButton);
-
-        answerGroup.appendChild(divInputGroup);
-        answerGroup.appendChild(divRemoveButton);
-
-        answerContainer.appendChild(answerGroup); // Corregido aquí
-    }
+                    // Aquí agregamos el evento para manejar la respuesta correcta
+                    inputCheckbox.addEventListener("change", new Function("saveIfAnswer('" + i + "', " + idQ + ");"));
+                    inputCheckbox.addEventListener("change", function() {
+                        if (this.checked) {
+                            var otherCheckboxes = answerContainer.querySelectorAll("input[type='checkbox']");
+                            otherCheckboxes.forEach(function(checkbox) {
+                                if (checkbox !== inputCheckbox) {
+                                    checkbox.checked = false;
+                                }
+                            });
+                        }
+                    });
 
 
+                    divInputGroup.appendChild(divInputGroupText);
+                    divInputGroup.appendChild(answerInput2);
 
+                    var divRemoveButton = document.createElement("div");
+                    divRemoveButton.className = "mb-2";
+
+                    var removeButton = document.createElement("button");
+                    removeButton.className = "btn btn-danger";
+                    removeButton.setAttribute("type", "button");
+                    removeButton.innerHTML = "Eliminar";
+                    removeButton.setAttribute("onclick", "deleteAnswer(" + i + ", '" + answerId + "')");
+
+
+                    divRemoveButton.appendChild(removeButton);
+
+                    answerGroup.appendChild(divInputGroup);
+                    answerGroup.appendChild(divRemoveButton);
+
+                    answerContainer.appendChild(answerGroup);
+                    i++;
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error en la solicitud AJAX:", error);
+                },
+            });
+
+
+
+        }
+        function deleteAnswer(arreglo, answerId){
+            $.ajax({
+                type: "POST",
+                url: "/exam/deleteA",
+                data: {
+                    "id_answer": answerID[arreglo],
+                },
+                success: function (response) {
+                    var answerGroupToRemove = document.querySelector('[data-card-id="' + answerId + '"]');
+                    if (answerGroupToRemove) {
+                        answerGroupToRemove.parentNode.removeChild(answerGroupToRemove);
+                        console.log("Respuesta Eliminada");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error en la solicitud AJAX:", error);
+                },
+            });
+        }
     function addQuestionOpen()  {
+        $.ajax({
+            type: "POST",
+            url: "/exam/createQ",
+            data: {
+                "id_exam": idExam,
+                "type_question": "1"
+            },
+            success: function (response) {
+                questionsID[generarId] = response;
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
+        });
+
         var questionContainer = document.getElementById("questions-container");
 
         generarId++;
-        console.log(generarId);
         var card = document.createElement("div");
         card.className = "card mt-3 card-color";
         card.id = "card-" + generarId;
@@ -432,18 +581,13 @@
         var formGroupQuestion = document.createElement("div");
         formGroupQuestion.className = "form-group";
 
+        var scoreForm = document.createElement("form");
         var scoreGroup = document.createElement("div");
         scoreGroup.className = "form-group col-md-1 col-lg-1";
 
         var scoreLabel = document.createElement("label");
         scoreLabel.setAttribute("for", "question-score");
         scoreLabel.innerHTML = "Puntaje:";
-
-        var quesiontype = document.createElement("input");
-        quesiontype.setAttribute("id", "question-type-"+generarId);
-        quesiontype.setAttribute("name", "question-type-"+generarId);
-        quesiontype.value = "1";
-        quesiontype.style.display = "none";
 
         var scoreInput = document.createElement("input");
         scoreInput.className = "form-control";
@@ -453,6 +597,7 @@
         scoreInput.setAttribute("min", 0);
         scoreInput.setAttribute("id", "score-"+generarId);
         scoreInput.setAttribute("name", "score-"+generarId);
+        scoreInput.setAttribute("onfocusout", "saveScore("+generarId+")");
         scoreInput.addEventListener("input", function () {
             if (this.value.length > 2)
                 this.value = this.value.slice(0, 2);
@@ -469,11 +614,14 @@
         scoreGroup.appendChild(scoreLabel);
         scoreGroup.appendChild(scoreInput);
 
-        cardBody.appendChild(scoreGroup);
+        scoreForm.appendChild(scoreGroup);
+        cardBody.appendChild(scoreForm);
+
 
         var formGroupQuestion = document.createElement("div");
         formGroupQuestion.className = "form-group";
 
+        var questionForm = document.createElement("form");
         var questionLabel = document.createElement("label");
         questionLabel.setAttribute("for", "open-question");
         questionLabel.innerHTML = "Pregunta:";
@@ -485,6 +633,7 @@
         questionTextarea.maxLength = 255;
         questionTextarea.setAttribute("id", "description-"+generarId);
         questionTextarea.setAttribute("name", "description-"+generarId);
+        questionTextarea.setAttribute("onfocusout", "saveDescription("+generarId+")");
         questionTextarea.style.overflow = "hidden";
         questionTextarea.addEventListener("input", resizeInput);
         questionTextarea.addEventListener("keyup", resizeInput);
@@ -495,14 +644,14 @@
 
         formGroupQuestion.appendChild(questionLabel);
         formGroupQuestion.appendChild(questionTextarea);
+        cardBody.appendChild(questionForm);
 
         var removeQuestion = document.createElement("button");
         removeQuestion.className = "btn btn-danger mt-2";
         removeQuestion.setAttribute("type", "button");
         removeQuestion.innerHTML = "Eliminar pregunta";
-        removeQuestion.addEventListener("click", function () {
-            deleteQuestion(card.id);
-        });
+        removeQuestion.setAttribute("onclick", "(function(id) { deleteQuestion('" + card.id + "', " + generarId + "); })()");
+
 
         cardBody.appendChild(formGroupQuestion);
         cardBody.appendChild(removeQuestion);
@@ -514,7 +663,20 @@
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    function deleteQuestion(cardId) {
+    function deleteQuestion(cardId,arreglo) {
+        $.ajax({
+            type: "POST",
+            url: "/exam/deleteQ",
+            data: {
+                "id_question": questionsID[arreglo],
+            },
+            success: function (response) {
+                console.log("Pregunta Eliminada");
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
+        });
         var card = document.getElementById(cardId);
         var currentCardId = parseInt(cardId.split("-")[1]);
 
@@ -531,12 +693,9 @@
                 deleteQuestion(currentCard.id);
             });
         }
-
-        // Decrementa el contador de IDs
-        generarId--;
-
-        // ...
     }
+
+
 
     function autoResize(textarea) {
         // Ajustar temporalmente el height al mínimo antes de medir el scrollHeight
@@ -609,15 +768,10 @@
 
     // Función para marcar los cambios como guardados y cambiar el color del botón
     function marcarCambiosYCambiarColor() {
-        console.log("Datos a enviar:");
-        console.log(fk_user);
-        var inputs = document.querySelectorAll('input, textarea');
-        inputs.forEach(function(input) {
-            console.log(input.name + ": " + input.value);
-        });
-        console.log(fk_user);
+
         marcarCambiosComoGuardados(); // Marcar cambios como guardados
         cambiarColorTemporarily(); // Cambiar el color del botón temporalmente
+        window.location.href = "/user/index-teacher";
     }
 
 
@@ -632,18 +786,17 @@
             const randomIndex = Math.floor(Math.random() * characters.length);
             code += characters.charAt(randomIndex);
         }
-        codigo = code;
         return code;
     }
 
     // Generar el código aleatorio al cargar la página y mostrarlo en el input
     window.addEventListener('load', function() {
-        const codeInput = document.getElementById('exam-code');
         const generatedCode = generateRandomCode(5);
+        const codeInput = document.getElementById('exam-code');
         codeInput.value = generatedCode;
-        const codeInput1 = document.getElementById('exam-code1');
-        codeInput1.value = generatedCode;
-        console.log(generatedCode);
+        const codeInput2 = document.getElementById('exam-code1');
+        codeInput2.value = generatedCode;
+        console.log(generatedCode)
     });
 </script>
 </script>
