@@ -26,20 +26,79 @@ public class DaoUser implements DaoRepository<User>{
             pstm.setString(1, loginCredential);
             pstm.setString(2, loginCredential);
             pstm.setString(3, password);
+
             rs = pstm.executeQuery();
             if (rs.next()) {
                 User user = new User();
                 user.setId(rs.getLong("id_user"));
-                user.setEnrollment(rs.getString("mail"));
+                user.setMail(rs.getString("mail"));
                 user.setType_user(rs.getLong("type_user"));
                 user.setName(rs.getString("name"));
                 return user;
+
+
             }
+
         } catch (SQLException e) {
             Logger.getLogger(DaoUser.class.getName())
                     .log(Level.SEVERE,
                             "Credentials mismatch: " + e.getMessage());
         } finally {
+            close();
+        }
+        return null;
+    }
+
+    public User findOneByUser(long id) {
+        System.out.println(id);
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "SELECT * from users where id_user = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1, id);
+            rs = pstm.executeQuery();
+            if (rs.next()) {
+                User user1 = new User();
+                user1.setId(rs.getLong("id_user"));
+                user1.setName(rs.getString("name"));
+                user1.setLastname(rs.getString("lastname"));
+                user1.setSurname(rs.getString("surname"));
+                user1.setCurp(rs.getString("curp"));
+                user1.setStatus(rs.getString("status"));
+                user1.setType_user(rs.getLong("type_user"));
+                user1.setMail(rs.getString("mail"));
+                user1.setEnrollment(rs.getString("enrollment"));
+                user1.setPassword(rs.getString("password"));
+                return user1;
+            }
+        } catch (Exception e) {
+            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, "ERROR findOne" + e.getMessage());
+        } finally {
+            close();
+        }
+        return null;
+    }
+
+    @Override
+    public User findAllp(String password){
+        try{
+            conn = new MySQLConnection().connect();
+            String query = "SELECT name, lastname, curp, mail, password from users where password = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setString(1, password);
+            rs = pstm.executeQuery();
+            User user = new User();
+            if (rs.next()){
+                user.setName(rs.getString("name"));
+                user.setLastname(rs.getString("lastname"));
+                user.setCurp(rs.getString("curp"));
+                user.setMail(rs.getString("mail"));
+                user.setPassword(rs.getString("password"));
+            }
+            return user;
+        }catch (SQLException e) {
+            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, "ERROR findAllp" + e.getMessage());
+        }finally {
             close();
         }
         return null;

@@ -1,4 +1,4 @@
-<%--
+<%@ page import="mx.edu.utez.ucq.models.user.User" %><%--
   Created by IntelliJ IDEA.
   User: angry
   Date: 17/06/2023
@@ -55,9 +55,13 @@
 <div class="grid-container position-absolute">
 
 </div>
+<%User user = (User) request.getAttribute("user");%>
 
 <nav class="navbar navbar-expand-lg" style="background-color: #002F5D;">
     <div class="container d-flex align-content-between">
+
+        <h4 class="d-inline-block align-text-top me-2" style="color: white"><%= user.getName() %> <%= user.getLastname() %> <%= user.getSurname() %></h4>
+
         <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
             <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
                 <h3>Ultimate Custom Quiz</h3>
@@ -80,7 +84,7 @@
                 <li class="list-group-item" style="background-color: #00AA83; color: white; margin: 0; padding: 0;"
                     onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='1px solid #002F5D';"
                     onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='transparent';"
-                    onclick="window.location.href='/user/view-login';">
+                    onclick="window.location.href='${pageContext.request.contextPath}/user/logout';">
                     <div style="cursor: pointer; padding: 8px;">
                         <h6 style="margin: 0;">Cerrar sesión</h6>
                     </div>

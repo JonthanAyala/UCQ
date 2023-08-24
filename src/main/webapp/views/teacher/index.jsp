@@ -1,3 +1,4 @@
+<%@ page import="mx.edu.utez.ucq.models.user.User" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -44,9 +45,14 @@
 <div class="grid-container position-absolute">
 
 </div>
+<%User user = (User) request.getAttribute("user");%>
 
 <nav class="navbar navbar-expand-lg" style="background-color: #002F5D;">
   <div class="container d-flex align-content-between">
+
+    <h4 class="d-inline-block align-text-top me-2" style="color: white"><%= user.getName() %> <%= user.getLastname() %> <%= user.getSurname() %></h4>
+
+
     <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
       <a class="navbar-brand position-absolute top-50 start-50 translate-middle" style="color: white;">
         <h3>Ultimate Custom Quiz</h3>

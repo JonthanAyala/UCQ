@@ -12,10 +12,12 @@ public class User {
     private String enrollment;
     private String password;
 
+    private String code;
+
     public User() {
     }
 
-    public User(Long id, String name,String lastname, String surname, String curp, String status, Long type_user, String mail, String enrollment, String password) {
+    public User(Long id, String name,String lastname, String surname, String curp, String status, Long type_user, String mail, String enrollment, String password, String code) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -26,6 +28,7 @@ public class User {
         this.mail = mail;
         this.enrollment = enrollment;
         this.password = password;
+        this.code = code;
 
     }
 
@@ -109,4 +112,28 @@ public class User {
         this.password = password;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", surname='" + surname + '\'' +
+                ", curp='" + curp + '\'' +
+                ", status='" + status + '\'' +
+                ", type_user=" + type_user +
+                ", mail='" + mail + '\'' +
+                ", enrollment='" + enrollment + '\'' +
+                ", password='" + password + '\'' +
+                ", code='" + code + '\''+
+                '}';
+    }
 }
