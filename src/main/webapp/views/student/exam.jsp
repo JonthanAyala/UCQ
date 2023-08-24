@@ -122,7 +122,7 @@
 
 <script>
     function redirectToStudentsIndex() {
-        window.location.href = "/user/student";
+        window.location.href ="${pageContext.request.contextPath}/user/student";
     }
 
 </script>

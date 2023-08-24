@@ -35,6 +35,7 @@ public class RequestFilter implements Filter {
         whiteList.add("/assets/img/Logo_UCQ.png");
         whiteList.add("/favicon.ico");
         whiteList.add("/user/view-recover");
+        whiteList.add("/assets/img/ico UCQ.png");
 
     }
 

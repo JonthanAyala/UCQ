@@ -88,7 +88,7 @@
             </div>
             <div class="card-body">
 
-                <form class="needs-validation" id="loginForm" action="/user/login" novalidate method="post">
+                <form class="needs-validation" id="loginForm" action="${pageContext.request.contextPath}/user/login" novalidate method="post">
                     <tr style="background-color: white;">
                         <th style="border: 2px solid #374b43;">
                             <div class="form-outline">
@@ -109,7 +109,7 @@
                         </th>
                     </tr>
 
-                    <a href='/user/view-recover'><h6 class="text-center">¿Olvidaste tu contraseña?</h6></a>
+                    <a href="${pageContext.request.contextPath}/user/view-recover"><h6 class="text-center">¿Olvidaste tu contraseña?</h6></a>
                     <div class="card-footer">
                         <div class="d-grid">
                             <button id="login" type="submit" class="btn btn-primary btn-block" value="login" style="background-color: #00AA83 !important;">

@@ -73,7 +73,7 @@
   <div class="d-flex">
 
     <div>
-      <img src="../../assets/img/usuario.png">
+      <img src="${pageContext.request.contextPath}../../assets/img/usuario.png">
     </div>
 
     <div class="container">
@@ -86,7 +86,7 @@
             <%--FALTA TRAER DATOS DE LA BD--%>
               <%User user = (User) request.getAttribute("user");%>
 
-              <form id="user-form" class="needs-validation" novalidate action="/user/update-Aprofile" method="post">
+              <form id="user-form" class="needs-validation" novalidate action="${pageContext.request.contextPath}/user/update-Aprofile" method="post">
                 <div class="form-group">
 
                   <div class="row"  style="display: none">
@@ -316,7 +316,7 @@
     }
 
     function redirectToAdminIndex() {
-      window.location.href = "/user/admin";
+      window.location.href ="${pageContext.request.contextPath}/user/admin";
     }
 
     // Agregar el evento de clic al botón "Guardar Contraseña"

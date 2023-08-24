@@ -60,7 +60,7 @@
 <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
   <div class="container d-flex align-content-between">
 
-    <img src="/assets/img/ico_UCQ.png" alt="Logo" width="100" height="40"
+    <img src=${pageContext.request.contextPath}"/assets/img/ico_UCQ.png" alt="Logo" width="100" height="40"
          class="d-inline-block align-text-top me-2">
 
 
@@ -112,7 +112,7 @@
       </div>
       <div class="card-body">
 
-        <form class="needs-validation" id="loginForm" action="/user/login" novalidate method="post">
+        <form class="needs-validation" id="loginForm" action=${pageContext.request.contextPath}"/user/login" novalidate method="post">
           <tr style="background-color: white;">
             <th style="border: 2px solid #374b43;">
               <div class="form-outline">

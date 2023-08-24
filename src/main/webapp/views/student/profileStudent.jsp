@@ -86,7 +86,7 @@
   <div class="d-flex">
 
     <div>
-      <img src="../../assets/img/usuario.png">
+      <img src="../../layouts/usuario.png">
     </div>
 
     <div class="container">
@@ -99,7 +99,7 @@
             <%--FALTA TRAER DATOS DE LA BD--%>
               <%User user = (User) request.getAttribute("user");%>
 
-              <form id="user-form" class="needs-validation" novalidate action="/user/update-Sprofile" method="post">
+              <form id="user-form" class="needs-validation" novalidate action="${pageContext.request.contextPath}/user/update-Sprofile" method="post">
                 <div class="form-group">
 
                   <div class="row"  style="display: none">
@@ -252,7 +252,7 @@
   })();
   function redirectToTeacherIndex() {
 
-    window.location.href = "/user/index-teacher?id_user=" + <%= user.getId() %>;
+    window.location.href = "${pageContext.request.contextPath}/user/index-teacher?id_user=" + <%= user.getId() %>;
   }
 
   function confirmPassword() {
@@ -331,7 +331,7 @@
     document.querySelector('.btn.mt-5').style.display = 'block';
   }
   function redirectToStudentsIndex() {
-    window.location.href = "/user/student";
+    window.location.href = "${pageContext.request.contextPath}/user/student";
   }
 
   // Agregar el evento de clic al botón "Guardar Contraseña"

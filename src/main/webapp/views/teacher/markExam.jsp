@@ -90,7 +90,7 @@
 
 <script>
     function redirectToTeacherIndex() {
-        window.location.href = "/user/index-teacher";
+        window.location.href = "${pageContext.request.contextPath}/user/index-teacher";
     }
 </script>
 </body>

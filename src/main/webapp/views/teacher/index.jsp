@@ -46,6 +46,8 @@
 
 </div>
 
+
+
 <nav class="navbar navbar-expand-lg" style="background-color: #002F5D;">
   <div class="container d-flex align-content-between">
 
@@ -66,7 +68,7 @@
         <li class="list-group-item" style="background-color: #00AA83; border-bottom: 1px solid #002F5D; margin: 0; padding: 0;"
             onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='none'; this.style.color='#002F5D';"
             onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='1px solid #002F5D'; this.style.color='white';"
-            onclick="window.location.href='/user/profile';">
+            onclick="window.location.href='${pageContext.request.contextPath}/user/profile';">
           <div style="cursor: pointer; padding: 8px;">
             <h6 style="color: white; margin: 0;">Perfil</h6>
           </div>
@@ -95,7 +97,7 @@
           <form>
             <div class="form-group mb-3 ">
               <div class="d-grid">
-                <button type="button" class="btn btn-outline-success btn-sm"  onclick="location.href='/teacher/view'">
+                <button type="button" class="btn btn-outline-success btn-sm"  onclick="location.href='${pageContext.request.contextPath}/teacher/view'">
                   Crear nuevo examen
                 </button>
               </div>
@@ -129,19 +131,19 @@
             <td><c:out value="${exam.start_time}"/></td>
             <td><c:out value="${exam.end_time}"/></td>
             <td>
-              <form method="post" action="/exam/comenzar">
+              <form method="post" action="${pageContext.request.contextPath}/exam/comenzar">
                 <input hidden value="${exam.id_exam}" name="id">
                 <button type="submit" class="btn btn-outline-success btn-sm">
                   Comenzar
                 </button>
               </form>
-              <form method="post" action="/exam/terminar">
+              <form method="post" action="${pageContext.request.contextPath}/exam/terminar">
                 <input hidden value="${exam.id_exam}" name="id">
                 <button type="submit" class="btn btn-outline-warning btn-sm">
                   Terminar
                 </button>
               </form>
-                <form method="post" action="/exam/delete">
+                <form method="post" action="${pageContext.request.contextPath}/exam/delete">
                 <input hidden value="${exam.id_exam}" name="id">
                 <button type="submit" class="btn btn-outline-danger btn-sm">
                   Eliminar
@@ -150,11 +152,6 @@
                 </td>
           </tr>
               </c:forEach>
-          <tr>
-            <td colspan="6" class="text-center">
-              Sin registros
-            </td>
-          </tr>
           </tbody>
         </table>
       </div>

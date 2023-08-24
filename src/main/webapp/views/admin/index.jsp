@@ -83,7 +83,7 @@
                     this.style.color='#002F5D';"
                     onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='1px solid #002F5D';
                     this.style.color='white';"
-                    onclick="window.location.href='/user/profile-a';">
+                    onclick="window.location.href='${pageContext.request.contextPath}/user/profile-a';">
                     <div style="cursor: pointer; padding: 8px;">
                         <h6 style="color: white; margin: 0;">perfil</h6>
                     </div>
@@ -132,7 +132,7 @@
             <button  type="button" class="btn btn-outline-success btn-sm buttonColor"
                      data-bs-toggle="modal" data-bs-target="#ModalStudent"
                      style="width: 180px; height: 100px; color: #002F5D" onclick="">
-                <img style="height: 100px; width: 100px" src="../../assets/img/icons8-student-100.png" class="card-img-top" alt="...">
+                <img style="height: 100px; width: 100px" src="${pageContext.request.contextPath}../../assets/img/icons8-student-100.png" class="card-img-top" alt="...">
                 <h5>Agregar estudiantes</h5>
             </button>
             <br>
@@ -209,7 +209,7 @@
                                         data-confirmpassword="${user.password}">
                                     Editar
                                 </button>
-                                <form method="post" action="/user/delete">
+                                <form method="post" action="${pageContext.request.contextPath}/user/delete">
                                     <input hidden value="${user.id}" name="id">
                                     <button type="submit" class="btn btn-outline-danger btn-sm">
                                         Eliminar
@@ -218,11 +218,7 @@
                             </td>
                         </tr>
                     </c:forEach>
-                    <tr>
-                        <td colspan="6">
-                            SIn registros
-                        </td>
-                    </tr>
+
                 </tbody>
             </table>
         </div>
@@ -236,7 +232,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="teacherForm" class="needs-validation" novalidate action="/user/save-teacher" method="post">
+                            <form id="teacherForm" class="needs-validation" novalidate action="${pageContext.request.contextPath}/user/save-teacher" method="post">
                                 <div class="row">
                                     <div class="col">
                                         <label for="name" class="fw-bold col-form-label">Nombre:</label>
@@ -304,7 +300,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="StudentForm" class="needs-validation" novalidate action="/user/save-student" method="post">
+                            <form id="StudentForm" class="needs-validation" novalidate action="${pageContext.request.contextPath}/user/save-student" method="post">
                                 <div class="row">
                                     <div class="col">
                                         <label for="name" class="fw-bold col-form-label">Nombre:</label>
@@ -377,7 +373,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body" id="userModalData">
-                            <form id="EditForm" class="needs-validation" novalidate action="/user/update" method="post">
+                            <form id="EditForm" class="needs-validation" novalidate action="${pageContext.request.contextPath}/user/update" method="post">
                                 <div class="row">
                                     <input hidden value="" id="Eid" name="id">
                                     <input hidden value="" id="Etype_user" name="type_user">

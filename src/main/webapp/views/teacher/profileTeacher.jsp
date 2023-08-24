@@ -72,16 +72,17 @@
   <div class="d-flex">
 
     <div>
-      <img src="../../assets/img/usuario.png">
+      <img src="../../layouts/usuario.png">
     </div>
 
     <div class="container">
 
       <div class="card mt-3">
         <div class="card-body">
+          <div class="container">
           <%User user = (User) request.getAttribute("user");%>
 
-          <form id="user-form" class="needs-validation" novalidate action="/user/update-Tprofile" method="post">
+          <form id="user-form" class="needs-validation" novalidate action="${pageContext.request.contextPath}/user/update-Tprofile" method="post">
             <div class="form-group">
 
               <div class="row"  style="display: none">
@@ -147,7 +148,7 @@
                     <button type="button" class="btn mt-2" onclick="changePassword()" style="background-color: green" id="changePasswordBtn"> <!-- Modificamos la clase "mt-5" por "mt-2" para alinear con los campos -->
                       <a style="color: white">Editar perfil</a>
                     </button>
-          <div class="container">
+           <div class="container">
 
             <%--FALTA TRAER DATOS DE LA BD--%>
 
@@ -160,7 +161,9 @@
                 <div id="changePassword-container">
                 </div>
               </div>
-            </form>
+            </div>
+          </form>
+          </div>
 
 
           </div>
@@ -176,9 +179,6 @@
 
   </div>
 
-</div>
-
-</div>
 </body>
 </html>
 
@@ -210,7 +210,7 @@
   }
   function redirectToTeacherIndex() {
 
-    window.location.href = "/user/index-teacher?id_user=" + <%= user.getId() %>;
+    window.location.href = "${pageContext.request.contextPath}/user/index-teacher?id_user=" + <%= user.getId() %>;
   }
 
   (() => {

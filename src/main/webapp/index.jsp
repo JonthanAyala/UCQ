@@ -42,7 +42,7 @@
 <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
   <div class="container d-flex align-content-between">
 
-    <img src="/assets/img/ico_UCQ.png" alt="Logo" width="100" height="40"
+    <img src="${pageContext.request.contextPath}/assets/img/ico%20UCQ.png" alt="Logo" width="100" height="40"
          class="d-inline-block align-text-top me-2">
 
 
@@ -55,27 +55,9 @@
     <div class="dropdown">
       <button class="btn btn-light dropdown-toggle" style="margin-right: 50px;
       background-color: #002F5D; color: white" type="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
+              data-bs-toggle="dropdown" aria-expanded="false" onclick="window.location.href='${pageContext.request.contextPath}/user/view-login';">
         Inicio de sesíon
       </button>
-      <ul class="dropdown-menu text-center" style="background-color: #00AA83;">
-        <li class="list-group-item" style="background-color: #00AA83; border-bottom: 1px solid #002F5D; margin: 0; padding: 0;"
-            onmouseover="this.style.backgroundColor='#002F5D'; this.style.border='none'; this.style.color='#002F5D';"
-            onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='transparent';"
-            onclick="window.location.href='user/view-exam';">
-          <div style="cursor: pointer; padding: 8px;">
-            <p style="margin: 0; color: white;">Estudiantes-Examen</p>
-          </div>
-        </li>
-        <li class="list-group-item" style="background-color: #00AA83; color: white; margin: 0; padding: 0;"
-            onmouseover="this.style.backgroundColor='#002F5D';"
-            onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='transparent';"
-            onclick="window.location.href='/user/view-login';">
-          <div style="cursor: pointer; padding: 8px;">
-            <p style="margin: 0;">Iniciar sesion</p>
-          </div>
-        </li>
-      </ul>
     </div>
 
     <br><br>
@@ -98,7 +80,7 @@
     </div>
     <div class="col-md-6 text-center">
       <div class="container">
-        <img src="/assets/img/examen.jpg" width="575" height="300" alt="Examen"> <!-- Cambiamos el width y height -->
+        <img src="${pageContext.request.contextPath}/assets/img/examen.jpg" width="575" height="300" alt="Examen"> <!-- Cambiamos el width y height -->
       </div>
     </div>
   </div>
