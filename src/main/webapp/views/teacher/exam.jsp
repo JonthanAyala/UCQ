@@ -76,7 +76,7 @@
 </style>
 
 <body style="background-color: white;">
-
+<script>var idExam = null;</script>
 
 <div class="grid-container position-absolute">
 
@@ -98,15 +98,17 @@
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: 'Guardar',
-            denyButtonText: `No guardar`,
-        }).then((result) => {
+            denyButtonText: `Regresar al Index`,
+            }).then((result) => {
 
             if (result.isConfirmed) {
-                Swal.fire('EXAMEN GUARDADO', '', 'success')
-                //LA ALERTA APARECERÁ EN CASO DE QUE APRETEN EL BOTON DE REGRESAR Y NO SE HAYAN GUARDADOS LOS CAMBIOS
-                //REDIRIGIR A LA PAGINA PRINCIPAL CON LOS CAMBIOS GUARDADOS
+                Swal.fire('EXAMEN GUARDADO', '', 'success');
+                // Redirigir después de 3 segundos si el usuario decidió guardar
+                setTimeout(function() {
+                     window.location.href = '/user/index-teacher';
+                }, 1200); // 3000 milisegundos = 3 segundos
             } else if (result.isDenied) {
-               //REDIRIGIR SOLAMENTE A LA PAGINA PRINCIPAL
+                window.location.href = '/user/index-teacher';
             }
         })">
                     <img src="../../assets/img/back-48.png">
@@ -156,7 +158,7 @@
         <div class="container mb-5">
             <div class=" container mt-5 mb-5 d-grid" style="text-align: center">
                 <input type="text" hidden id="fk_user" name="fk_user" value="${sessionScope.user.id}" >
-                <button id="guardarButton" type="" class="btn btn-success" style="background-color: #002F5D!important;
+                <button id="guardarButton" type="button" class="btn btn-success" style="background-color: #002F5D!important;
                 color: white !important;" onclick="marcarCambiosYCambiarColor( )">Guardar</button>
             </div>
         </div>
@@ -180,8 +182,7 @@
     var codigo = '';
     var generarId = 0;
     var fk_user = ${sessionScope.user.id};
-    console.log(fk_user);
-    var idExam = null;
+
 
     var questionsID = [];
 
@@ -203,7 +204,6 @@
                 },
                 success: function (response) {
                     idExam = response;
-                    console.log("nuevo Examen Id: " + response);
                 },
                 error: function (xhr, status, error) {
                     console.log("Error en la solicitud AJAX:", error);
@@ -269,11 +269,6 @@
     function saveAnswer(arregloi, answerId){
         var answerElement = document.getElementById("answer-" + answerId);
         var answer = answerElement.value;
-        console.log("arreglo: "+arregloi);
-        console.log(answerID[arregloi]);
-        var idA = answerID[arregloi];
-        console.log("ID en arreglo: "+idA);
-        console.log("A enviar respuesta: "+answer);
         $.ajax({
             type: "POST",
             url: "/exam/save-answer",
@@ -420,122 +415,116 @@
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    function addAnswerClose(idQ) {
-        $.ajax({
-            type: "POST",
-            url: "/exam/create-Answer",
-            data: {
-                "Id_Question": questionsID[idQ]
-            },
-            success: function (response) {
-                console.log("valor de arreglo :"+i);
-                answerID[i] = response;
-                console.log("ID respuesta "+idQ+" : "+answerID[i]);
-                i++;
-            },
-            error: function (xhr, status, error) {
-                console.log("Error en la solicitud AJAX:", error);
-            },
-        });
-
-        var answerContainer = document.getElementById("answer-container-" + idQ); // Corrige esta línea
-        var answerId = "answer-" + idQ + "-" + (answerContainer.children.length + 1); // Corrige esta línea
-        var card = document.getElementById("card-" + idQ);
-
-        console.log("Respuesta para pregunta no : " + idQ);
-        console.log("respuesta no: " + answerId);
-
-        var answerGroup = document.createElement("div");
-        answerGroup.className = "form-group align-items-center";
-        answerGroup.setAttribute("data-card-id", idQ);
-
-        var divInputGroup = document.createElement("div");
-        divInputGroup.className = "input-group mb-2 input-group-sm"; // Ajustado el margen aquí
-
-        var divInputGroupText = document.createElement("div");
-        divInputGroupText.className = "input-group-prepend"; // Ajustado el nombre de la clase
-
-        var inputCheckbox = document.createElement("input");
-        inputCheckbox.className = "form-check-input mt-0";
-        inputCheckbox.type = "checkbox";
-        inputCheckbox.value = "";
-        inputCheckbox.setAttribute("aria-label", "correctAnswer");
-        inputCheckbox.setAttribute("name", "correct-answer-"+answerId);
-
-        divInputGroupText.appendChild(inputCheckbox);
-
-        var answerInput2 = document.createElement("textarea");
-        answerInput2.className = "form-control input-high-size";
-        answerInput2.setAttribute("aria-label", "answer-" + answerId); // Ajustado el atributo aria-label
-        answerInput2.maxLength = 255;
-        answerInput2.setAttribute("name", "answer-" + answerId); // Ajustado el atributo name
-        answerInput2.setAttribute("id","answer-"+ answerId);
-        answerInput2.setAttribute("placeholder", "Respuesta");
-        answerInput2.setAttribute("onfocusout", "saveAnswer("+i+",'"+answerId+"')");
-        answerInput2.style.resize = "none";
-        answerInput2.rows = 1;
-        answerInput2.required = true;
-        answerInput2.style.overflow = "hidden";
-        answerInput2.addEventListener("input", resizeInput);
-        answerInput2.addEventListener("keyup", resizeInput);
-        function resizeInput() {
-            this.style.height = "auto";
-            this.style.height = this.scrollHeight + "px";
-        }
-
-        // Aquí agregamos el evento para manejar la respuesta correcta
-        inputCheckbox.addEventListener("change", function() {
-            if (this.checked) {
-                var otherCheckboxes = answerContainer.querySelectorAll("input[type='checkbox']");
-                otherCheckboxes.forEach(function(checkbox) {
-                    if (checkbox !== inputCheckbox) {
-                        checkbox.checked = false;
-                    }
-                });
-            }
-        });
-
-        divInputGroup.appendChild(divInputGroupText);
-        divInputGroup.appendChild(answerInput2);
-
-        var divRemoveButton = document.createElement("div");
-        divRemoveButton.className = "mb-2";
-
-        var removeButton = document.createElement("button");
-        removeButton.className = "btn btn-danger";
-        removeButton.setAttribute("type", "button");
-        removeButton.innerHTML = "Eliminar";
-        //removeButton.setAttribute("onclick", "(function(id) { deleteAnswer(" + i +");  })");
-
-        console.log("ID answer a borrar: "+answer);
-        removeButton.addEventListener("click", function () {
-            answerGroup.parentNode.removeChild(answerGroup);
-
+        function addAnswerClose(idQ) {
             $.ajax({
                 type: "POST",
-                url: "/exam/deleteA",
+                url: "/exam/create-Answer",
                 data: {
-                    "id_answer": answer,
+                    "Id_Question": questionsID[idQ]
                 },
                 success: function (response) {
-                    console.log("Respuesta Eliminada");
+                    answerID[i] = response;
+                    var answerContainer = document.getElementById("answer-container-" + idQ); // Corrige esta línea
+                    var answerId = "answer-" + idQ + "-" + (answerContainer.children.length + 1); // Corrige esta línea
+
+                    var answerGroup = document.createElement("div");
+                    answerGroup.className = "form-group align-items-center";
+                    answerGroup.setAttribute("data-card-id", answerId);
+
+                    var divInputGroup = document.createElement("div");
+                    divInputGroup.className = "input-group mb-2 input-group-sm"; // Ajustado el margen aquí
+
+                    var divInputGroupText = document.createElement("div");
+                    divInputGroupText.className = "input-group-prepend"; // Ajustado el nombre de la clase
+
+                    var inputCheckbox = document.createElement("input");
+                    inputCheckbox.className = "form-check-input mt-0";
+                    inputCheckbox.type = "checkbox";
+                    inputCheckbox.value = "";
+                    inputCheckbox.setAttribute("aria-label", "correctAnswer");
+                    inputCheckbox.setAttribute("name", "correct-answer-"+answerId);
+
+                    divInputGroupText.appendChild(inputCheckbox);
+
+                    var answerInput2 = document.createElement("textarea");
+                    answerInput2.className = "form-control input-high-size";
+                    answerInput2.setAttribute("aria-label", "answer-" + answerId); // Ajustado el atributo aria-label
+                    answerInput2.maxLength = 255;
+                    answerInput2.setAttribute("name", "answer-" + answerId); // Ajustado el atributo name
+                    answerInput2.setAttribute("id","answer-"+ answerId);
+                    answerInput2.setAttribute("placeholder", "Respuesta");
+                    answerInput2.setAttribute("onfocusout", "saveAnswer("+i+",'"+answerId+"')");
+                    answerInput2.style.resize = "none";
+                    answerInput2.rows = 1;
+                    answerInput2.required = true;
+                    answerInput2.style.overflow = "hidden";
+                    answerInput2.addEventListener("input", resizeInput);
+                    answerInput2.addEventListener("keyup", resizeInput);
+                    function resizeInput() {
+                        this.style.height = "auto";
+                        this.style.height = this.scrollHeight + "px";
+                    }
+
+                    // Aquí agregamos el evento para manejar la respuesta correcta
+                    inputCheckbox.addEventListener("change", function() {
+                        if (this.checked) {
+                            var otherCheckboxes = answerContainer.querySelectorAll("input[type='checkbox']");
+                            otherCheckboxes.forEach(function(checkbox) {
+                                if (checkbox !== inputCheckbox) {
+                                    checkbox.checked = false;
+                                }
+                            });
+                        }
+                    });
+
+                    divInputGroup.appendChild(divInputGroupText);
+                    divInputGroup.appendChild(answerInput2);
+
+                    var divRemoveButton = document.createElement("div");
+                    divRemoveButton.className = "mb-2";
+
+                    var removeButton = document.createElement("button");
+                    removeButton.className = "btn btn-danger";
+                    removeButton.setAttribute("type", "button");
+                    removeButton.innerHTML = "Eliminar";
+                    removeButton.setAttribute("onclick", "deleteAnswer(" + i + ", '" + answerId + "')");
+
+
+                    divRemoveButton.appendChild(removeButton);
+
+                    answerGroup.appendChild(divInputGroup);
+                    answerGroup.appendChild(divRemoveButton);
+
+                    answerContainer.appendChild(answerGroup);
+                    i++;
                 },
                 error: function (xhr, status, error) {
                     console.log("Error en la solicitud AJAX:", error);
                 },
             });
 
-        });
 
-        divRemoveButton.appendChild(removeButton);
 
-        answerGroup.appendChild(divInputGroup);
-        answerGroup.appendChild(divRemoveButton);
-
-        answerContainer.appendChild(answerGroup); // Corregido aquí
-
-    }
-
+        }
+        function deleteAnswer(arreglo, answerId){
+            $.ajax({
+                type: "POST",
+                url: "/exam/deleteA",
+                data: {
+                    "id_answer": answerID[arreglo],
+                },
+                success: function (response) {
+                    var answerGroupToRemove = document.querySelector('[data-card-id="' + answerId + '"]');
+                    if (answerGroupToRemove) {
+                        answerGroupToRemove.parentNode.removeChild(answerGroupToRemove);
+                        console.log("Respuesta Eliminada");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error en la solicitud AJAX:", error);
+                },
+            });
+        }
     function addQuestionOpen()  {
         $.ajax({
             type: "POST",
@@ -555,7 +544,6 @@
         var questionContainer = document.getElementById("questions-container");
 
         generarId++;
-        console.log(generarId);
         var card = document.createElement("div");
         card.className = "card mt-3 card-color";
         card.id = "card-" + generarId;
@@ -658,7 +646,6 @@
     }
 
     function deleteQuestion(cardId,arreglo) {
-        console.log("Pregunta a eliminar: "+ questionsID[arreglo])
         $.ajax({
             type: "POST",
             url: "/exam/deleteQ",
@@ -690,21 +677,7 @@
         }
     }
 
-    function deleteAnswer(arreglo){
-        $.ajax({
-            type: "POST",
-            url: "/exam/deleteA",
-            data: {
-                "id_answer": answerID[arreglo],
-            },
-            success: function (response) {
-                console.log("Respuesta Eliminada");
-            },
-            error: function (xhr, status, error) {
-                console.log("Error en la solicitud AJAX:", error);
-            },
-        });
-    }
+
 
     function autoResize(textarea) {
         // Ajustar temporalmente el height al mínimo antes de medir el scrollHeight
@@ -777,15 +750,10 @@
 
     // Función para marcar los cambios como guardados y cambiar el color del botón
     function marcarCambiosYCambiarColor() {
-        /*console.log("Datos a enviar:");
-        console.log(fk_user);
-        var inputs = document.querySelectorAll('input, textarea');
-        inputs.forEach(function(input) {
-            console.log(input.name + ": " + input.value);
-        });
-        console.log(fk_user);
+
         marcarCambiosComoGuardados(); // Marcar cambios como guardados
-        cambiarColorTemporarily(); // Cambiar el color del botón temporalmente*/
+        cambiarColorTemporarily(); // Cambiar el color del botón temporalmente
+        window.location.href = "/user/index-teacher";
     }
 
 
