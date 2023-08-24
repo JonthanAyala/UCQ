@@ -4,10 +4,7 @@ import mx.edu.utez.ucq.models.Respuestas.ExamDetails;
 import mx.edu.utez.ucq.models.user.DaoUser;
 import mx.edu.utez.ucq.utils.MySQLConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -398,38 +395,62 @@ public class DaoExam{
     }
 
     public Long[] finQuestions(Long idE) {
-        Long[] ids = null;
-        int rowCount = 0;
+        List<Long> idList = new ArrayList<>();
 
         try {
             conn = new MySQLConnection().connect();
             String query = "SELECT id_Question FROM questions WHERE fk_exam = ?;";
-            pstm = conn.prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE);
+            pstm = conn.prepareStatement(query);
             pstm.setLong(1, idE);
             rs = pstm.executeQuery();
 
             while (rs.next()) {
-                rowCount++;  // Incrementa el contador de filas
-            }
-
-            // Vuelve a configurar el ResultSet para que esté en la primera fila
-            rs.beforeFirst();
-
-            ids = new Long[rowCount];  // Inicializa el arreglo con el tamaño adecuado
-            int index = 0;
-
-            while (rs.next()) {
-                ids[index] = rs.getLong("id_Question");
-                index++;
+                idList.add(rs.getLong("id_Question"));
             }
         } catch (SQLException e) {
-            Logger.getLogger(DaoUser.class.getName())
-                    .log(Level.SEVERE,
-                            "Credentials mismatch: " + e.getMessage());
+            Logger.getLogger(DaoExam.class.getName())
+                    .log(Level.SEVERE, "Error al obtener los IDs de preguntas: " + e.getMessage());
         } finally {
             close();
         }
-        return ids;
+
+        return idList.toArray(new Long[0]);
     }
 
+
+    public boolean createStudentExam(Long idExam, Long fkUser) {
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "INSERT INTO Students_exam (fk_exam, fk_user, start_date)" +
+                    " VALUES ( ?, ?, NOW());";
+            pstm = conn.prepareCall(query);
+            pstm.setLong(1, idExam);
+            pstm.setLong(2, fkUser);
+            return  pstm.executeUpdate() == 1;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findExam" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
+
+    public Long extractIdStudentExam(Long fkUser) {
+        Long id_student_exam = null;
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "SELECT id_Student_exam FROM Students_exam WHERE fk_user = ?";
+            pstm = conn.prepareCall(query);
+            pstm.setLong(1, fkUser);
+            if (rs.next()) {
+                id_student_exam = rs.getLong("id_Student_exam");
+                System.out.println("idSW: "+id_student_exam);// Obtener el valor de la columna "id_question"
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findExam" + e.getMessage());
+        } finally {
+            close();
+        }
+        return id_student_exam;
+    }
 }

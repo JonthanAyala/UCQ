@@ -1,4 +1,22 @@
 /*
+DELIMITER //
+
+CREATE PROCEDURE InsertStudentExam(
+    IN p_fk_exam INT,
+    IN p_fk_user INT,
+    OUT p_generated_id INT
+)
+BEGIN
+    INSERT INTO Students_exam (fk_exam, fk_user, start_date)
+    VALUES (p_fk_exam, p_fk_user, NOW());
+
+    SET p_generated_id = LAST_INSERT_ID();
+END //
+
+DELIMITER ;
+*/
+
+/*
 INSERT INTO `ucq_chido`.`users` (`id_user`, `name`, `lastname`, `surname`, `curp`, `status`, `type_user`, `mail`, `enrollment`, `password`) VALUES ('1', 'admin', 'utez', 'NA', 'NA', 'Activo', '1', 'admin@utez.edu.mx', 'N/A', 'adminucq');
 INSERT INTO `ucq_chido`.`users` (`id_user`, `name`, `lastname`, `surname`, `curp`, `status`, `type_user`, `mail`, `enrollment`, `password`) VALUES ('2', 'Hugo', 'NA', 'NA', 'NA', 'Activo', '2', 'hugo@utez.edu.mx', 'NA', 'hugoucq');
 INSERT INTO `ucq_chido`.`users` (`id_user`, `name`, `lastname`, `surname`, `curp`, `status`, `type_user`, `mail`, `enrollment`, `password`) VALUES ('3', 'Isai', 'acosta', 'guerra', 'iii', 'Activo', '3', 'isai@utez.edu.mx', '20213tn094', 'isaiucq');

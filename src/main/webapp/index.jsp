@@ -42,7 +42,7 @@
 <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
   <div class="container d-flex align-content-between">
 
-    <img src="/assets/img/ico_UCQ.png" alt="Logo" width="100" height="40"
+    <img src="/assets/img/" alt="Logo" width="100" height="40"
          class="d-inline-block align-text-top me-2">
 
 
