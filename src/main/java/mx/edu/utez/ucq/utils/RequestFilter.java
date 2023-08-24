@@ -33,6 +33,7 @@ public class RequestFilter implements Filter {
         whiteList.add("/assets/js/bootstrap.bundle.min.js");
         whiteList.add("/assets/js/sweetalert2.all.min.js");
         whiteList.add("/assets/img/Logo_UCQ.png");
+        whiteList.add("/assets/img/ico_UCQ.png");
         whiteList.add("/favicon.ico");
         whiteList.add("/user/view-recover");
         whiteList.add("/assets/img/ico UCQ.png");

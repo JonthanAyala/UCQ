@@ -33,10 +33,6 @@
 </style>
 <body style="background-color: white;">
 
-<div class="grid-container position-absolute">
-
-</div>
-
 <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
     <div class="container d-flex align-content-between">
 
@@ -58,73 +54,149 @@
 <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="container mt-5 bg-light p-4 rounded shadow">
-            <h1 class="text-center mb-4">Examen Recupera</h1>
+            <h1 class="text-center mb-4">${exam.name_exam}</h1>
         </div>
     </div>
 </div>
 
-
-<div class="row row justify-content-center">
-    <div class="col-md-6">
-        <div class="container mt-5 bg-light p-4 rounded shadow">
-            <div class="pregunta p-4 border rounded">
-                <h2>Pregunta 1:</h2>
-                <p>¿Cuánto es 2 + 2?</p>
-
-                <form>
-                    <div class="form-check">
-                        <input class="form-check-input custom-radio" type="radio" name="pregunta1" id="radio1" value="1">
-                        <label class="form-check-label" for="radio1">1</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input custom-radio" type="radio" name="pregunta1" id="radio2" value="2">
-                        <label class="form-check-label" for="radio2">2</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input custom-radio" type="radio" name="pregunta1" id="radio3" value="3">
-                        <label class="form-check-label" for="radio3">Pez</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input custom-radio" type="radio" name="pregunta1" id="radio4" value="4">
-                        <label class="form-check-label" for="radio4">Todas las anteriores</label>
-                    </div>
-
-                <style>
-                        /* Estilo personalizado para los círculos de selección */
-                        .custom-radio {
-                            width: 1.2rem; /* Ajusta el tamaño del círculo según sea necesario */
-                            height: 1.2rem; /* Ajusta el tamaño del círculo según sea necesario */
-                            background-color: transparent; /* Quita el fondo por defecto del círculo */
-                            border-radius: 50%; /* Hace que el círculo tenga forma redondeada */
-                        }
-
-                        /* Estilo personalizado para el círculo cuando está seleccionado */
-                        .custom-radio:checked {
-                            background-color: #28a745; /* Cambia el color de fondo a verde cuando está seleccionado */
-                        }
-
-                    </style>
-
-                        </form>
-            </div>
-        </div>
-    </div>
+<div class="row justify-content-center" id="question-container">
+    <!-- Aquí se insertarán las cards de preguntas -->
 </div>
+
+<form action="/exam/enviar">
 <div class="d-flex justify-content-center mt-3">
     <button type="submit" class="btn btn-success">
         ENVIAR
     </button>
 </div>
+</form>
 
-</body>
 
 <jsp:include page="../../layouts/footer.jsp"/>
 
 <script>
+
+    var id_student_exam = null;
+
+    var IDsQ = [];
+
+    $.ajax({
+        type: "POST",
+        url: "/exam/IdsQ",
+        data: {
+            "idExam": ${exam.id_exam}
+        },
+        success: function (response) {
+            if (response !== null && Array.isArray(response)) {
+                IDsQ = response.map(Number);
+                console.log("IDs de preguntas en arreglo IDQ:", IDsQ);
+
+                // Aquí puedes hacer lo que necesites con el arreglo IDQ
+            } else {
+                console.log("La respuesta JSON es inválida.");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log("Error en la solicitud AJAX:", error);
+        },
+    });
+
+
+    $.ajax({
+        type: "POST",
+        url: "/exam/create-studen-exam",
+        data: {
+            "idExaID": ${exam.id_exam},
+            "fk_user": ${sessionScope.user.id}
+        },
+        success: function (response) {
+            id_student_exam = response
+            console.log("i.s.t :"+id_student_exam)
+        },
+        error: function (xhr, status, error) {
+            console.log("Error en la solicitud AJAX:", error);
+        },
+    });
+
+
+    $.ajax({
+        type: "POST",
+        url: "/exam/contrucQuestions",
+        data: {
+            "IDs": IDsQ
+        },
+        success: function (response) {
+            x
+        },
+        error: function (xhr, status, error) {
+            console.log("Error en la solicitud AJAX:", error);
+        },
+    });
+
+    // Supongamos que 'questions' es el objeto obtenido a través de AJAX
+    var questions = [
+        {
+            question: "Pregunta 1:",
+            description: "Descripcion-1",
+            options: ["1", "2", "Pez", "Todas las anteriores"]
+        },
+        // ... otras preguntas
+    ];
+
+    var questionContainer = document.getElementById("question-container");
+
+    // Iterar a través de las preguntas y construir las cards
+    questions.forEach(function(questionObj, index) {
+        var card = document.createElement("div");
+        card.className = "col-md-6";
+
+        var cardContent = `
+            <div class="container mt-5 bg-light p-4 rounded shadow">
+                <div class="pregunta p-4 border rounded">
+                    <h2>${questionObj.question}</h2>
+                    <p>${questionObj.description}</p>
+                    <form>
+        `;
+
+        questionObj.options.forEach(function(option, optionIndex) {
+            cardContent += `
+                <div class="form-check">
+                    <input class="form-check-input custom-radio" type="radio" name="pregunta${index}" id="radio${index}-${optionIndex}" value="${optionIndex + 1}">
+                    <label class="form-check-label" for="radio${index}-${optionIndex}">${option}</label>
+                </div>
+            `;
+        });
+
+        cardContent += `
+                    <style>
+                        /* Estilo personalizado para los círculos de selección */
+                        .custom-radio {
+                            width: 1.2rem;
+                            height: 1.2rem;
+                            background-color: transparent;
+                            border-radius: 50%;
+                        }
+
+                        /* Estilo personalizado para el círculo cuando está seleccionado */
+                        .custom-radio:checked {
+                            background-color: #28a745;
+                        }
+                    </style>
+                    </form>
+                </div>
+            </div>
+        `;
+
+        card.innerHTML = cardContent;
+        questionContainer.appendChild(card);
+    });
+
+
+
+
     function redirectToStudentsIndex() {
         window.location.href ="${pageContext.request.contextPath}/user/student";
     }
-
 </script>
 </body>
 </html>

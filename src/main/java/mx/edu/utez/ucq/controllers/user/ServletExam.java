@@ -13,6 +13,10 @@ import mx.edu.utez.ucq.models.exam.Question;
 import mx.edu.utez.ucq.models.user.User;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 @WebServlet(name = "exams",urlPatterns = {
         "/exam/exams",
         "/exam/save-exam",
@@ -27,13 +31,17 @@ import java.io.IOException;
         "/exam/deleteA",
         "/exam/if-answer",
         "/exam/comenzar",
-        "/exam/terminar"
+        "/exam/terminar",
+        "/exam/find-exam",
+        "/exam/redirect",
+        "/exam/IdsQ",
+        "/exam/create-studen-exam"
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 
 public class ServletExam extends HttpServlet {
     private String action;
-    private String redirect = "/exam/exams";
+    private String redirect = "";
 
     private  String name, surname, lastname, username, birthday, status;
     private Long id_user, id_exam;
@@ -46,6 +54,25 @@ public class ServletExam extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         action = req.getServletPath();
         switch (action){
+            case "/exam/redirect":
+                User user6 = (User) session.getAttribute("user");// se guardan los datos en un objeto
+                System.out.println(session);// pa ver si hay una sesion
+                switch (Math.toIntExact(user.getType_user())){
+                    case 1:
+                        redirect = "/user/admin";
+                        break;
+                    case 2:
+                        redirect = "/user/index-teacher";
+                        break;
+                    case 3:
+                        redirect = "/user/student";
+                        break;
+                    default:
+                        redirect = "/user/view-login?result=false&message=" + URLEncoder
+                                .encode("Error grave", StandardCharsets.UTF_8);
+                        break;
+                }
+                break;
             case "/exam/exams":
                 User user2 = (User) session.getAttribute("user");// se guardan los datos en un objeto
                 System.out.println(session);// pa ver si hay una sesion
@@ -229,6 +256,7 @@ public class ServletExam extends HttpServlet {
             case "/exam/create-Answer":
                 try {
                     Long idQuestion = Long.valueOf(req.getParameter("Id_Question"));
+                    System.out.println(idQuestion);
                     boolean resultA = new DaoExam().createAnswer(idQuestion);
                     System.out.println(resultA);
 
@@ -306,11 +334,75 @@ public class ServletExam extends HttpServlet {
                 }else
                     redirect = "/user/index-teacher";
                 break;
+            case "/exam/find-exam":
+                try {
+                    String codigo = req.getParameter("codigo");
+                    id_exam = new DaoExam().findExam(codigo);
+                    System.out.println("IdExam "+id_exam);
+                    if (id_exam != null) {
+                        HttpSession session = req.getSession();
+                        session.setAttribute("id_exam", id_exam);
+
+                        redirect = "/user/view-exam";
+                    }else {
+                        redirect = "/user/student";
+                    }
+                }catch (Exception e) {
+                    e.printStackTrace(); // Imprime detalles del error para el diagnóstico
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+                break;
+            case "/exam/IdsQ":
+                try {
+                    Long idE = Long.valueOf(req.getParameter("idExam"));
+                    Long[] arreglo = new DaoExam().finQuestions(idE);
+
+                    if (arreglo != null) {
+                        String idsJSON = Arrays.toString(arreglo);
+                        sendJSONResponse(resp, idsJSON);
+                    } else {
+                        resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                        resp.getWriter().write("Error al obtener los IDs de preguntas.");
+                    }
+                    return;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+                break;
+            case "/exam/create-student-exam":
+                Long idExam = Long.valueOf(req.getParameter("idExam"));
+                System.out.println("IDEXam: "+idExam);
+                Long fkUser = Long.valueOf(req.getParameter("fk_user"));
+                System.out.println("FK_user"+ fkUser);
+                try {
+                    boolean resultSE = new DaoExam().createStudentExam(idExam, fkUser);
+                    System.out.println("Creo?: "+resultSE);
+                    Long idStudentExam = null;
+                    if (resultSE) {
+                        idStudentExam = new DaoExam().extractIdStudentExam(fkUser);
+                        System.out.println("AAA: "+idStudentExam);
+                        sendJSONResponse(resp, idStudentExam.toString());
+                        return;
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+                break;
+            case "":
+                break;
             default:
                     System.out.println(action);
         }
         resp.sendRedirect(req.getContextPath() + redirect);
     }
 
+    private void sendJSONResponse(HttpServletResponse response, String json) throws IOException {
+        response.setContentType("application/json");
+        response.getWriter().write(json);
+        response.getWriter().flush();
+    }
 }
 
