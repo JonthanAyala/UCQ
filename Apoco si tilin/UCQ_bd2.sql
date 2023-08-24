@@ -35,111 +35,94 @@ INNER JOIN Users u ON e.fk_user = u.id_user;
 
 create database ucq_chido;
 use ucq_chido;
-create table Users(
-	id_user int(254) not null auto_increment,
-	name varchar(254) not null,
-    lastname varchar(254)not null,
-    surname varchar(254) not null,
-    curp varchar (18) not null,
-    status varchar(7) not null,
-    type_user int(1) not null,
-    mail varchar(254),
-    enrollment varchar (10),
-    password varchar(254),
-    primary key (id_user)
+
+CREATE TABLE Users (
+    id_user INT auto_increment,
+    name VARCHAR(254) NOT NULL,
+    lastname VARCHAR(254) NOT NULL,
+    surname VARCHAR(254) NOT NULL,
+    curp VARCHAR(18) NOT NULL,
+    status VARCHAR(7) NOT NULL,
+    type_user INT NOT NULL,
+    mail VARCHAR(254),
+    enrollment VARCHAR(10),
+    password VARCHAR(254),
+    PRIMARY KEY (id_user)
 );
 
-CREATE TABLE exams (
-    id_exam INT NOT NULL auto_increment,
+CREATE TABLE Exams (
+    id_exam INT NOT NULL AUTO_INCREMENT,
     name_exam VARCHAR(254) NOT NULL,
-    code VARCHAR(5) NOT NULL,
-    start_time datetime NULL,
-    end_time datetime null,
-    fk_user INT(254) NOT NULL,
+    code VARCHAR(5) NOT NULL UNIQUE,
+    start_time DATETIME NULL,
+    end_time DATETIME NULL,
+    fk_user INT NOT NULL,
     PRIMARY KEY (id_exam),
     FOREIGN KEY (fk_user) REFERENCES Users (id_user)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
-
+/*Hay que ver los not null*/
 CREATE TABLE Students_exam (
-  id_Student_exam INT NOT NULL auto_increment,
-  score INT(3) NULL,
-  start_date datetime not NULL,
-  end_date datetime null,
-  fk_user INT(1) NOT NULL,
-  fk_exam INT(254) NOT NULL,
-  PRIMARY KEY (id_Student_exam),
-    FOREIGN KEY (fk_user)
-    REFERENCES Users (id_User)
+    id_Student_exam INT NOT NULL AUTO_INCREMENT,
+    score INT NULL,
+    start_date DATETIME NOT NULL,
+    end_date DATETIME NULL,
+    fk_user INT NOT NULL,
+    fk_exam INT NOT NULL,
+    PRIMARY KEY (id_Student_exam),
+    FOREIGN KEY (fk_user) REFERENCES Users (id_user)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-    FOREIGN KEY (fk_exam)
-	REFERENCES Exams (id_Exam)
+    FOREIGN KEY (fk_exam) REFERENCES Exams (id_exam)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 CREATE TABLE Questions (
-  id_Question INT(5) NOT NULL auto_increment,
-  url_image VARCHAR(254) NULL,
-  type_question INT(1) NOT NULL,
-  description VARCHAR(254) NOT NULL,
-  points INT(2) NOT NULL,
-  PRIMARY KEY (id_Question)
-
+    id_Question INT NOT NULL AUTO_INCREMENT,
+    url_image VARCHAR(254),
+    type_question INT,
+    description VARCHAR(254),
+    points INT,
+    fk_exam INT,
+    PRIMARY KEY (id_Question),
+    FOREIGN KEY (fk_exam) REFERENCES Exams (id_exam)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE Questions_answer (
-  id_Question_answer INT NOT NULL auto_increment,
-  answer VARCHAR(254) NOT NULL,
-  if_answer TINYINT NOT NULL,
-  fk_question INT(5) NOT NULL,
-  PRIMARY KEY (id_Question_answer),
-    FOREIGN KEY (fk_question)
-    REFERENCES Questions (id_Question)
+    id_Question_answer INT NOT NULL AUTO_INCREMENT,
+    answer VARCHAR(254),
+    if_answer TINYINT,
+    fk_question INT,
+    PRIMARY KEY (id_Question_answer),
+    FOREIGN KEY (fk_question) REFERENCES Questions (id_Question)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
-
+/*Hay que ver los not null*/
 CREATE TABLE Students_exam_answer (
-  id_Student_exam_answer INT NOT NULL auto_increment,
-  fk_student_exam INT NOT NULL,
-  answer VARCHAR(254) NOT NULL,
-  fk_answer INT(5) NOT NULL,
-  fk_question INT(5) NOT NULL,
-  PRIMARY KEY (id_Student_exam_answer),
-    FOREIGN KEY (fk_student_exam)
-    REFERENCES Students_exam (id_Student_exam)
+    id_Student_exam_answer INT NOT NULL AUTO_INCREMENT,
+    fk_student_exam INT NOT NULL,
+    answer VARCHAR(254) NOT NULL,
+    fk_answer INT NOT NULL,
+    fk_question INT NOT NULL,
+    PRIMARY KEY (id_Student_exam_answer),
+    FOREIGN KEY (fk_student_exam) REFERENCES Students_exam (id_Student_exam)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-    FOREIGN KEY (fk_question)
-    REFERENCES Questions (id_Question)
+    FOREIGN KEY (fk_question) REFERENCES Questions (id_Question)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-    FOREIGN KEY (fk_answer)
-    REFERENCES Questions_answer (id_Question_answer)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);
-
-CREATE TABLE Exam_questions (
-  id_Exam_questions INT NOT NULL auto_increment,
-  fk_question INT(5) NOT NULL,
-  fk_exam INT(254) NOT NULL,
-  PRIMARY KEY (id_Exam_questions),
-    FOREIGN KEY (fk_exam)
-    REFERENCES Exams (id_Exam)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-    FOREIGN KEY (fk_question)
-    REFERENCES Questions (id_Question)
+    FOREIGN KEY (fk_answer) REFERENCES Questions_answer (id_Question_answer)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 create view view_user as 
-select * from users
+select * from Users
 group by type_user, enrollment 
 order by type_user asc, enrollment asc;
 
@@ -176,15 +159,13 @@ join questions on students_exam_answer.fk_question = questions.id_Question
 group by questions.type_question
 order by questions.points asc;
 
-create view view_exam_questions as select exams.id_exam, exams.name_exam,
-questions.id_Question, questions.type_question,
-questions.points, questions.description from exam_questions
-join exams on exam_questions.fk_exam=exams.id_exam
-join questions on exam_questions.fk_question=questions.id_Question
-group by questions.type_question
-order by questions.points asc;
+CREATE VIEW ExamDetails AS
+SELECT se.id_Student_exam, se.start_date, se.end_date, e.name_exam, u.name AS professor_name, se.fk_user as id_s
+FROM Students_exam se
+INNER JOIN exams e ON se.fk_exam = e.id_exam
+INNER JOIN Users u ON e.fk_user = u.id_user;
 
-create unique index idx_users_enrollment on Users(enrollment);
+create unique index idx_users_mail on Users(mail);
 
 create index idx_users_name_type_user on Users (type_user);
 
@@ -209,10 +190,6 @@ create index idx_questions_answer_answer_if_answer on Questions_answer (answer,i
 create index idx_Student_exam_answer_id_Student_exam_answer on Students_exam_answer (id_Student_exam_answer);
 
 create index idx_Student_exam_answer_fk_question_fk_answer on Students_exam_answer (fk_question,fk_answer);
-
- create index idx_exam_questions_id_Exam_questions on Exam_questions (id_Exam_questions);
-
-create index idx_Exam_questions_fk_exam_fk_question on Exam_questions (fk_exam,fk_question);	
 
 delimiter $$
 CREATE TRIGGER update_password
@@ -240,25 +217,29 @@ CREATE TRIGGER validate_user_exists
 BEFORE DELETE ON Users
 FOR EACH ROW
 BEGIN
-    DECLARE type_u INT(1);
+    DECLARE type_u INT;
     SELECT type_user INTO type_u FROM users WHERE id_user = old.id_user;                
     IF type_u > 3 THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Usuario no existe';
     END IF;
 END;$$
+DELIMITER ;
+
 
 DELIMITER $$
 CREATE TRIGGER User_deleted_stu
-after DELETE ON Users 												
+AFTER DELETE ON Users
 FOR EACH ROW
 BEGIN
-	DECLARE type_u INT(1);
-    SELECT type_user INTO type_u FROM users WHERE id_user = old.id_user;			
+    DECLARE type_u INT;
+    SELECT type_user INTO type_u FROM users WHERE id_user = old.id_user;            
     IF type_u = 3 THEN
-        delete from students_exam where fk_user=id_user;
+        DELETE FROM students_exam WHERE fk_user = old.id_user;
     END IF;
 END;$$
+DELIMITER ;
+
 
 DELIMITER $$
 CREATE TRIGGER validate_mail
@@ -298,7 +279,7 @@ FOR EACH ROW
 BEGIN
 	IF length(new.code ) < 5 OR length(new.code) > 5 THEN
 		SIGNAL SQLSTATE '45000'										
-		SET MESSAGE_TEXT = 'El código debe ser de 5 digitos.';
+		SET MESSAGE_TEXT = 'El código debe ser de 8 digitos.';
 	END IF;
 END;$$
 
@@ -316,16 +297,6 @@ DECLARE exams_count INT;
     END IF;
 END;$$
 
-delimiter $$
-CREATE TRIGGER code_exam
-AFTER UPDATE ON exams
-FOR EACH ROW
-BEGIN
-	IF NEW.code = OLD.code THEN										
-		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El codigo ingresado ya esta siendo ocupado. en este mismo examen';
-	END IF;
-END;$$
-
 DELIMITER $$
 CREATE TRIGGER validate_id_exam
 BEFORE DELETE ON exams
@@ -338,42 +309,35 @@ BEGIN
     END IF;
 END$$
 
-delimiter $$
-CREATE TRIGGER delete_exam_question
-AFTER DELETE ON exams
-FOR EACH ROW										
-BEGIN
-    declare id_ex int;
-    set id_ex = old.id_exam;										
-		delete from exam_questions where fk_exam=id_ex;
-END;$$
-
 DELIMITER $$
 CREATE TRIGGER validate_student
 BEFORE INSERT
 ON Students_exam FOR EACH ROW
 BEGIN
-    DECLARE type_u INT(1);
-    SELECT type_user INTO type_u FROM users WHERE id_user = NEW.fk_user;				
+    DECLARE type_u INT;
+    SELECT type_user INTO type_u FROM users WHERE id_user = NEW.fk_user;            
     IF type_u != 3 THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'No es un estudiante.';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No es un estudiante.';
     END IF;
 END$$
+DELIMITER ;
+
 
 DELIMITER $$
 CREATE TRIGGER trigger_inserted_student_exam
 AFTER INSERT
 ON Students_exam FOR EACH ROW
 BEGIN
-    DECLARE type_u INT(1);
+    DECLARE type_u INT;
     SELECT type_user INTO type_u FROM users WHERE id_user = NEW.fk_user;
-    IF type_u != 3 AND type_u >3 THEN
+    IF type_u != 3 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No es un estudiante el tipo de usuario.';
     END IF;
 END$$
+DELIMITER ;
 
-delimiter $$
+
+DELIMITER $$
 CREATE TRIGGER validated_time_exam
 before delete
 ON Students_exam FOR EACH ROW
@@ -384,15 +348,15 @@ BEGIN
     END IF;
 END;$$
 
-delimiter $$
-CREATE TRIGGER delete_students_exam
-after delete
-ON Students_exam FOR EACH ROW                   						
+DELIMITER $$
+CREATE TRIGGER delete_students_exam 
+AFTER DELETE ON Students_exam 
+FOR EACH ROW
 BEGIN
-	declare id_studen int;
-    set id_studen = old.id_student_exam;										
-		delete from students_exam_answer where fk_student_exam=id_studen;
-END;$$
+    DELETE sea
+    FROM Students_exam_answer sea
+    WHERE sea.fk_student_exam = old.id_Student_exam;
+END $$
 
 DELIMITER $$
 CREATE TRIGGER calification_exam
@@ -409,8 +373,8 @@ FOR EACH ROW
 BEGIN
 	DECLARE total_points INT;
 	SELECT SUM(points) INTO total_points FROM questions;
-	IF total_points > 100 THEN
-		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La suma de puntos excede los 100';
+	IF total_points > 10 THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La suma de puntos excede los 10';
 	END IF;
 END;$$
 
@@ -425,16 +389,6 @@ BEGIN
     END IF;
 END;$$
 
-delimiter $$
-CREATE TRIGGER validate_type_question
-BEFORE UPDATE ON questions
-FOR EACH ROW
-BEGIN					 
-    IF NEW.type_question = OLD.type_question THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se permite actualizar con el mismo valor de type_question';
-    END IF;
-END;$$
-
 DELIMITER $$
 CREATE TRIGGER after_update_questions
 AFTER UPDATE ON Questions
@@ -443,37 +397,7 @@ BEGIN
 IF NEW.id_Question <> OLD.id_Question THEN
         UPDATE Questions_answer SET fk_question = NEW.id_Question WHERE fk_question = OLD.id_Question;		
         UPDATE Students_exam_answer SET fk_question = NEW.id_Question WHERE fk_question = OLD.id_Question;
-        UPDATE Exam_questions SET fk_question = NEW.id_Question WHERE fk_question = OLD.id_Question;
     END IF;
-END;$$
-
-DELIMITER $$
-CREATE TRIGGER check_questions_correct
-BEFORE DELETE ON Questions
-FOR EACH ROW
-BEGIN
-  DECLARE questions_count INT;
-  SELECT COUNT(*) INTO questions_count												
-  FROM exam_Questions
-  WHERE fk_Question = OLD.id_Question;
-  IF questions_count > 0 THEN
-    SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'La pregunta ya esta asignada con un id en un examen no puede borrarse.';
-  END IF;
-END; $$
-
-DELIMITER $$
-CREATE TRIGGER after_delete_trigger
-AFTER DELETE ON Questions
-FOR EACH ROW
-BEGIN
-    DECLARE questions_count INT;
-  SELECT COUNT(*) INTO questions_count
-  FROM exam_Questions												
-  WHERE fk_Question = OLD.id_Question;
-  IF questions_count >0 THEN
-      delete from Questions where id_Question;
-  END IF;
 END;$$
 
 DELIMITER $$
@@ -515,13 +439,13 @@ CREATE PROCEDURE crear_usuarios(
     surname_in VARCHAR(254),
     curp_in VARCHAR(18),
     status_in VARCHAR(7),
-    type_user_in INT(1),
+    type_user_in INT,
     mail_in VARCHAR(254),
     enrollment_in VARCHAR(10),
     password_in VARCHAR(254)
 )
 BEGIN
-    DECLARE conteo INT DEFAULT 0;
+    DECLARE conteo INT;
     SET autocommit = 0;
     START TRANSACTION;
     SELECT COUNT(*) INTO conteo FROM users WHERE mail = mail_in OR enrollment = enrollment_in OR curp = curp_in;
@@ -529,7 +453,7 @@ BEGIN
         BEGIN
             DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
             BEGIN
-                SELECT 'Error al intentar registrar el usuario en la base de datos';
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error al intentar registrar el usuario en la base de datos';
                 ROLLBACK;
             END;
             INSERT INTO users(name, lastname, surname, curp, status, type_user, mail, enrollment, password)
@@ -537,12 +461,13 @@ BEGIN
             COMMIT;
         END;
     ELSE
-        SELECT 'El usuario que se intenta registrar YA existe en la base de datos';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El usuario que se intenta registrar YA existe en la base de datos';
         ROLLBACK;
     END IF;
     SET autocommit = 1;
 END$$
 DELIMITER ;
+
    
 DELIMITER $$
 CREATE PROCEDURE actualizar_usuario(
@@ -552,13 +477,13 @@ CREATE PROCEDURE actualizar_usuario(
     surname_new VARCHAR(254),
     curp_new VARCHAR(18),
     status_new VARCHAR(7),
-    type_user_new INT(1),
+    type_user_new INT,
     mail_new VARCHAR(254),
     enrollment_new VARCHAR(10),
     password_new VARCHAR(254)
 )
 BEGIN
-    DECLARE usuario_existente INT DEFAULT 0;
+    DECLARE usuario_existente INT;
     SET autocommit = 0;
     START TRANSACTION;
     SELECT COUNT(*) INTO usuario_existente FROM users WHERE id_user = id_user_new FOR UPDATE;
@@ -566,7 +491,7 @@ BEGIN
         BEGIN
             DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
             BEGIN
-                SELECT 'Error al intentar actualizar el usuario en la base de datos';
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error al intentar actualizar el usuario en la base de datos';
                 ROLLBACK;
             END;
             UPDATE users
@@ -583,12 +508,13 @@ BEGIN
             COMMIT;
         END;
     ELSE
-        SELECT 'El usuario que intenta actualizar NO existe' AS mensaje;
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El usuario que intenta actualizar NO existe';
         ROLLBACK;
     END IF;
     SET autocommit = 1;
 END$$
 DELIMITER ;
+
 
 DELIMITER $$
 CREATE PROCEDURE eliminar_usuario(id INT)
@@ -654,15 +580,13 @@ CREATE PROCEDURE crear_examenes(
 	id_exam_in int,
     name_exam_in VARCHAR(254),
     code_in VARCHAR(5),
-    start_time_in timestamp,
-    end_time_in timestamp ,
     fk_user_in int
 )
 BEGIN
     DECLARE conteo INT DEFAULT 0;
     SET autocommit = 0;
     START TRANSACTION;
-    SELECT COUNT(*) INTO conteo FROM exams WHERE  code = code_in;
+    SELECT COUNT(*) INTO conteo FROM exams WHERE id_exam = id_exam_in;
     IF conteo = 0 THEN
     BEGIN
             DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
@@ -670,8 +594,8 @@ BEGIN
                 SELECT 'Error al intentar registrar el examen en la base de datos';
                 ROLLBACK;
             END;
-        INSERT INTO exams(id_exam,name_exam, code, start_time, end_time, fk_user) VALUES 
-        (id_exam_in,name_exam_in, code_in, start_time_in, end_time_in, fk_user_in);
+        INSERT INTO exams(id_exam,name_exam, code,fk_user) VALUES 
+        (id_exam_in,name_exam_in, code_in,fk_user_in);
         COMMIT;
         END;
     ELSE
@@ -681,15 +605,13 @@ BEGIN
     SET autocommit = 1;
 END$$
 DELIMITER ;
- 
- DELIMITER $$
+
+DELIMITER $$
 CREATE PROCEDURE actualizar_examen(
     id_exam_new INT,
     name_exam_new VARCHAR(254),
-    code_new VARCHAR(5),
-    start_time_new timestamp,
-    end_time_new timestamp,
-    fk_user_new INT)
+    code_new VARCHAR(5)
+    )
 BEGIN
     DECLARE examen_existente INT DEFAULT 0;
     SET autocommit = 0;	
@@ -703,8 +625,7 @@ BEGIN
                 ROLLBACK;
             END;
         UPDATE exams
-        SET name_exam = name_exam_new,code = code_new, 
-        start_time = start_time_new,end_time = end_time_new,fk_user = fk_user_new
+        SET name_exam = name_exam_new,code = code_new
         WHERE id_exam = id_exam_new;
         commit;
         END;
@@ -743,7 +664,7 @@ BEGIN
     SET SQL_SAFE_UPDATES = 0;
 END$$
 DELIMITER ;
- 
+
 DELIMITER $$
 CREATE PROCEDURE consultar_examenes(
     id_buscar INT,
@@ -770,4 +691,119 @@ BEGIN
     SET autocommit = 1;
 END
 $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE crear_preguntas(
+	id_Question_in int,
+    type_question_in VARCHAR(254),
+    fk_exam_in int
+)
+BEGIN
+    DECLARE conteo INT DEFAULT 0;
+    SET autocommit = 0;
+    START TRANSACTION;
+    SELECT COUNT(*) INTO conteo FROM questions WHERE id_Question = id_Question_in;
+    IF conteo = 0 THEN
+    BEGIN
+            DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+            BEGIN
+                SELECT 'Error al intentar registrar el examen en la base de datos';
+                ROLLBACK;
+            END;
+        INSERT INTO questions(id_Question,type_question,fk_exam) VALUES 
+        (id_Question_in,type_question_in, fk_exam_in);
+        COMMIT;
+        END;
+    ELSE
+        SELECT 'La pregunta tiene parametros incorrectos, intente de nuevo';
+        ROLLBACK;
+    END IF;
+    SET autocommit = 1;
+END$$
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE UpdateQuestionDescription(
+    IN p_id INT,
+    IN p_description VARCHAR(254)
+)
+BEGIN
+    UPDATE Questions
+    SET description = p_description
+    WHERE id_Question = p_id;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE InsertQuestionAnswer(
+    IN p_answer VARCHAR(254),
+    IN p_if_answer TINYINT,
+    IN p_fk_question INT
+)
+BEGIN
+    INSERT INTO Questions_answer (answer, if_answer, fk_question)
+    VALUES (p_answer, p_if_answer, p_fk_question);
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE UpdateQuestionPoints(
+    IN p_points INT,
+    IN p_id_question INT
+)
+BEGIN
+    UPDATE Questions
+    SET points = p_points
+    WHERE id_Question = p_id_question;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE SelectMaxExamIdWithException(userId INT)
+BEGIN
+    DECLARE maxId INT;
+    SELECT MAX(id_exam) INTO maxId
+    FROM exams
+    WHERE fk_user = userId;
+    IF maxId IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'No Hay Examenes encontrados.';
+    ELSE
+        SELECT maxId AS id_exam;
+    END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE SelectMaxQuestionIdWithException(fk_exam INT)
+BEGIN
+    DECLARE maxId INT;
+    SELECT MAX(id_Question) INTO maxId
+    FROM Questions
+    WHERE fk_exam = fk_exam;
+    IF maxId IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'No Hay Resultados.';
+    ELSE
+        SELECT maxId AS id_question;
+    END IF;
+END //
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE respuestasif(
+    idQ INT,
+    idAnswer INT
+)
+BEGIN
+    START TRANSACTION;
+    UPDATE Questions_answer
+    SET if_answer = 0
+    WHERE fk_question = idQ;
+    UPDATE Questions_answer
+    SET if_answer = 1
+    WHERE id_Question_answer = idAnswer;
+    COMMIT;
+END$$
 DELIMITER ;
