@@ -336,7 +336,31 @@ public class DaoExam{
         return false;
     }
 
-    // Buscar examen 
+    // Buscar examen
 
+    public List<Exam> findAllExamS(Long id) {
+        List<Exam> exams = new ArrayList<>();
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "SELECT * from exams where fk_user = "+id+";";
+            pstm = conn.prepareStatement(query);
+            rs = pstm.executeQuery();
+            while (rs.next()){
+                Exam exam = new Exam();
+                exam.setId_exam(rs.getLong("id_exam"));
+                exam.setName_exam(rs.getString("name_exam"));
+                exam.setCode(rs.getString("code"));
+                exam.setStart_time(rs.getString("start_time"));
+                exam.setEnd_time(rs.getString("end_time"));
+                exam.setFk_user(rs.getLong("fk_user"));
+                exams.add(exam);
+            }
+        }catch (SQLException e){
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
+        }finally {
+            close();
+        }
+        return exams;
+    }
 
 }
