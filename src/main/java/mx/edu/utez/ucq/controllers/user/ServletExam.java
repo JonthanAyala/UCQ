@@ -27,7 +27,8 @@ import java.io.IOException;
         "/exam/deleteA",
         "/exam/if-answer",
         "/exam/comenzar",
-        "/exam/terminar"
+        "/exam/terminar",
+        "/exam/find-exam"
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 
@@ -229,6 +230,7 @@ public class ServletExam extends HttpServlet {
             case "/exam/create-Answer":
                 try {
                     Long idQuestion = Long.valueOf(req.getParameter("Id_Question"));
+                    System.out.println(idQuestion);
                     boolean resultA = new DaoExam().createAnswer(idQuestion);
                     System.out.println(resultA);
 
@@ -305,6 +307,10 @@ public class ServletExam extends HttpServlet {
                     redirect = "/user/index-teacher";
                 }else
                     redirect = "/user/index-teacher";
+                break;
+            case "/exam/find-exam":
+                String codigo = req.getParameter("codigo");
+                Exam exam = new DaoExam().findExam(codigo);
                 break;
             default:
                     System.out.println(action);

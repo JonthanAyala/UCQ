@@ -1,5 +1,6 @@
 package mx.edu.utez.ucq.models.exam;
 
+import mx.edu.utez.ucq.models.Respuestas.ExamDetails;
 import mx.edu.utez.ucq.utils.MySQLConnection;
 
 import java.sql.Connection;
@@ -290,20 +291,7 @@ public class DaoExam{
         }
         return false;
     }
-    public Exam findExam(Long code) {
-        Exam exam = new Exam();
-        try {
-        conn = new MySQLConnection().connect();
-        String query = "SELECT name,id_exam from exams where code=?;";
-        pstm = conn.prepareStatement(query);
-        pstm.setString(1, String.valueOf(code));
-        }catch (SQLException e) {
-            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
-        }finally {
-            close();
-        }
-        return exam;
-    }
+
 
     public boolean comenzar(Long id_exam){
         try {
@@ -336,24 +324,22 @@ public class DaoExam{
         return false;
     }
 
-    // Buscar examen
-
-    public List<Exam> findAllExamS(Long id) {
-        List<Exam> exams = new ArrayList<>();
+    public List<ExamDetails> findAllExamS(Long id) {
+        List<ExamDetails> exams = new ArrayList<>();
         try {
             conn = new MySQLConnection().connect();
-            String query = "SELECT * from exams where fk_user = "+id+";";
+            String query = "SELECT * FROM ExamDetails WHERE id_s = "+id+";";
             pstm = conn.prepareStatement(query);
             rs = pstm.executeQuery();
             while (rs.next()){
-                Exam exam = new Exam();
-                exam.setId_exam(rs.getLong("id_exam"));
-                exam.setName_exam(rs.getString("name_exam"));
-                exam.setCode(rs.getString("code"));
-                exam.setStart_time(rs.getString("start_time"));
-                exam.setEnd_time(rs.getString("end_time"));
-                exam.setFk_user(rs.getLong("fk_user"));
-                exams.add(exam);
+                ExamDetails examsd = new ExamDetails();
+                examsd.setId_Student_exam(rs.getLong("id_Student_exam"));
+                examsd.setStart_date(rs.getString("start_date"));
+                examsd.setEnd_date(rs.getString("end_date"));
+                examsd.setName_exam(rs.getString("name_exam"));
+                examsd.setProfessor_name(rs.getString("professor_name"));
+                examsd.setId_s(rs.getLong("id_s"));
+                exams.add(examsd);
             }
         }catch (SQLException e){
             Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
@@ -361,6 +347,22 @@ public class DaoExam{
             close();
         }
         return exams;
+    }
+
+    // Buscar examen
+    public Exam findExam(String code) {
+        Exam exam = new Exam();
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "SELECT name,id_exam from exams where code=?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setString(1, code);
+        }catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findExam"+e.getMessage());
+        }finally {
+            close();
+        }
+        return exam;
     }
 
 }

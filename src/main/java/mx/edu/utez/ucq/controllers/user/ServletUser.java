@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import mx.edu.utez.ucq.models.Respuestas.ExamDetails;
 import mx.edu.utez.ucq.models.exam.DaoExam;
 import mx.edu.utez.ucq.models.exam.Exam;
 import mx.edu.utez.ucq.models.user.DaoUser;
@@ -89,21 +90,12 @@ public class ServletUser extends HttpServlet {
                 break;
 
             case "/user/student":
-               /* HttpSession sessionst = req.getSession();
-                User user4 = (User) sessionst.getAttribute("user");
-                user4 = new DaoUser().findOneByUser(user4.getId());
-                System.out.println(user4);
-                if (user != null) {
-                    req.setAttribute("user", user4);
-                    redirect = "/views/student/index.jsp";
-                }*/
                 User user4 = (User) session.getAttribute("user");// se guardan los datos en un objeto
                 System.out.println(session);// pa ver si hay una sesion
                 Long userId4 = user4.getId(); // se obtiene el campo a utilizar
                 //----
-                List<Exam> exams2 = new DaoExam().findAllExamS(userId4);
+                List<ExamDetails> exams2 = new DaoExam().findAllExamS(userId4);
                 req.setAttribute("exams",exams2);
-
                 redirect = "/views/student/index.jsp";
                 break;
             case "/user/view-login":

@@ -25,6 +25,12 @@ BEGIN
 END$$
 DELIMITER ;
 
+CREATE VIEW ExamDetails AS
+SELECT se.id_Student_exam, se.start_date, se.end_date, e.name_exam, u.name AS professor_name, se.fk_user as id_s
+FROM Students_exam se
+INNER JOIN exams e ON se.fk_exam = e.id_exam
+INNER JOIN Users u ON e.fk_user = u.id_user;
+
 */
 
 create database ucq_chido;

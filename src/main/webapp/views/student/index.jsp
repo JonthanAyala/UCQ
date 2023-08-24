@@ -102,12 +102,12 @@
                 <div class="car-header" style="background-color: #00AA83; color: white"
                 ><h4 class="text-center">Código de acceso</h4></div> <!-- Corregido con tilde en "Código" -->
                 <div class="card-body" ><br> <br> <br>
-                    <form>
+                    <form method="post" action="/exam/find-exam">
                         <div class="form-group mt-2 position-absolute top-50 start-50 translate-middle">
                             <div class="row">
                                 <div class="col text-center d-grid mt-2">
                                     <input  type="text" name="codigo" id="codigo" class="form-control
-                   mt-4" required style="background-color: #D9D9D9;" maxlength="8">
+                                        mt-4" required style="background-color: #D9D9D9;" maxlength="8">
                                     <button type="submit" class="btn btn-outline-success btn-sm mt-3">
                                         Aceptar
                                     </button>
@@ -137,20 +137,31 @@
                     <th style="color: white">Fecha inicio</th>
                     <th style="color: white">Fecha finalización</th> <!-- Corregido con tilde en "finalización" -->
                     <th style="color: white">Profesor</th>
+                    <th style="color: white">Acciones</th>
                     </thead>
                     <tbody>
+                    <c:forEach var="exam" items="${exams}" varStatus="s">
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><c:out value="${exam.id_Student_exam}"/></td>
+                        <td><c:out value="${exam.name_exam}"/></td>
+                        <td><c:out value="${exam.start_date}"/></td>
+                        <td><c:out value="${exam.end_date}"/></td>
+                        <td><c:out value="${exam.professor_name}"/></td>
+                        <td>
+                            <form method="post" action="/exam/comenzar">
+                            <input hidden value="${exam.id_Student_exam}" name="id">
+                            <button type="submit" class="btn btn-outline-success btn-sm">
+                                Comenzar
+                            </button>
+                            </form>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="6" class="text-center">
                             No hay exámenes pendientes <!-- Corregido con tilde en "exámenes" -->
                         </td>
                     </tr>
+                    </c:forEach>
                     </tbody>
                 </table>
 
