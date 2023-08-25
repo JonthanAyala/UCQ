@@ -4,17 +4,16 @@
 <head>
     <title>Crear Examen</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="${pageContext.request.contextPath}/path/to/bootstrap.min.css" rel="stylesheet">
     <jsp:include page="../../layouts/head.jsp"/>
 </head>
 
 <style>
 
-    .navbar-color{
+    .navbar-color {
         background-color: #002F5D;
     }
 
-    .navbar-input{
+    .navbar-input {
         border: solid #002F5D;
     }
 
@@ -23,16 +22,16 @@
         font-size: 1.5em;
     }
 
-    .card-color{
+    .card-color {
         border: solid #ffffff;
     }
 
-    .card-header-color{
+    .card-header-color {
 
         border: solid #ffffff;
     }
 
-    .answer-container{
+    .answer-container {
         display: inline-block;
         min-width: 500px;
     }
@@ -58,9 +57,8 @@
         margin: 0;
         padding: 0;
         background-color: white; /* Color de fondo */
-        background-image:
-                linear-gradient(to right, rgba(216, 234, 227, 0.5) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(216, 234, 227, 0.5) 1px, transparent 1px);
+        background-image: linear-gradient(to right, rgba(216, 234, 227, 0.5) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(216, 234, 227, 0.5) 1px, transparent 1px);
         background-size: 5px 5px; /* Tamaño de las celdas del cuadriculado */
     }
 
@@ -76,6 +74,7 @@
 </style>
 
 <body style="background-color: white;">
+
 <script>var idExam = null;</script>
 
 <div class="grid-container position-absolute">
@@ -83,34 +82,34 @@
 </div>
 
 <div class="overflow-hidden fixed-top">
-    <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
+    <nav class="navbar navbar-expand-lg  " style="background-color: #002F5D;">
         <div class="container d-flex align-content-between">
 
             <div class="container-fluid h-20 d-inline-block" style="width: 120px;">
                 <a class="navbar-brand position-absolute top-50 start-50 translate-middle"
-                   style="color: white;"> <h3> Ultimate Custom Quiz </h3></a>
+                   style="color: white;"><h3> Ultimate Custom Quiz </h3></a>
             </div>
 
             <div>
                 <button type="button" class="btn" style="background-color: transparent; border: transparent"
                         onclick=" Swal.fire({
-            title: '¿Deseas guardar los cambios?',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Guardar',
-            denyButtonText: `Regresar al Index`,
-            }).then((result) => {
+                                title: '¿Deseas guardar los cambios?',
+                                showDenyButton: true,
+                                showCancelButton: true,
+                                confirmButtonText: 'Guardar',
+                                denyButtonText: `Regresar al Index`,
+                                }).then((result) => {
 
-            if (result.isConfirmed) {
-                Swal.fire('EXAMEN GUARDADO', '', 'success');
-                // Redirigir después de 3 segundos si el usuario decidió guardar
-                setTimeout(function() {
-                     window.location.href ='${pageContext.request.contextPath}/user/index-teacher';
-                }, 1200); // 3000 milisegundos = 3 segundos
-            } else if (result.isDenied) {
-                window.location.href = '${pageContext.request.contextPath}/user/index-teacher';
-            }
-        })">
+                                if (result.isConfirmed) {
+                                Swal.fire('EXAMEN GUARDADO', '', 'success');
+                                // Redirigir después de 3 segundos si el usuario decidió guardar
+                                setTimeout(function() {
+                                window.location.href ='${pageContext.request.contextPath}/user/index-teacher';
+                                }, 1200); // 3000 milisegundos = 3 segundos
+                                } else if (result.isDenied) {
+                                window.location.href = '${pageContext.request.contextPath}/user/index-teacher';
+                                }
+                                })">
                     <img src="${pageContext.request.contextPath}/assets/img/back-48.png">
                 </button>
             </div>
@@ -128,27 +127,28 @@
         <br>
 
 
-            <div class="d-grid">
-                <button type="button" class="btn mt-5" onclick="addQuestionClose()" style="background-color: #d9d9d9" >
-                    Opción multiple
-                    <img src="${pageContext.request.contextPath}/assets/img/icons8-add-48.png">
-                </button>
-                <button type="button" class="btn mt-5" onclick="addQuestionOpen()" style="background-color: #d9d9d9" >
-                    Respuesta abierta
-                    <img src="${pageContext.request.contextPath}/assets/img/icons8-add2-48.png">
-                </button>
-            </div>
+        <div class="d-grid">
+            <button type="button" class="btn mt-5" onclick="addQuestionClose()" style="background-color: #d9d9d9">
+                Opción multiple
+                <img src="${pageContext.request.contextPath}/assets/img/icons8-add-48.png">
+            </button>
+            <button type="button" class="btn mt-5" onclick="addQuestionOpen()" style="background-color: #d9d9d9">
+                Respuesta abierta
+                <img src="${pageContext.request.contextPath}/assets/img/icons8-add2-48.png">
+            </button>
+        </div>
         <div class="container-fluid mt-5">
             <form>
                 <textarea class="form-control textareaTittle" name="nameExam" id="nameExam"
-                  style="font-size: 30px; overflow: hidden; resize: none"
-                  maxlength="50" oninput="autoResize(this)"
-                  placeholder="Titulo Examen" required onfocusout="saveExam()">
+                          style="font-size: 30px; overflow: hidden; resize: none"
+                          maxlength="50" oninput="autoResize(this)"
+                          placeholder="Titulo Examen" required onfocusout="saveExam()">
                 </textarea>
                 <div class=" container mt-5 col-4" style="text-align: center">
                     <div class="form-group">
-                        <label for="exam-code1" class="placeholder-exam-code1"> <h6> Código del examen:</h6> </label>
-                        <input type="text" class="form-control" id="exam-code1" style="background-color:#D9D9D9;" readonly>
+                        <label for="exam-code1" class="placeholder-exam-code1"><h6> Código del examen:</h6></label>
+                        <input type="text" class="form-control" id="exam-code1" style="background-color:#D9D9D9;"
+                               readonly>
                         <input hidden name="exam-code" id="exam-code" name="exam-code">
                     </div>
                 </div>
@@ -157,9 +157,10 @@
 
         <div class="container mb-5">
             <div class=" container mt-5 mb-5 d-grid" style="text-align: center">
-                <input type="text" hidden id="fk_user" name="fk_user" value="${sessionScope.user.id}" >
+                <input type="text" hidden id="fk_user" name="fk_user" value="${sessionScope.user.id}">
                 <button id="guardarButton" type="button" class="btn btn-success" style="background-color: #002F5D!important;
-                color: white !important;" onclick="marcarCambiosYCambiarColor( )">Guardar</button>
+                color: white !important;" onclick="marcarCambiosYCambiarColor( )">Guardar
+                </button>
             </div>
         </div>
     </div>
@@ -167,7 +168,6 @@
 
     <div class="container mt-5 w-50 p-3 containerExam mb-5" style="background-color: white;
     box-shadow: 0 0 8px rgba(0, 170, 131, 0.3);">
-
 
 
         <div id="questions-container" class="overflow-y-auto">
@@ -226,13 +226,14 @@
             });
         }
     }
-    function saveDescription(arreglo){
+
+    function saveDescription(arreglo) {
         var descriptionElement = document.getElementById("description-" + arreglo);
         var description = descriptionElement.value;
 
         $.ajax({
             type: "POST",
-            url:"${pageContext.request.contextPath}/exam/save-description",
+            url: "${pageContext.request.contextPath}/exam/save-description",
             data: {
                 "id_question": questionsID[arreglo],
                 "description": description,
@@ -245,7 +246,8 @@
             },
         });
     }
-    function saveScore(arreglo){
+
+    function saveScore(arreglo) {
 
         var scoreElement = document.getElementById("score-" + arreglo);
         var score = scoreElement.value;
@@ -255,18 +257,19 @@
             url: "${pageContext.request.contextPath}/exam/save-score",
             data: {
                 "id_question": questionsID[arreglo],
-                "score": score ,
+                "score": score,
             },
             success: function (response) {
                 console.log("Score  guardada");
             },
             error: function (xhr, status, error) {
-                ${pageContext.request.contextPath}  console.log("Error en la solicitud AJAX:", error);
+                console.log("Error en la solicitud AJAX:", error);
             },
         });
     }
+
     // borrar el trigger drop trigger delete_exam_question;
-    function saveAnswer(arregloi, answerId){
+    function saveAnswer(arregloi, answerId) {
         var answerElement = document.getElementById("answer-" + answerId);
         var answer = answerElement.value;
         $.ajax({
@@ -274,7 +277,7 @@
             url: "${pageContext.request.contextPath}/exam/save-answer",
             data: {
                 "id_answer": answerID[arregloi],
-                "answer": answer ,
+                "answer": answer,
             },
             success: function (response) {
                 console.log("respuesta  guardada");
@@ -284,8 +287,9 @@
             },
         });
     }
-    function saveIfAnswer(ia, idQ){
-        console.log("3---i if:"+ia+"="+answerID[ia]+", idQ if: "+idQ+" = "+questionsID[idQ]);
+
+    function saveIfAnswer(ia, idQ) {
+        console.log("3---i if:" + ia + "=" + answerID[ia] + ", idQ if: " + idQ + " = " + questionsID[idQ]);
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/exam/if-answer", // Cambia la URL según corresponda
@@ -293,14 +297,15 @@
                 "IdPregunta": questionsID[idQ],
                 "IdA": answerID[ia]
             },
-            success: function(response) {
+            success: function (response) {
                 // Maneja el éxito
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.log("Error en la solicitud AJAX:", error);
             }
         });
     }
+
     ///
     function addQuestionClose() {
         $.ajax({
@@ -351,9 +356,9 @@
         scoreInput.setAttribute("value", "0");
         scoreInput.setAttribute("max", "10");
         scoreInput.setAttribute("min", "0");
-        scoreInput.setAttribute("id", "score-"+generarId);
-        scoreInput.setAttribute("name", "score-"+generarId);
-        scoreInput.setAttribute("onfocusout", "saveScore("+generarId+")");
+        scoreInput.setAttribute("id", "score-" + generarId);
+        scoreInput.setAttribute("name", "score-" + generarId);
+        scoreInput.setAttribute("onfocusout", "saveScore(" + generarId + ")");
         scoreInput.addEventListener("input", function () {
             if (this.value.length > 2) {
                 this.value = this.value.slice(0, 2);
@@ -381,9 +386,9 @@
         questionTextarea.style.resize = "none";
         questionTextarea.style.overflow = "hidden";
         questionTextarea.maxLength = "255";
-        questionTextarea.setAttribute("id", "description-"+generarId);
-        questionTextarea.setAttribute("name", "description-"+generarId);
-        questionTextarea.setAttribute("onfocusout", "saveDescription("+generarId+")");
+        questionTextarea.setAttribute("id", "description-" + generarId);
+        questionTextarea.setAttribute("name", "description-" + generarId);
+        questionTextarea.setAttribute("onfocusout", "saveDescription(" + generarId + ")");
         questionTextarea.addEventListener("input", resizeInput);
         questionTextarea.addEventListener("keyup", resizeInput);
 
@@ -429,121 +434,124 @@
         card.appendChild(cardBody);
 
         questionContainer.appendChild(card);
-        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        card.scrollIntoView({behavior: 'smooth', block: 'start'});
     }
 
-        function addAnswerClose(idQ) {
-            $.ajax({
-                type: "POST",
-                url: "${pageContext.request.contextPath}/exam/create-Answer",
-                data: {
-                    "Id_Question": questionsID[idQ]
-                },
-                success: function (response) {
-                    answerID[i] = response;
-                    var answerContainer = document.getElementById("answer-container-" + idQ); // Corrige esta línea
-                    var answerId = "answer-" + idQ + "-" + (answerContainer.children.length + 1); // Corrige esta línea
+    function addAnswerClose(idQ) {
+        $.ajax({
+            type: "POST",
+            url: "${pageContext.request.contextPath}/exam/create-Answer",
+            data: {
+                "Id_Question": questionsID[idQ]
+            },
+            success: function (response) {
+                answerID[i] = response;
+                var answerContainer = document.getElementById("answer-container-" + idQ); // Corrige esta línea
+                var answerId = "answer-" + idQ + "-" + (answerContainer.children.length + 1); // Corrige esta línea
 
-                    var answerGroup = document.createElement("div");
-                    answerGroup.className = "form-group align-items-center";
-                    answerGroup.setAttribute("data-card-id", answerId);
+                var answerGroup = document.createElement("div");
+                answerGroup.className = "form-group align-items-center";
+                answerGroup.setAttribute("data-card-id", answerId);
 
-                    var divInputGroup = document.createElement("div");
-                    divInputGroup.className = "input-group mb-2 input-group-sm"; // Ajustado el margen aquí
+                var divInputGroup = document.createElement("div");
+                divInputGroup.className = "input-group mb-2 input-group-sm"; // Ajustado el margen aquí
 
-                    var divInputGroupText = document.createElement("div");
-                    divInputGroupText.className = "input-group-prepend"; // Ajustado el nombre de la clase
+                var divInputGroupText = document.createElement("div");
+                divInputGroupText.className = "input-group-prepend"; // Ajustado el nombre de la clase
 
-                    var inputCheckbox = document.createElement("input");
-                    inputCheckbox.className = "form-check-input mt-0";
-                    inputCheckbox.type = "checkbox";
-                    inputCheckbox.value = "";
-                    inputCheckbox.setAttribute("aria-label", "correctAnswer");
-                    inputCheckbox.setAttribute("name", "correct-answer-"+answerId);
+                var inputCheckbox = document.createElement("input");
+                inputCheckbox.className = "form-check-input mt-0";
+                inputCheckbox.type = "checkbox";
+                inputCheckbox.value = "";
+                inputCheckbox.setAttribute("aria-label", "correctAnswer");
+                inputCheckbox.setAttribute("name", "correct-answer-" + answerId);
 
-                    divInputGroupText.appendChild(inputCheckbox);
+                divInputGroupText.appendChild(inputCheckbox);
 
-                    var answerInput2 = document.createElement("textarea");
-                    answerInput2.className = "form-control input-high-size";
-                    answerInput2.setAttribute("aria-label", "answer-" + answerId); // Ajustado el atributo aria-label
-                    answerInput2.maxLength = 255;
-                    answerInput2.setAttribute("name", "answer-" + answerId); // Ajustado el atributo name
-                    answerInput2.setAttribute("id","answer-"+ answerId);
-                    answerInput2.setAttribute("placeholder", "Respuesta");
-                    answerInput2.setAttribute("onfocusout", "saveAnswer("+i+",'"+answerId+"')");
-                    answerInput2.style.resize = "none";
-                    answerInput2.rows = 1;
-                    answerInput2.required = true;
-                    answerInput2.style.overflow = "hidden";
-                    answerInput2.addEventListener("input", resizeInput);
-                    answerInput2.addEventListener("keyup", resizeInput);
-                    function resizeInput() {
-                        this.style.height = "auto";
-                        this.style.height = this.scrollHeight + "px";
+                var answerInput2 = document.createElement("textarea");
+                answerInput2.className = "form-control input-high-size";
+                answerInput2.setAttribute("aria-label", "answer-" + answerId); // Ajustado el atributo aria-label
+                answerInput2.maxLength = 255;
+                answerInput2.setAttribute("name", "answer-" + answerId); // Ajustado el atributo name
+                answerInput2.setAttribute("id", "answer-" + answerId);
+                answerInput2.setAttribute("placeholder", "Respuesta");
+                answerInput2.setAttribute("onfocusout", "saveAnswer(" + i + ",'" + answerId + "')");
+                answerInput2.style.resize = "none";
+                answerInput2.rows = 1;
+                answerInput2.required = true;
+                answerInput2.style.overflow = "hidden";
+                answerInput2.addEventListener("input", resizeInput);
+                answerInput2.addEventListener("keyup", resizeInput);
+
+                function resizeInput() {
+                    this.style.height = "auto";
+                    this.style.height = this.scrollHeight + "px";
+                }
+
+                // Aquí agregamos el evento para manejar la respuesta correcta
+                inputCheckbox.addEventListener("change", new Function("saveIfAnswer('" + i + "', " + idQ + ");"));
+                inputCheckbox.addEventListener("change", function () {
+                    if (this.checked) {
+                        var otherCheckboxes = answerContainer.querySelectorAll("input[type='checkbox']");
+                        otherCheckboxes.forEach(function (checkbox) {
+                            if (checkbox !== inputCheckbox) {
+                                checkbox.checked = false;
+                            }
+                        });
                     }
-                    // Aquí agregamos el evento para manejar la respuesta correcta
-                    inputCheckbox.addEventListener("change", new Function("saveIfAnswer('" + i + "', " + idQ + ");"));
-                    inputCheckbox.addEventListener("change", function() {
-                        if (this.checked) {
-                            var otherCheckboxes = answerContainer.querySelectorAll("input[type='checkbox']");
-                            otherCheckboxes.forEach(function(checkbox) {
-                                if (checkbox !== inputCheckbox) {
-                                    checkbox.checked = false;
-                                }
-                            });
-                        }
-                    });
+                });
 
 
-                    divInputGroup.appendChild(divInputGroupText);
-                    divInputGroup.appendChild(answerInput2);
+                divInputGroup.appendChild(divInputGroupText);
+                divInputGroup.appendChild(answerInput2);
 
-                    var divRemoveButton = document.createElement("div");
-                    divRemoveButton.className = "mb-2";
+                var divRemoveButton = document.createElement("div");
+                divRemoveButton.className = "mb-2";
 
-                    var removeButton = document.createElement("button");
-                    removeButton.className = "btn btn-danger";
-                    removeButton.setAttribute("type", "button");
-                    removeButton.innerHTML = "Eliminar";
-                    removeButton.setAttribute("onclick", "deleteAnswer(" + i + ", '" + answerId + "')");
-
-
-                    divRemoveButton.appendChild(removeButton);
-
-                    answerGroup.appendChild(divInputGroup);
-                    answerGroup.appendChild(divRemoveButton);
-
-                    answerContainer.appendChild(answerGroup);
-                    i++;
-                },
-                error: function (xhr, status, error) {
-                    console.log("Error en la solicitud AJAX:", error);
-                },
-            });
+                var removeButton = document.createElement("button");
+                removeButton.className = "btn btn-danger";
+                removeButton.setAttribute("type", "button");
+                removeButton.innerHTML = "Eliminar";
+                removeButton.setAttribute("onclick", "deleteAnswer(" + i + ", '" + answerId + "')");
 
 
+                divRemoveButton.appendChild(removeButton);
 
-        }
-        function deleteAnswer(arreglo, answerId){
-            $.ajax({
-                type: "POST",
-                url: "${pageContext.request.contextPath}/exam/deleteA",
-                data: {
-                    "id_answer": answerID[arreglo],
-                },
-                success: function (response) {
-                    var answerGroupToRemove = document.querySelector('[data-card-id="' + answerId + '"]');
-                    if (answerGroupToRemove) {
-                        answerGroupToRemove.parentNode.removeChild(answerGroupToRemove);
-                        console.log("Respuesta Eliminada");
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log("Error en la solicitud AJAX:", error);
-                },
-            });
-        }
-    function addQuestionOpen()  {
+                answerGroup.appendChild(divInputGroup);
+                answerGroup.appendChild(divRemoveButton);
+
+                answerContainer.appendChild(answerGroup);
+                i++;
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
+        });
+
+
+    }
+
+    function deleteAnswer(arreglo, answerId) {
+        $.ajax({
+            type: "POST",
+            url: "${pageContext.request.contextPath}/exam/deleteA",
+            data: {
+                "id_answer": answerID[arreglo],
+            },
+            success: function (response) {
+                var answerGroupToRemove = document.querySelector('[data-card-id="' + answerId + '"]');
+                if (answerGroupToRemove) {
+                    answerGroupToRemove.parentNode.removeChild(answerGroupToRemove);
+                    console.log("Respuesta Eliminada");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            },
+        });
+    }
+
+    function addQuestionOpen() {
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/exam/createQ",
@@ -595,9 +603,9 @@
         scoreInput.setAttribute("value", 0);
         scoreInput.setAttribute("max", 10);
         scoreInput.setAttribute("min", 0);
-        scoreInput.setAttribute("id", "score-"+generarId);
-        scoreInput.setAttribute("name", "score-"+generarId);
-        scoreInput.setAttribute("onfocusout", "saveScore("+generarId+")");
+        scoreInput.setAttribute("id", "score-" + generarId);
+        scoreInput.setAttribute("name", "score-" + generarId);
+        scoreInput.setAttribute("onfocusout", "saveScore(" + generarId + ")");
         scoreInput.addEventListener("input", function () {
             if (this.value.length > 2)
                 this.value = this.value.slice(0, 2);
@@ -631,12 +639,13 @@
         questionTextarea.style.resize = "none";
         questionTextarea.contentEditable = "true";
         questionTextarea.maxLength = 255;
-        questionTextarea.setAttribute("id", "description-"+generarId);
-        questionTextarea.setAttribute("name", "description-"+generarId);
-        questionTextarea.setAttribute("onfocusout", "saveDescription("+generarId+")");
+        questionTextarea.setAttribute("id", "description-" + generarId);
+        questionTextarea.setAttribute("name", "description-" + generarId);
+        questionTextarea.setAttribute("onfocusout", "saveDescription(" + generarId + ")");
         questionTextarea.style.overflow = "hidden";
         questionTextarea.addEventListener("input", resizeInput);
         questionTextarea.addEventListener("keyup", resizeInput);
+
         function resizeInput() {
             this.style.height = "auto";
             this.style.height = this.scrollHeight + "px";
@@ -660,10 +669,10 @@
         card.appendChild(cardBody);
 
         questionContainer.appendChild(card);
-        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        card.scrollIntoView({behavior: 'smooth', block: 'start'});
     }
 
-    function deleteQuestion(cardId,arreglo) {
+    function deleteQuestion(cardId, arreglo) {
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/exam/deleteQ",
@@ -696,13 +705,11 @@
     }
 
 
-
     function autoResize(textarea) {
         // Ajustar temporalmente el height al mínimo antes de medir el scrollHeight
         textarea.style.height = "1px";
         textarea.style.height = textarea.scrollHeight + "px";
     }
-
 
 
     // Variable global para rastrear si se han guardado los cambios
@@ -775,7 +782,6 @@
     }
 
 
-
     //--------------------------------------------------------------------------------//
 
     // Función para generar el código aleatorio
@@ -790,7 +796,7 @@
     }
 
     // Generar el código aleatorio al cargar la página y mostrarlo en el input
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
         const generatedCode = generateRandomCode(5);
         const codeInput = document.getElementById('exam-code');
         codeInput.value = generatedCode;

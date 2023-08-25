@@ -15,6 +15,7 @@ import mx.edu.utez.ucq.models.user.User;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @WebServlet(name = "exams",urlPatterns = {
         "/exam/exams",
@@ -39,7 +40,8 @@ import java.nio.charset.StandardCharsets;
         "/exam/create-student-answer",
         "/exam/update-student-answer",
         "/exam/update-student-answer-open",
-        "/exam/create-student-answer-open"
+        "/exam/create-student-answer-open",
+        "/exam/view-markExam"
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 
@@ -83,6 +85,26 @@ public class ServletExam extends HttpServlet {
                 Long userId = user2.getId(); // se obtiene el campo a utilizar
                 System.out.println("User ID: " + userId); // simplemente pa verlo en pantalla
                 redirect = "/views/teacher/exam.jsp";
+                break;
+            case "/exam/view-markExam":
+                session = req.getSession();
+                Long id_exam = Long.valueOf(req.getParameter("id"));
+                User userE = (User) session.getAttribute("user");
+                System.out.println("id: "+id_exam);
+                Exam exam = new DaoExam().LoadExam(id_exam);//SI
+                //Se usa el end_time para ver si se puede responder el examen
+                String end = exam.getEnd_time();
+                req.setAttribute("exam", exam);
+
+                System.out.println("Exam: "+exam);
+                if (end == null || end.isEmpty()){
+                    List<Question> questions = new  DaoExam().constructQ(id_exam);
+                    System.out.println(questions);
+                    req.setAttribute("questions", questions);
+                            redirect = "/views/teacher/markExam.jsp";
+                }else {
+                    redirect = "/user/index-teacher ";
+                }
                 break;
             default:
                 System.out.println(action);
