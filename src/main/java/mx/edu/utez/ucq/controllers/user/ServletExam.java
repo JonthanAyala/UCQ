@@ -35,7 +35,8 @@ import java.util.Arrays;
         "/exam/find-exam",
         "/exam/redirect",
         "/exam/IdsQ",
-        "/exam/create-studen-exam"
+        "/exam/create-studen-exam",
+        "/exam/saveAnswered"
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 

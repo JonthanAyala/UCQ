@@ -11,7 +11,12 @@ public class MySQLConnection {
             TIMEZONE = "America/Mexico_City",
             USESSL = "false",
             PUBLICKEY = "true",
+<<<<<<< Updated upstream
             DDLAUTO = "true", HOST = "localhost";
+=======
+            DDLAUTO = "true",
+            HOST = "localhost";
+>>>>>>> Stashed changes
 
     public Connection connect() {
         String dataSource = String.format("jdbc:mysql://%s:3306/%s?user=%s&password=%s&serverTimezone=%s&useSSL=%s&allowPublicKeyRetrieval=%s&createDatabaseIfNotExist=%s", HOST, DBNAME, USER, PASSWORD, TIMEZONE, USESSL , PUBLICKEY, DDLAUTO);

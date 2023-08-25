@@ -30,8 +30,26 @@
         align-items: center;
         height: 100vh;
     }
+
+    .resize-none {
+        overflow: hidden !important; /* Evita que el contenido se desborde */
+    }
+
+    /* Evitar el desplazamiento horizontal por si el contenido es más ancho */
+    .resize-none::-webkit-scrollbar {
+        width: 0px;
+        background: transparent; /* Asegura que el fondo sea transparente */
+    }
+    /* Limitar el crecimiento vertical del textarea */
+    .resize-horizontal {
+        max-height: 200px; /* Ajusta esto según tus necesidades */
+        overflow-y: auto; /* Mostrar barra de desplazamiento vertical si es necesario */
+    }
+
+
 </style>
 <body style="background-color: white;">
+
 
 <nav class="navbar navbar-expand-lg  " style= "background-color: #002F5D;">
     <div class="container d-flex align-content-between">
@@ -58,24 +76,59 @@
         </div>
     </div>
 </div>
+<<<<<<< Updated upstream
+=======
+<c:forEach var="question" items="${questions}" varStatus="s">
+    <div class="row justify-content-center" id="question-container">
+        <div class="col-md-6">
+            <div class="container mt-5 bg-light p-4 rounded shadow">
+                <div class="pregunta p-4 border rounded">
+                    <h2><c:out value="${question.description}" /></h2>
+                    <form id="formAnsewered" class="needs-validation"
+                          novalidate method="post" action="/exam/saveAnswered">
+                        <c:choose>
+                            <c:when test="${question.type_question == 2}">
+                                <c:forEach var="answer" items="${question.answer}" varStatus="as">
+                                    <div class="form-check">
+                                        <input class="form-check-input custom-radio" type="radio" name="pregunta${s.index}" id="radio${s.index}-${as.index}" value="${as.index + 1}" required>
+                                        <label class="form-check-label" for="radio${s.index}-${as.index}">
+                                            <c:out value="${answer.answer}" />
+                                        </label>
+                                    </div>
+                                </c:forEach>
+                            </c:when>
+                            <c:when test="${question.type_question == 1}">
+                                <textarea class="form-control"  name="pregunta${s.index}"
+                                          rows="4" maxlength="250"  style="resize: none"
+                                          required></textarea>
+                            </c:when>
+                        </c:choose>
+                        <style>
+                            /* Estilo personalizado para los círculos de selección */
+                            .custom-radio {
+                                width: 1.2rem;
+                                height: 1.2rem;
+                                background-color: transparent;
+                                border-radius: 50%;
+                            }
+>>>>>>> Stashed changes
 
 <div class="row justify-content-center" id="question-container">
     <!-- Aquí se insertarán las cards de preguntas -->
 </div>
 
-<form action="/exam/enviar">
 <div class="d-flex justify-content-center mt-3">
-    <button type="submit" class="btn btn-success">
+    <button type="submit" class="btn btn-success" form="formAnsewered">
         ENVIAR
     </button>
 </div>
-</form>
 
 
 <jsp:include page="../../layouts/footer.jsp"/>
 
 <script>
 
+<<<<<<< Updated upstream
     var id_student_exam = null;
 
     var IDsQ = [];
@@ -197,6 +250,30 @@
     function redirectToStudentsIndex() {
         window.location.href ="${pageContext.request.contextPath}/user/student";
     }
+=======
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (() => {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+
+
+
+>>>>>>> Stashed changes
 </script>
 </body>
 </html>
