@@ -7,6 +7,7 @@ public class Answer {
     private Long fk_question;
 
 
+
     public Answer() {
     }
 
