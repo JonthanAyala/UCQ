@@ -85,7 +85,7 @@
                     this.style.color='white';"
                     onclick="window.location.href='${pageContext.request.contextPath}/user/profile-a';">
                     <div style="cursor: pointer; padding: 8px;">
-                        <h6 style="color: white; margin: 0;">perfil</h6>
+                        <h6 style="color: white; margin: 0;">Perfil</h6>
                     </div>
                 </li>
                 <li class="list-group-item" style="background-color: #00AA83; color: white; margin: 0; padding: 0;"
@@ -93,7 +93,7 @@
                     onmouseout="this.style.backgroundColor='#00AA83'; this.style.borderBottom='transparent';"
                     onclick="window.location.href='${pageContext.request.contextPath}/user/logout';">
                     <div style="cursor: pointer; padding: 8px;" >
-                        <h6 style="margin: 0;">cerrar sesión</h6>
+                        <h6 style="margin: 0;">Cerrar sesión</h6>
                     </div>
                 </li>
             </ul>
@@ -121,7 +121,7 @@
             <button  type="button" class="btn btn-outline-success btn-sm buttonColor"
                      data-bs-toggle="modal" data-bs-target="#ModalTeacher"
                      style="width: 180px; height: 100px; color: #002F5D" onclick="">
-                <img style="height: 100px; width: 100px" src="../../assets/img/icons8-teacher-100.png" class="card-img-top" alt="...">
+                <img style="height: 100px; width: 100px" src="${pageContext.request.contextPath}/assets/img/icons8-teacher-100.png" class="card-img-top" alt="...">
                 <h5>Agregar profesores</h5>
             </button>
         </div>
@@ -132,7 +132,7 @@
             <button  type="button" class="btn btn-outline-success btn-sm buttonColor"
                      data-bs-toggle="modal" data-bs-target="#ModalStudent"
                      style="width: 180px; height: 100px; color: #002F5D" onclick="">
-                <img style="height: 100px; width: 100px" src="${pageContext.request.contextPath}../../assets/img/icons8-student-100.png" class="card-img-top" alt="...">
+                <img style="height: 100px; width: 100px" src="${pageContext.request.contextPath}/assets/img/icons8-student-100.png" class="card-img-top" alt="...">
                 <h5>Agregar estudiantes</h5>
             </button>
             <br>
@@ -154,13 +154,13 @@
             <table class="table table-stripped" id="userTable">
                 <thead style="background-color: #00AA83; color: white">
                 <tr>
-                    <th>matricula </th>
-                    <th>nombre </th>
+                    <th>Matricula </th>
+                    <th>Nombre </th>
                     <th>CURP </th>
-                    <th>status </th>
-                    <th>correo </th>
-                    <th>tipo </th>
-                    <th>acciones </th>
+                    <th>Status </th>
+                    <th>Correo </th>
+                    <th>Tipo </th>
+                    <th>Acciones </th>
                 </tr>
                 </thead>
                 <tbody>

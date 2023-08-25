@@ -47,7 +47,7 @@
 
     <div>
       <button type="button" class="btn" style="background-color: transparent; border: transparent" onclick="redirectToTeacherIndex()">
-        <img src="../../assets/img/back-48.png">
+        <img src=" ${pageContext.request.contextPath}/assets/img/back-48.png">
       </button>
     </div>
 
@@ -72,7 +72,7 @@
   <div class="d-flex">
 
     <div>
-      <img src="../../layouts/usuario.png">
+      <img src=" ${pageContext.request.contextPath}/layouts/usuario.png">
     </div>
 
     <div class="container">

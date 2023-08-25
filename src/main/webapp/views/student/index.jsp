@@ -102,7 +102,7 @@
                 <div class="car-header" style="background-color: #00AA83; color: white"
                 ><h4 class="text-center">Código de acceso</h4></div> <!-- Corregido con tilde en "Código" -->
                 <div class="card-body" ><br> <br> <br>
-                    <form method="post" action="/exam/find-exam">
+                    <form method="post" action=" ${pageContext.request.contextPath}/exam/find-exam">
                         <div class="form-group mt-2 position-absolute top-50 start-50 translate-middle">
                             <div class="row">
                                 <div class="col text-center d-grid mt-2">

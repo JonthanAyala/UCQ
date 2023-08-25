@@ -43,7 +43,7 @@
 
         <div>
             <button type="button" class="btn" style="background-color: transparent; border: transparent" onclick="redirectToStudentsIndex()">
-                <img src="../../assets/img/back-48.png">
+                <img src=" ${pageContext.request.contextPath}/assets/img/back-48.png">
             </button>
         </div>
 

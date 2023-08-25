@@ -111,7 +111,7 @@
                 window.location.href = '${pageContext.request.contextPath}/user/index-teacher';
             }
         })">
-                    <img src="../../assets/img/back-48.png">
+                    <img src="${pageContext.request.contextPath}/assets/img/back-48.png">
                 </button>
             </div>
 
@@ -131,11 +131,11 @@
             <div class="d-grid">
                 <button type="button" class="btn mt-5" onclick="addQuestionClose()" style="background-color: #d9d9d9" >
                     Opción multiple
-                    <img src="../../assets/img/icons8-add-48.png">
+                    <img src="${pageContext.request.contextPath}/assets/img/icons8-add-48.png">
                 </button>
                 <button type="button" class="btn mt-5" onclick="addQuestionOpen()" style="background-color: #d9d9d9" >
                     Respuesta abierta
-                    <img src="../../assets/img/icons8-add2-48.png">
+                    <img src="${pageContext.request.contextPath}/assets/img/icons8-add2-48.png">
                 </button>
             </div>
         <div class="container-fluid mt-5">
@@ -737,18 +737,18 @@
                     }).then(() => {
                         // Redirigir a la página principal con los cambios guardados
                         // Puedes actualizar el valor de href con la URL deseada
-                        window.location.href = '/ruta/a/pagina-principal';
+                        window.location.href = '${pageContext.request.contextPath}/ruta/a/pagina-principal';
                     });
                 } else if (result.isDenied) {
                     // Redirigir a la página principal sin guardar cambios
                     // Puedes actualizar el valor de href con la URL deseada
-                    window.location.href = '/ruta/a/pagina-principal';
+                    window.location.href = '${pageContext.request.contextPath}/ruta/a/pagina-principal';
                 }
             });
         } else {
             // Redirigir a la página principal directamente, ya que los cambios ya están guardados
             // Puedes actualizar el valor de href con la URL deseada
-            window.location.href = '/ruta/a/pagina-principal';
+            window.location.href = '${pageContext.request.contextPath}/ruta/a/pagina-principal';
         }
     }
 
