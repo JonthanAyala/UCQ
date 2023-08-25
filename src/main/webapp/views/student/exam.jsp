@@ -96,7 +96,7 @@
     </div>
 </c:forEach>
 
-<form action="/exam/enviar">
+<form action="${pageContext.request.contextPath}/exam/enviar">
 <div class="d-flex justify-content-center mt-3">
     <button type="submit" class="btn btn-success">
         ENVIAR
