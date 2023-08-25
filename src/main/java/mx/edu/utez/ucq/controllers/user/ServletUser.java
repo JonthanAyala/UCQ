@@ -164,9 +164,11 @@ public class ServletUser extends HttpServlet {
                     boolean resultSE = new DaoExam().createStudentExam(id_exam, userE.getId());//SI
                     if (resultSE) {
                         Long idStudentExam = new DaoExam().extractIdStudentExam(userE.getId());//SI
+                        req.setAttribute("id_Student_Exam",idStudentExam);
                         if (idStudentExam != null){
                             List<Question> questions = new  DaoExam().constructQ(id_exam);
                             req.setAttribute("questions", questions);
+
                             redirect = "/views/student/exam.jsp";
                         }
                     }

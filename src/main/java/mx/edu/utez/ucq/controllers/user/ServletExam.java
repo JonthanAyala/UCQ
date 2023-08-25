@@ -34,7 +34,12 @@ import java.nio.charset.StandardCharsets;
         "/exam/find-exam",
         "/exam/redirect",
         "/exam/IdsQ",
-        "/exam/create-studen-exam"
+        "/exam/create-studen-exam",
+        "/exam/enviar",
+        "/exam/create-student-answer",
+        "/exam/update-student-answer",
+        "/exam/update-student-answer-open",
+        "/exam/create-student-answer-open"
 }) // Endpoints --> Acceso para el CRUD usuarios
 
 
@@ -350,7 +355,76 @@ public class ServletExam extends HttpServlet {
                     resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
                 break;
+            case "/exam/enviar":
+                try {
 
+                }catch (Exception e) {
+                    e.printStackTrace(); // Imprime detalles del error para el diagnóstico
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+                break;
+            case "/exam/create-student-answer":
+                Long id_A = Long.parseLong(req.getParameter("id_A"));
+                Long id_Q = Long.parseLong(req.getParameter("id_Q"));
+                Long id_SE = Long.parseLong(req.getParameter("id_SE"));
+
+                // Llama a la función para crear una nueva respuesta de estudiante
+                boolean resultCreate = new DaoExam().createStudentAnswer(id_A, id_Q, id_SE);
+                if (resultCreate) {
+                    Long resultID = new DaoExam().extractIDStudentAnswer(id_SE);
+                    resp.getWriter().write(String.valueOf(resultID));
+                    resp.getWriter().flush();
+                    return;
+                } else {
+                    // Manejo de error en la creación de respuesta
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+                break;
+            case "/exam/update-student-answer":
+                Long id_SE_A = Long.parseLong(req.getParameter("id_SE_A"));
+                Long id_A2 = Long.parseLong(req.getParameter("id_A"));
+
+                // Llama a la función para actualizar la respuesta de estudiante
+                boolean resultUpdate = new DaoExam().updateStudentAnswer(id_SE_A,id_A2);
+                if (resultUpdate) {
+                    // Respuesta exitosa
+                    resp.getWriter().write("Respuesta actualizada");
+                } else {
+                    // Manejo de error en la actualización de respuesta
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+                break;
+            case "/exam/create-student-answer-open":
+                String answer = req.getParameter("Answer");
+                Long id_Question = Long.parseLong(req.getParameter("id_Q"));
+                Long id_Student_Exam = Long.parseLong(req.getParameter("id_SE"));
+
+                boolean resultCreateAO = new DaoExam().createStudentAnswerOpen(id_Question,id_Student_Exam,answer);
+                if (resultCreateAO) {
+                    Long resultID = new DaoExam().extractIDStudentAnswer(id_Student_Exam);
+                    resp.getWriter().write(String.valueOf(resultID));
+                    resp.getWriter().flush();
+                    return;
+                } else {
+                    // Manejo de error en la creación de respuesta
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+
+                break;
+            case "/exam/update-student-answer-open":
+                String updatedAnswer = req.getParameter("Answer");
+                Long id_Student_Exam_Answer = Long.parseLong(req.getParameter("id_SE_A"));
+
+                boolean resultUpdateOpen = new DaoExam().updateStudentAnswerOpen(id_Student_Exam_Answer,updatedAnswer);
+                if (resultUpdateOpen) {
+                    // Respuesta exitosa
+                    resp.getWriter().write("Respuesta actualizada");
+                } else {
+                    // Manejo de error en la actualización de respuesta
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+
+                break;
             default:
                     System.out.println(action);
         }
