@@ -4,7 +4,7 @@
 <head>
     <title>Crear Examen</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="${pageContext.request.contextPath}/path/to/bootstrap.min.css" rel="stylesheet">
+    <link href="/path/to/bootstrap.min.css" rel="stylesheet">
     <jsp:include page="../../layouts/head.jsp"/>
 </head>
 
@@ -105,10 +105,10 @@
                 Swal.fire('EXAMEN GUARDADO', '', 'success');
                 // Redirigir después de 3 segundos si el usuario decidió guardar
                 setTimeout(function() {
-                     window.location.href ='${pageContext.request.contextPath}/user/index-teacher';
+                     window.location.href = '/user/index-teacher';
                 }, 1200); // 3000 milisegundos = 3 segundos
             } else if (result.isDenied) {
-                window.location.href = '${pageContext.request.contextPath}/user/index-teacher';
+                window.location.href = '/user/index-teacher';
             }
         })">
                     <img src="../../assets/img/back-48.png">
@@ -168,7 +168,9 @@
     <div class="container mt-5 w-50 p-3 containerExam mb-5" style="background-color: white;
     box-shadow: 0 0 8px rgba(0, 170, 131, 0.3);">
 
+        <div class="mt-5 mt-2 container" style="background-color: white">
 
+        </div>
 
         <div id="questions-container" class="overflow-y-auto">
 
@@ -197,7 +199,7 @@
         if (!idExam || idExam === "") {
             $.ajax({
                 type: "POST",
-                url: "${pageContext.request.contextPath}/exam/save-exam",
+                url: "/exam/save-exam",
                 data: {
                     "exam-code": examCode,
                     "nameExam": examTitle
@@ -212,7 +214,7 @@
         } else {
             $.ajax({
                 type: "POST",
-                url: "${pageContext.request.contextPath}/exam/update",
+                url: "/exam/update",
                 data: {
                     "nameExam": examTitle,
                     "id_exam": idExam
@@ -232,7 +234,7 @@
 
         $.ajax({
             type: "POST",
-            url:"${pageContext.request.contextPath}/exam/save-description",
+            url: "/exam/save-description",
             data: {
                 "id_question": questionsID[arreglo],
                 "description": description,
@@ -252,7 +254,7 @@
 
         $.ajax({
             type: "POST",
-            url: "${pageContext.request.contextPath}/exam/save-score",
+            url: "/exam/save-score",
             data: {
                 "id_question": questionsID[arreglo],
                 "score": score ,
@@ -261,7 +263,7 @@
                 console.log("Score  guardada");
             },
             error: function (xhr, status, error) {
-                ${pageContext.request.contextPath}  console.log("Error en la solicitud AJAX:", error);
+                console.log("Error en la solicitud AJAX:", error);
             },
         });
     }
@@ -271,7 +273,7 @@
         var answer = answerElement.value;
         $.ajax({
             type: "POST",
-            url: "${pageContext.request.contextPath}/exam/save-answer",
+            url: "/exam/save-answer",
             data: {
                 "id_answer": answerID[arregloi],
                 "answer": answer ,
@@ -288,7 +290,7 @@
         console.log("3---i if:"+ia+"="+answerID[ia]+", idQ if: "+idQ+" = "+questionsID[idQ]);
         $.ajax({
             type: "POST",
-            url: "${pageContext.request.contextPath}/exam/if-answer", // Cambia la URL según corresponda
+            url: "/exam/if-answer", // Cambia la URL según corresponda
             data: {
                 "IdPregunta": questionsID[idQ],
                 "IdA": answerID[ia]
@@ -305,7 +307,7 @@
     function addQuestionClose() {
         $.ajax({
             type: "POST",
-            url: "${pageContext.request.contextPath}/exam/createQ",
+            url: "/exam/createQ",
             data: {
                 "id_exam": idExam,
                 "type_question": "2"
@@ -398,6 +400,7 @@
 
         var answerContainer = document.createElement("div");
         answerContainer.id = "answer-container-" + generarId;
+        answerContainer.className = "d-block mt-3";
         cardBody.appendChild(answerContainer);
 
         var buttonGroup = document.createElement("div");
@@ -435,7 +438,7 @@
         function addAnswerClose(idQ) {
             $.ajax({
                 type: "POST",
-                url: "${pageContext.request.contextPath}/exam/create-Answer",
+                url: "/exam/create-Answer",
                 data: {
                     "Id_Question": questionsID[idQ]
                 },
@@ -527,7 +530,7 @@
         function deleteAnswer(arreglo, answerId){
             $.ajax({
                 type: "POST",
-                url: "${pageContext.request.contextPath}/exam/deleteA",
+                url: "/exam/deleteA",
                 data: {
                     "id_answer": answerID[arreglo],
                 },
@@ -546,7 +549,7 @@
     function addQuestionOpen()  {
         $.ajax({
             type: "POST",
-            url: "${pageContext.request.contextPath}/exam/createQ",
+            url: "/exam/createQ",
             data: {
                 "id_exam": idExam,
                 "type_question": "1"
@@ -666,7 +669,7 @@
     function deleteQuestion(cardId,arreglo) {
         $.ajax({
             type: "POST",
-            url: "${pageContext.request.contextPath}/exam/deleteQ",
+            url: "/exam/deleteQ",
             data: {
                 "id_question": questionsID[arreglo],
             },
@@ -771,7 +774,7 @@
 
         marcarCambiosComoGuardados(); // Marcar cambios como guardados
         cambiarColorTemporarily(); // Cambiar el color del botón temporalmente
-        window.location.href = "${pageContext.request.contextPath}/user/index-teacher";
+        window.location.href = "/user/index-teacher";
     }
 
 

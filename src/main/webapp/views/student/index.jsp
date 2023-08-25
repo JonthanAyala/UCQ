@@ -171,7 +171,8 @@
 </div>
 <jsp:include page="../../layouts/footer.jsp"/>
 
+<script>
 
-
+</script>
 </body>
 </html>

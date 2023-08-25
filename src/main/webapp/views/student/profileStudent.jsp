@@ -281,8 +281,20 @@
 
     // Validar el formulario antes de enviarlo
     if (form.checkValidity() && passwordInput.value === confirmPasswordInput.value && passwordInput.equals() === confirmPasswordInput.equals()) {
-      // Si el formulario es válido y las contraseñas coinciden, enviarlo al servidor
-      form.submit();
+
+      Swal.fire({
+        title: '¿Guardar cambios?',
+        showCancelButton: true,
+        confirmButtonText: 'Guardar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          Swal.fire('GUARDADO!', '', 'HECHO')
+          form.submit();
+        }
+      })
+
     } else if (passwordInput.value !== confirmPasswordInput.value || passwordInput.equals() === confirmPasswordInput.equals()) {
       // Si las contraseñas no coinciden, mostrar un mensaje de error con SweetAlert2
       Swal.fire({
