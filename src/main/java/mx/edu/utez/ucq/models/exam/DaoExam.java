@@ -486,4 +486,99 @@ public class DaoExam{
             }
             return questions;
         }
+
+    public boolean createStudentAnswer(Long idA, Long idQ, Long idSe) {
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "INSERT INTO students_exam_answer (fk_student_exam, fk_answer, fk_question) " +
+                    "VALUES ( ?,?,?);";
+            pstm = conn.prepareCall(query);
+            pstm.setLong(1, idSe);
+            pstm.setLong(2, idA);
+            pstm.setLong(3,idQ);
+            return  pstm.executeUpdate() == 1;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findExam" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
+
+    public Long extractIDStudentAnswer(Long idSe) {
+        Long id_Student_Answer = null;
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "SELECT MAX(id_Student_exam_answer) AS max_id_SEA FROM students_exam_answer WHERE fk_student_exam = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1, idSe);
+            rs = pstm.executeQuery();
+            if (rs.next()) {
+                id_Student_Answer = rs.getLong("max_id_SEA");
+                System.out.println("idSEA: " + id_Student_Answer);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findExam" + e.getMessage());
+        } finally {
+            close();
+        }
+        return id_Student_Answer;
+    }
+
+    public boolean updateStudentAnswer(Long id_SE_A, Long id_A) {
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "UPDATE students_exam_answer SET fk_answer = ? WHERE id_Student_exam_answer = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1,id_A);
+            pstm.setLong(2,id_SE_A);
+            int result = pstm.executeUpdate();
+            System.out.println("Se guardo la respuesta: "+result);
+            return result > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+
+    }
+
+    public boolean createStudentAnswerOpen(Long id_Question, Long id_Student_Exam, String answer) {
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "INSERT INTO students_exam_answer (fk_student_exam, answer, fk_question) " +
+                    "VALUES ( ?,?,?);";
+            pstm = conn.prepareCall(query);
+            pstm.setLong(1, id_Student_Exam);
+            pstm.setString(2, answer);
+            pstm.setLong(3,id_Question);
+            return  pstm.executeUpdate() == 1;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findExam" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
+
+    public boolean updateStudentAnswerOpen(Long idStudentExamAnswer, String updatedAnswer) {
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "UPDATE students_exam_answer SET answer = ? WHERE id_Student_exam_answer = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setString(1,updatedAnswer);
+            pstm.setLong(2,idStudentExamAnswer);
+            int result = pstm.executeUpdate();
+            System.out.println("Se guardo la respuesta: "+result);
+            return result > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error save" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+
+
+    }
 }

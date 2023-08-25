@@ -53,6 +53,7 @@
         </div>
     </div>
 </div>
+<c:set var="position" value="0" scope="request" />
 <c:forEach var="question" items="${questions}" varStatus="s">
     <div class="row justify-content-center" id="question-container">
         <div class="col-md-6">
@@ -64,15 +65,17 @@
                             <c:when test="${question.type_question == 2}">
                                 <c:forEach var="answer" items="${question.answer}" varStatus="as">
                                     <div class="form-check">
-                                        <input class="form-check-input custom-radio" type="radio" name="pregunta${s.index}" id="radio${s.index}-${as.index}" value="${as.index + 1}">
+                                        <input class="form-check-input custom-radio"  type="radio" name="pregunta${s.index}" id="radio${s.index}-${as.index}" value="${as.index + 1}"
+                                               onchange="answerClose(${answer.id_answer},${question.id_question},${id_Student_Exam},${position})">
                                         <label class="form-check-label" for="radio${s.index}-${as.index}">
                                             <c:out value="${answer.answer}" />
                                         </label>
                                     </div>
+
                                 </c:forEach>
                             </c:when>
                             <c:when test="${question.type_question == 1}">
-                                <textarea class="form-control" name="pregunta${s.index}" rows="4"></textarea>
+                                <textarea class="form-control" name="pregunta${s.index}" id="textarea${position}" rows="4" onfocusout="answerOpen(${question.id_question},${id_Student_Exam},${position})"></textarea>
                             </c:when>
                         </c:choose>
                         <style>
@@ -94,6 +97,7 @@
             </div>
         </div>
     </div>
+    <c:set var="position" value="${position + 1}" scope="request" />
 </c:forEach>
 
 <form action="/exam/enviar">
@@ -108,10 +112,87 @@
 <jsp:include page="../../layouts/footer.jsp"/>
 
 <script>
-
+    var IdsSEA= []
     function redirectToStudentsIndex() {
         window.location.href ="${pageContext.request.contextPath}/user/student";
     }
+
+    function answerClose(id_A,id_Q,id_SE,position){
+        if(IdsSEA[position] == null){
+            $.ajax({
+                type: "POST",
+                url: "${pageContext.request.contextPath}/exam/create-student-answer",
+                data: {
+                    "id_A": id_A,
+                    "id_Q": id_Q,
+                    "id_SE": id_SE
+                },
+                success: function (response) {
+                    IdsSEA[position] = response;
+                    console.log(IdsSEA[position]);
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error en la solicitud AJAX:", error);
+                },
+            });
+        }else {
+            $.ajax({
+                type: "POST",
+                url: "${pageContext.request.contextPath}/exam/update-student-answer",
+                data: {
+                    "id_A": id_A,
+                    "id_SE_A": IdsSEA[position]
+                },
+                success: function (response) {
+                    console.log("Respuesta actualizada");
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error en la solicitud AJAX:", error);
+                },
+            });
+        }
+
+
+    }
+
+
+    function answerOpen(id_Q, id_SE, position) {
+        var textareaValue = document.getElementById("textarea" + position).value;
+        if (IdsSEA[position] == null) {
+            $.ajax({
+                type: "POST",
+                url: "${pageContext.request.contextPath}/exam/create-student-answer-open",
+                data: {
+                    "Answer": textareaValue,
+                    "id_Q": id_Q,
+                    "id_SE": id_SE
+                },
+                success: function (response) {
+                    IdsSEA[position] = response;
+                    console.log(IdsSEA[position]);
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error en la solicitud AJAX:", error);
+                },
+            });
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "${pageContext.request.contextPath}/exam/update-student-answer-open",
+                data: {
+                    "Answer": textareaValue,
+                    "id_SE_A": IdsSEA[position]
+                },
+                success: function (response) {
+                    console.log("Respuesta actualizada");
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error en la solicitud AJAX:", error);
+                },
+            });
+        }
+    }
+
 
 
 </script>
