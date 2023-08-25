@@ -11,9 +11,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DaoExam{
-    private Connection conn;
-    private PreparedStatement pstm;
-    private ResultSet rs;
+    private Connection conn,conn2;
+    private PreparedStatement pstm, pstm2;
+    private ResultSet rs, rs2;
 
     public boolean saveExam(Exam object) {
         try {
@@ -219,6 +219,16 @@ public class DaoExam{
         }
 
     }
+    public void close2(){
+        try {
+            if(conn2 != null) conn2.close();
+            if (pstm2 != null) pstm2.close();
+            if (rs2 != null) rs2.close();
+        }catch (SQLException e){
+
+        }
+
+    }
 
     public Long extractId(Long userId) {
         Long id = null;
@@ -366,91 +376,114 @@ public class DaoExam{
         }
         return id_exam;
     }
-    public Exam LoadExam(Long id_exam){
-        try {
-            conn = new MySQLConnection().connect();
-            String query = "SELECT * FROM exams WHERE id_exam = ?;";
-            pstm = conn.prepareStatement(query);
-            pstm.setLong(1, id_exam);
 
-            rs = pstm.executeQuery();
-            if (rs.next()) {
-                Exam exam = new Exam();
-                exam.setId_exam(rs.getLong("id_exam"));
-                exam.setName_exam(rs.getString("name_exam"));
-                exam.setCode(rs.getString("code"));
-                exam.setStart_time(rs.getString("start_time"));
-                exam.setEnd_time(rs.getString("end_time"));
-                exam.setFk_user(rs.getLong("fk_user"));
-                return exam;
+    //-------------------------Validacion de contruccion de exam
+        public Exam LoadExam(Long id_exam){
+            try {
+                conn = new MySQLConnection().connect();
+                String query = "SELECT * FROM exams WHERE id_exam = ?;";
+                pstm = conn.prepareStatement(query);
+                pstm.setLong(1, id_exam);
+
+                rs = pstm.executeQuery();
+                if (rs.next()) {
+                    Exam exam = new Exam();
+                    exam.setId_exam(rs.getLong("id_exam"));
+                    exam.setName_exam(rs.getString("name_exam"));
+                    exam.setCode(rs.getString("code"));
+                    exam.setStart_time(rs.getString("start_time"));
+                    exam.setEnd_time(rs.getString("end_time"));
+                    exam.setFk_user(rs.getLong("fk_user"));
+                    return exam;
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(DaoUser.class.getName())
+                        .log(Level.SEVERE,
+                                "Credentials mismatch: " + e.getMessage());
+            } finally {
+                close();
             }
-        } catch (SQLException e) {
-            Logger.getLogger(DaoUser.class.getName())
-                    .log(Level.SEVERE,
-                            "Credentials mismatch: " + e.getMessage());
-        } finally {
-            close();
+            return null;
         }
-        return null;
-    }
 
-    public Long[] finQuestions(Long idE) {
-        List<Long> idList = new ArrayList<>();
-
-        try {
-            conn = new MySQLConnection().connect();
-            String query = "SELECT id_Question FROM questions WHERE fk_exam = ?;";
-            pstm = conn.prepareStatement(query);
-            pstm.setLong(1, idE);
-            rs = pstm.executeQuery();
-
-            while (rs.next()) {
-                idList.add(rs.getLong("id_Question"));
+        public boolean createStudentExam(Long idExam, Long fkUser) {
+            try {
+                conn = new MySQLConnection().connect();
+                String query = "INSERT INTO Students_exam (fk_exam, fk_user, start_date)" +
+                        " VALUES ( ?, ?, NOW());";
+                pstm = conn.prepareCall(query);
+                pstm.setLong(1, idExam);
+                pstm.setLong(2, fkUser);
+                return  pstm.executeUpdate() == 1;
+            } catch (SQLException e) {
+                Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findExam" + e.getMessage());
+            } finally {
+                close();
             }
-        } catch (SQLException e) {
-            Logger.getLogger(DaoExam.class.getName())
-                    .log(Level.SEVERE, "Error al obtener los IDs de preguntas: " + e.getMessage());
-        } finally {
-            close();
+            return false;
         }
 
-        return idList.toArray(new Long[0]);
-    }
-
-
-    public boolean createStudentExam(Long idExam, Long fkUser) {
-        try {
-            conn = new MySQLConnection().connect();
-            String query = "INSERT INTO Students_exam (fk_exam, fk_user, start_date)" +
-                    " VALUES ( ?, ?, NOW());";
-            pstm = conn.prepareCall(query);
-            pstm.setLong(1, idExam);
-            pstm.setLong(2, fkUser);
-            return  pstm.executeUpdate() == 1;
-        } catch (SQLException e) {
-            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findExam" + e.getMessage());
-        } finally {
-            close();
-        }
-        return false;
-    }
-
-    public Long extractIdStudentExam(Long fkUser) {
-        Long id_student_exam = null;
-        try {
-            conn = new MySQLConnection().connect();
-            String query = "SELECT id_Student_exam FROM Students_exam WHERE fk_user = ?";
-            pstm = conn.prepareCall(query);
-            pstm.setLong(1, fkUser);
-            if (rs.next()) {
-                id_student_exam = rs.getLong("id_Student_exam");
-                System.out.println("idSW: "+id_student_exam);// Obtener el valor de la columna "id_question"
+        public Long extractIdStudentExam(Long fkUser) {
+            System.out.printf("fkUser en DAO: "+fkUser);
+            Long id_student_exam = null;
+            try {
+                conn = new MySQLConnection().connect();
+                String query = "SELECT MAX(id_Student_exam) AS max_id FROM students_exam WHERE fk_user = ?;";
+                pstm = conn.prepareStatement(query);
+                pstm.setLong(1, fkUser);
+                rs = pstm.executeQuery();
+                if (rs.next()) {
+                    id_student_exam = rs.getLong("max_id");
+                    System.out.println("idSW: " + id_student_exam);
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findExam" + e.getMessage());
+            } finally {
+                close();
             }
-        } catch (SQLException e) {
-            Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findExam" + e.getMessage());
-        } finally {
-            close();
+            return id_student_exam;
         }
-        return id_student_exam;
-    }
+
+        public List<Question> constructQ (Long id_exam){
+            List<Question> questions = new ArrayList<>();
+            try {
+                conn = new MySQLConnection().connect();
+                String query = "SELECT * FROM questions where fk_exam = "+id_exam+";";
+                pstm = conn.prepareStatement(query);
+                rs = pstm.executeQuery();
+                while (rs.next()){
+                    Question questionA = new Question();
+                    questionA.setId_question(rs.getLong("id_Question"));
+                    questionA.setType_question(rs.getLong("type_question"));
+                    questionA.setDescription(rs.getString("description"));
+                    questionA.setPoints(rs.getLong("points"));
+                    List<Answer> answers = new ArrayList<>();
+                    try {
+                        conn2 = new MySQLConnection().connect();
+                        String query2 = "SELECT * from questions_answer WHERE fk_question= "+questionA.getId_question()+";";
+                        pstm2 = conn2.prepareStatement(query2);
+                        rs2 = pstm2.executeQuery();
+                        while (rs2.next()) {
+                            Answer answerA = new Answer();
+                            answerA.setId_answer(rs2.getLong("id_Question_answer"));
+                            answerA.setAnswer(rs2.getString("answer"));
+                            answers.add(answerA);
+                        }
+                    }catch (SQLException e){
+                        Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
+                    }finally {
+                        close2();
+                    }
+
+                    questionA.setAnswer(answers);
+
+                    questions.add(questionA);
+                }
+            }catch (SQLException e){
+                Logger.getLogger(DaoExam.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
+            }finally {
+                close();
+            }
+            return questions;
+        }
 }

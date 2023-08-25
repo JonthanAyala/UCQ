@@ -1,12 +1,23 @@
 package mx.edu.utez.ucq.models.exam;
 
+import java.util.List;
+
 public class Question {
     private long id_question;
     private String url_image;
     private Long type_question;
-    private String Description;
+    private String description;
     private Long points;
     private Long fk_exam;
+    private List<Answer> answer;
+
+    public List<Answer> getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(List<Answer> answer) {
+        this.answer = answer;
+    }
 
     public Question() {
     }
@@ -15,7 +26,7 @@ public class Question {
         this.id_question = id_question;
         this.url_image = url_image;
         this.type_question = type_question;
-        this.Description = description;
+        this.description = description;
         this.points = points;
         this.fk_exam = fk_exam;
     }
@@ -45,11 +56,11 @@ public class Question {
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     public Long getPoints() {

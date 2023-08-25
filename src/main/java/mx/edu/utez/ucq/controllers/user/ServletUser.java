@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import mx.edu.utez.ucq.models.Respuestas.ExamDetails;
 import mx.edu.utez.ucq.models.exam.DaoExam;
 import mx.edu.utez.ucq.models.exam.Exam;
+import mx.edu.utez.ucq.models.exam.Question;
 import mx.edu.utez.ucq.models.user.DaoUser;
 import mx.edu.utez.ucq.models.user.User;
 
@@ -135,7 +136,6 @@ public class ServletUser extends HttpServlet {
                 break;
 
             case "/user/profile-a":
-
                 HttpSession session1 = req.getSession();
                 User userA = (User) session1.getAttribute("user");
                 userA = new DaoUser().findOneByUser(userA.getId());
@@ -154,14 +154,22 @@ public class ServletUser extends HttpServlet {
             case "/user/view-exam":
                 session = req.getSession();
                 Long id_exam = (Long) session.getAttribute("id_exam");
-                Exam exam = new DaoExam().LoadExam(id_exam);
+                User userE = (User) session.getAttribute("user");
+                Exam exam = new DaoExam().LoadExam(id_exam);//SI
+                //Se usa el end_time para ver si se puede responder el examen
                 String end = exam.getEnd_time();
-                System.out.println("name= "+exam.getName_exam());
                 req.setAttribute("exam", exam);
+
                 if (end == null || end.isEmpty()){
-                    Long[] arreglo = new DaoExam().finQuestions(id_exam);
-                    req.setAttribute("idsQ", arreglo);
-                    redirect = "/views/student/exam.jsp";
+                    boolean resultSE = new DaoExam().createStudentExam(id_exam, userE.getId());//SI
+                    if (resultSE) {
+                        Long idStudentExam = new DaoExam().extractIdStudentExam(userE.getId());//SI
+                        if (idStudentExam != null){
+                            List<Question> questions = new  DaoExam().constructQ(id_exam);
+                            req.setAttribute("questions", questions);
+                            redirect = "/views/student/exam.jsp";
+                        }
+                    }
                 }else {
                     redirect = "/user/student";
                 }
