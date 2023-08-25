@@ -3,8 +3,9 @@ package mx.edu.utez.ucq.models.exam;
 public class Answer {
     private Long id_answer;
     private String answer;
-    private boolean if_answer;
+    private Boolean if_answer;
     private Long fk_question;
+
 
     public Answer() {
     }

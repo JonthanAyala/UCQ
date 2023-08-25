@@ -15,7 +15,6 @@ import mx.edu.utez.ucq.models.user.User;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 @WebServlet(name = "exams",urlPatterns = {
         "/exam/exams",
@@ -342,7 +341,6 @@ public class ServletExam extends HttpServlet {
                     if (id_exam != null) {
                         HttpSession session = req.getSession();
                         session.setAttribute("id_exam", id_exam);
-
                         redirect = "/user/view-exam";
                     }else {
                         redirect = "/user/student";
@@ -352,57 +350,12 @@ public class ServletExam extends HttpServlet {
                     resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
                 break;
-            case "/exam/IdsQ":
-                try {
-                    Long idE = Long.valueOf(req.getParameter("idExam"));
-                    Long[] arreglo = new DaoExam().finQuestions(idE);
 
-                    if (arreglo != null) {
-                        String idsJSON = Arrays.toString(arreglo);
-                        sendJSONResponse(resp, idsJSON);
-                    } else {
-                        resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                        resp.getWriter().write("Error al obtener los IDs de preguntas.");
-                    }
-                    return;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                }
-                break;
-            case "/exam/create-student-exam":
-                Long idExam = Long.valueOf(req.getParameter("idExam"));
-                System.out.println("IDEXam: "+idExam);
-                Long fkUser = Long.valueOf(req.getParameter("fk_user"));
-                System.out.println("FK_user"+ fkUser);
-                try {
-                    boolean resultSE = new DaoExam().createStudentExam(idExam, fkUser);
-                    System.out.println("Creo?: "+resultSE);
-                    Long idStudentExam = null;
-                    if (resultSE) {
-                        idStudentExam = new DaoExam().extractIdStudentExam(fkUser);
-                        System.out.println("AAA: "+idStudentExam);
-                        sendJSONResponse(resp, idStudentExam.toString());
-                        return;
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                }
-                break;
-            case "":
-                break;
             default:
                     System.out.println(action);
         }
         resp.sendRedirect(req.getContextPath() + redirect);
     }
 
-    private void sendJSONResponse(HttpServletResponse response, String json) throws IOException {
-        response.setContentType("application/json");
-        response.getWriter().write(json);
-        response.getWriter().flush();
-    }
 }
 
