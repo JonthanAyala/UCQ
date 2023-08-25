@@ -1,11 +1,5 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: axelj_7
-  Date: 11/07/2023
-  Time: 10:12 p. m.
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 <head>
     <title>Calificar Examen</title>
@@ -72,12 +66,58 @@
                 </div>
             </div>
         </div>
-
-
-        <div class="container p-3">
-            <div class="container mt-5 w-75 p-3" style="background-color: white">
-
+        <div class="col-md-6">
+            <div class="container mt-5 bg-light p-4 rounded shadow">
+                <h1 class="text-center mb-4">${exam.name_exam}</h1>
+            </div>
+        </div>
                 <div id="questions-container">
+                    <c:set var="position" value="0" scope="request" />
+                    <c:forEach var="question" items="${questions}" varStatus="s">
+                        <div class="" id="question-container">
+                            <div class="col-md-6">
+                                <div class="container mt-5 bg-light p-4 rounded shadow">
+                                    <div class="pregunta p-4 border rounded">
+                                        <h2><c:out value="${question.description}" /></h2>
+                                        <form>
+                                            <c:choose>
+                                                <c:when test="${question.type_question == 2}">
+                                                    <c:forEach var="answer" items="${question.answer}" varStatus="as">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input custom-radio"  type="radio" name="pregunta${s.index}" id="radio${s.index}-${as.index}" value="${as.index + 1}"
+                                                                   onchange="answerClose(${answer.id_answer},${question.id_question},${id_Student_Exam},${position})">
+                                                            <label class="form-check-label" for="radio${s.index}-${as.index}">
+                                                                <c:out value="${answer.answer}" />
+                                                            </label>
+                                                        </div>
+
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:when test="${question.type_question == 1}">
+                                                    <textarea class="form-control" name="pregunta${s.index}" id="textarea${position}" rows="4" onfocusout="answerOpen(${question.id_question},${id_Student_Exam},${position})"></textarea>
+                                                </c:when>
+                                            </c:choose>
+                                            <style>
+                                                /* Estilo personalizado para los círculos de selección */
+                                                .custom-radio {
+                                                    width: 1.2rem;
+                                                    height: 1.2rem;
+                                                    background-color: transparent;
+                                                    border-radius: 50%;
+                                                }
+
+                                                /* Estilo personalizado para el círculo cuando está seleccionado */
+                                                .custom-radio:checked {
+                                                    background-color: #28a745;
+                                                }
+                                            </style>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <c:set var="position" value="${position + 1}" scope="request" />
+                    </c:forEach>
 
                 </div>
             </div>

@@ -149,6 +149,12 @@
                   Eliminar
                 </button>
                 </form>
+              <form method="get" action="${pageContext.request.contextPath}/exam/view-markExam">
+                <input hidden value="${exam.id_exam}" name="id">
+                <button type="submit" class="btn btn-outline-success btn-sm">
+                  Calificar
+                </button>
+              </form>
                 </td>
           </tr>
               </c:forEach>
